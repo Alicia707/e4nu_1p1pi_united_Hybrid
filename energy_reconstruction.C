@@ -446,7 +446,11 @@ EC_photon_beta["3He"]=0.93;
 
   int N_qe;
   double *x_qe;
-
+  //- - - - - - Debugging variables - - - - - ///
+  int Overall_1p1pi_Pass = 0;
+  int Npimi_Pass = 0;
+  int Npipl_Pass = 0;
+  int Rad_phot_Pass = 0;
   ///- - - - - Declaration of certain constants - - - - - ///
   double reso_p = 0.01;
   double reso_e = 0.005;
@@ -455,12 +459,6 @@ EC_photon_beta["3He"]=0.93;
   double Smeared_Ep[20] = {0};
   double Smeared_Ppi[20] = {0};
   double Smeared_Epi[20] = {0};
-  int charge_pi[20];
-  int num_phot_rad = 0;
-  for(int i = 0; i < 20; i++)
-  {
-    charge_pi[i] = -2;
-  }
   int num_pi_phot_nonrad = 0;
   vector <int> PiPlusID;
   vector <int> PiMinusID;
@@ -540,6 +538,8 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
   h1_en_recon1->Sumw2();
   TH1F *h1_E_tot_pimi=new TH1F("h1_E_tot_pimi", "", n_bins, x_values);
   h1_E_tot_pimi->Sumw2();
+  TH1F *h1_E_tot_pipl=new TH1F("h1_E_tot_pipl", "", n_bins, x_values);
+  h1_E_tot_pipl->Sumw2();
   TH1F *h1_en_recon1_pipl=new TH1F("cal_pipl", "",n_bins, x_values);
   h1_en_recon1_pipl->Sumw2();
   TH1F *h1_en_recon2=new TH1F("kin_e","",n_bins, x_values);
@@ -946,7 +946,6 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
     {
       el_vert = 0;
       el_vert_corr = 0;
-
     }
 
     ece = TMath::Max(ec_ei[ec[ind_em] - 1] + ec_eo[ec[ind_em] - 1], etot[ec[ind_em] - 1]);
@@ -973,27 +972,31 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
     double en_recon2 = (m_delta*m_delta-(m_prot-eps)*(m_prot-eps)+2*(m_prot-eps)*V4_el.E())/(2*(m_prot-eps-V4_el.E()+V4_el.Rho()*cz[ind_em]));
     if(ffilter_selection == "filtered")
       {
-	       el_phi_mod=V3_el.Phi()*TMath::RadToDeg()  + 30;
+	       el_phi_mod = V3_el.Phi()*TMath::RadToDeg()  + 30;
       }
     TVector3 V3_pipl;
     TVector3 V3_pimi;
     int index_p[20],ind_p,index_pi[20],ind_pi, ind_pi_phot[20];
-    int num_p = 0,num_pi=0,num_pimi=0,num_pipl=0, num_pi_phot=0;
+    int num_p = 0,num_pi=0,num_pimi=0,num_pipl=0, num_pi_phot=0, num_phot_rad = 0;
     int index_n[20]={},ec_index_n[20]={},index_pipl[20]={},index_pimi[20]={};
+    int charge_pi[20];
+    for(int i = 0; i < 20; i++)
+    {
+      index_p[i] = -1;   index_pi[i] = -1;   index_pipl[i] = -1;   index_pimi[i] = -1;   ind_pi_phot[i] = -1;
+			ec_index_n[i] = -1;   //ec_radstat_n[i] = false;
+			charge_pi[i] = -2; //default number should be not a possible real charge
+			Smeared_Pp[i]  = 0; Smeared_Ep[i]  = 0;  //default 0 momentum and energy after smearing
+			Smeared_Ppi[i] = 0; Smeared_Epi[i] = 0;  //default 0 momentum and energy after smearing
+    }
     int num_n = 0,ec_num_n = 0;
     double pi_phi,pi_phi_mod, pi_theta,pimi_phi,pimi_phi_mod,pimi_theta,pipl_phi,pipl_phi_mod, pipl_theta;
     double fine_struc_const=0.007297;
     double reco_Q2 = 0;
+    reco_Q2 = -(V4_el-V4_beam).Mag2();
+    double Q4 = reco_Q2 * reco_Q2;
     ///- - - - - Debug (Made Mott_cross_sec) actually equal something for filtered data 10.8.20 -AM - - - - - ///
-    double Mott_cross_sec;
-    if(ffilter_selection == "unfiltered"){
-     Mott_cross_sec=(fine_struc_const*fine_struc_const*(cz[ind_em]+1))/(2*V4_el.E()*V4_el.E()*(1-cz[ind_em])*(1-cz[ind_em]));
-    }
-    else if(ffilter_selection == "filtered"){
-      reco_Q2 = -(V4_el-V4_beam).Mag2();
-      double Q4 = reco_Q2 * reco_Q2;
-       Mott_cross_sec = (1./Q4);
-	}
+    double Mott_cross_sec = 1.0/ Q4;
+    ///- - - - - Changed Mott_cross_sec to be the same regardless of filter type 2.8.21 -AM - - - - - ///
     double WeightIncl = 1.0 / Mott_cross_sec;
 
     const double pimi_vertcut=2.5,pipl_vertcut=2.5;
@@ -1017,17 +1020,53 @@ if(ffilter_selection == "unfiltered"){
     h2_e_phi_theta->Fill(el_phi_mod, el_theta);
     h2_e_phi_costheta->Fill(el_phi_mod, cz[ind_em]);
     h2_e_ec_xy->Fill(ec_x,ec_y);
+
+    double Q2cut = 0;
+    TVector3 V3_q=(V4_beam-V4_el).Vect();
+    double q2 = -(V4_beam-V4_el).Mag2();
+    double omega= (V4_beam-V4_el).E();
+    double Wvar=TMath::Sqrt((m_prot+omega)*(m_prot+omega)-V3_q*V3_q);
+
+    if(en_beam[fbeam_en]>1. && en_beam[fbeam_en]<2.) //1.1 GeV Configuration parameters and cuts
+    {
+      Q2cut = 0.1;
+    }
+
+
+    if(en_beam[fbeam_en]>2. && en_beam[fbeam_en]<3.) //2.2 GeV Configuration parameters and cuts
+    {
+      Q2cut = 0.4;
+    }
+
+    if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.) //4.4 GeV Configuration parameters and cuts
+    {
+      Q2cut = 0.8;
+    }
+    ///- - - - - Declaration of Parameters for continue statements - - - - - ///
+    double Wcut = 2;
+    //double e_acc_ratio = 1.;
+    double nu = -(V4_el-V4_beam).E();
+    double W_var = TMath::Sqrt((m_prot+nu)*(m_prot+nu)-V3_q*V3_q);
+    ///- - - - - 11.5.20 -> Changed Q2 -> reco_Q2 - - - - - ///
+    if(ffilter_selection == "filtered")
+    {
+      if( reco_Q2 < Q2cut || W_var > Wcut) continue;
+      ///- - - - - - Perhaps this is the source of my charges being messed up? - - - - - ///
+    //  if(!EFiducialCut(V3_el)) continue;
+    //  if(fabs(e_acc_ratio) != e_acc_ratio) {continue;}
+    }
+
     /// - - - - - 11.5.20 -> Attempt bug fix - - - - - ///
     if(ffilter_selection == "unfiltered")
     {
       if(!EFiducialCut(el_mom1)){ continue; }//theta, phi cuts
     }
-/// - - - - - Attempting to fix n_prot count - - - - - ///
     else ///- - - - - Hardron Counts - - - - -///
     {
       for(int i = 0; i<nf; i++)
       {
-        if(pdgf[i] == 2212 && pf[i] > .3) /// - - - - Begin Proton Count - - - - - ///
+        /// - - - - Begin Proton Count - - - - ///
+        if(pdgf[i] == 2212 && pf[i] > .3)
         {
           num_p = num_p + 1;
           index_p[num_p - 1] = i;
@@ -1082,7 +1121,6 @@ if(ffilter_selection == "unfiltered"){
   				 //within 40 degrees in theta and 30 degrees in phi. Electron phi has already added 30 degree and between 0 to 360
 
   				 if(V3_phot_angles.Angle(V3_el)*TMath::RadToDeg() < phot_rad_cut && fabs(neut_phi_mod-el_phi_mod) < phot_e_phidiffcut ) {
-
   					ec_radstat_n[num_pi_phot - 1] = true; //select radiation photons
   					num_phot_rad = num_phot_rad + 1;
   					RadCosThetaGammaEgamma->Fill(V3_phot_angles.CosTheta(),V3_phot_angles.Mag() ,WeightIncl);
@@ -1096,11 +1134,13 @@ if(ffilter_selection == "unfiltered"){
   					NonRadThetaVsPhiGamma->Fill(neut_phi_mod,V3_phot_angles.Theta()*TMath::RadToDeg(),WeightIncl);
   				 }
   			}
-
-
       }//end for
     }//end else if
-
+    if(num_phot_rad > 0 )
+    {
+      Rad_phot_Pass++;
+      continue;
+    }
     if(ffilter_selection == "unfiltered")
     {
         if(!CutUVW(e_ec_xyz1)){ continue; }
@@ -1117,6 +1157,7 @@ if(ffilter_selection == "unfiltered"){
   for( int i = 1; i < TMath::Min(gpart, 20); i++ )   //i is the index of the particle in the event
       {
   /// - - - - - Implemented Filter Selection  10.4.20 -AM - - - - - ///
+  ///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	if( (sc[i] > 0 && stat[i] > 0 &&  id[i] == 2212) && ffilter_selection == "unfiltered" )// looking for protons, id ==2212
 	  {
       bett=p[i]/TMath::Sqrt(p[i]*p[i]+m_prot*m_prot);
@@ -1151,6 +1192,7 @@ if(ffilter_selection == "unfiltered"){
 	   }
     }
 ///- - - - - Filter Selection Implementation 10.4.20 -AM - - - - - ///
+///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	if((q[i]!=0 &&  sc[i] > 0 && dc[i]>0 && stat[i] > 0 &&  id[i] == -211)&&(ffilter_selection=="unfiltered")) //looking for negative pions, id=-211
 	  {
       V3_pimi.SetXYZ(p[i]*cx[i],p[i]*cy[i],p[i]*cz[i]);
@@ -1186,23 +1228,8 @@ if(ffilter_selection == "unfiltered"){
     }
     }
 	  }
-/// - - - - - Filter Selection Implementation 10.4.20 -AM - - - - - ///
-/*for(int o = 0; o<nf; o++)
-{
-  if((pdgf[o] == -211 && pf[o] > .15)&&(ffilter_selection=="filtered")) //PI minus filter selection
-  {
-    num_pimi = num_pimi + 1;
-    num_pi = num_pi + 1;
-    num_pi_phot = num_pi_phot + 1;
-    num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
-    index_pimi[num_pi_phot - 1] = o;
-    index_pi[num_pi_phot - 1] = o;
-    ind_pi_phot[num_pi_phot - 1] = o;
-    PiMinusID.push_back(o);
-    charge_pi[num_pi_phot - 1] = -1;
-  }
-} Ali, look here for deletion :) */
   /// - - - - - FIlter Selection Implementation 10.4.20 -AM - - - - - ///
+  ///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	if((q[i]!=0 &&  sc[i] > 0 && dc[i]>0 && stat[i] > 0 &&  id[i] == 211) && (ffilter_selection == "unfiltered")) //looking for positive pions, id=211
 	  {
       V3_pipl.SetXYZ(p[i]*cx[i],p[i]*cy[i],p[i]*cz[i]);
@@ -1237,31 +1264,8 @@ if(ffilter_selection == "unfiltered"){
     }
 	  }
 }
-/// - - - - - Filter Selection Implementation 10.4.20 -AM - - - - - ///
-/*else if((pdgf[i] == 211 && pf[i] > .15) && (ffilter_selection == "filtered"))
-{
-  /// - - - - - Potential Fix for pipl, pi, and pi_phot - - - - - ///
-  //  bool Pi_phot_fid_united = fiducialcut->GetEPhiLimits(fbeam_E, V3_pi_corr, 1);
-  double temp_smear_P = gRandom->Gaus(pf[i],0.007*pf[i]);
-  double temp_smear_E = sqrt( temp_smear_P*temp_smear_P + Mpi * Mpi );
-
-  TVector3 V3_pi_corr(temp_smear_P/pf[i] * pxf[i],temp_smear_P/pf[i] * pyf[i],temp_smear_P/pf[i] * pzf[i]);
-  double phi_pion = V3_pi_corr.Phi();
-  V3_pi_corr.SetPhi(phi_pion + TMath::Pi());
-  if ( !Phot_fid(V3_pi_corr) )     {  continue; }
-  /// - - - - - ///
-  num_pipl = num_pipl + 1;
-  num_pi = num_pi + 1;
-  num_pi_phot = num_pi_phot + 1;
-  num_pi_phot_nonrad = num_pi_phot_nonrad + 1;
-  index_pipl[num_pi_phot - 1] = i;
-  ind_pi_phot[num_pi_phot - 1] = i;
-  ind_pi_phot[num_pi_phot - 1] = i;
-  PiPlusID.push_back(i);
-  charge_pi[num_pi_phot - 1] = 1;
-}Ali, look here for deletion :) */
-
-  if(ec[i] > 0 && dc[i]<=0  && sc[i]<=0  && stat[i] > 0 &&  q[i] == 0) //looking for neutral particles
+///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if((ec[i] > 0 && dc[i]<=0  && sc[i]<=0  && stat[i] > 0 &&  q[i] == 0) && (ffilter_selection == "unfiltered"))//looking for neutral particles
   {
     neut_zvert=vz[i];
     neut_yvert=vy[i];
@@ -1300,24 +1304,8 @@ if(ffilter_selection == "unfiltered"){
   h1_el_vertcorr->Fill(el_vert_corr);
   h1_el_vertuncorr->Fill(el_vert);
 
-  TVector3 V3_q=(V4_beam-V4_el).Vect();
-  double q2 = -(V4_beam-V4_el).Mag2();
-  double omega= (V4_beam-V4_el).E();
-  double Wvar=TMath::Sqrt((m_prot+omega)*(m_prot+omega)-V3_q*V3_q);
 
-  ///- - - - - Declaration of Parameters for continue statements - - - - - ///
-  double Q2cut = 0;
-  double Wcut = 2;
-  //double e_acc_ratio = 1.;
-  double nu = -(V4_el-V4_beam).E();
-  double W_var = TMath::Sqrt((m_prot+nu)*(m_prot+nu)-V3_q*V3_q);
-  ///- - - - - 11.5.20 -> Changed Q2 -> reco_Q2 - - - - - ///
-  if(ffilter_selection == "filtered")
-  {
-    if( reco_Q2 < Q2cut || W_var > Wcut) continue;
-    if(!EFiducialCut(V3_el)) continue;
-  //  if(fabs(e_acc_ratio) != e_acc_ratio) {continue;}
-  }
+
   h1_Q2->Fill(reco_Q2);
   h1_el_mom->Fill(V4_el_uncorr.Rho(), 1/Mott_cross_sec);
   //- - - - - 11.5.20 -> Added X distribution - - - - - ///
@@ -1333,16 +1321,52 @@ if(ffilter_selection == "unfiltered"){
       h2_omega_Q2_sect1->Fill(omega, q2, 1/Mott_cross_sec);
   }
   h2_omega_Q2->Fill(omega,q2, 1/Mott_cross_sec);
-
+///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/// - - - - - Hardron Count Histograms - - - - - ///
   h1_Nprot->Fill(num_p);
   h1_Npi->Fill(num_pi);
-
   h1_Nphot->Fill(ec_num_n);
   h1_Npipl->Fill(num_pipl);
   h1_Npimi->Fill(num_pimi);
   h1_Npiphot->Fill(num_pi_phot);
   h1_Npiphot_norad->Fill(num_pi_phot_nonrad);
 
+  if(num_p ==1)
+  {
+    if(num_pi_phot == 1)
+    {
+      if(charge_pi[0] > 0 )
+      {
+        double Ecal = V4_el.E();
+        h1_E_tot_pipl->Fill(Ecal,1/Mott_cross_sec);
+      }
+      else if(charge_pi[0]<0)
+      {
+        double Ecal = V4_el.E();
+        h1_E_tot_pimi->Fill(Ecal, 1/Mott_cross_sec);
+      }
+    }
+  }
+
+/*  //---- Test -> Filling at hardron count ----///
+  if((num_pi_phot == 1 || num_pi == 1) && num_p == 1)
+  {
+    double Ecal = V4_el.E();
+    Overall_1p1pi_Pass++;
+    if(charge_pi[0] < 0)
+    {
+    //  h1_E_tot_pimi->Fill(Ecal, 1/Mott_cross_sec);
+      Npimi_Pass++;
+    }
+    else if(charge_pi[0] > 0)
+    {
+      Npipl_Pass++;
+    }
+    h1_E_tot_pimi->Fill(Ecal, 1/Mott_cross_sec);
+  }
+  cout<<"1pi1pCount = "<<Overall_1p1pi_Pass<<" Rad_phot_Pass "<<Rad_phot_Pass<<endl;
+  cout<<"Npimi_Pass = "<<Npimi_Pass<<" Npipl_Pass = "<< Npipl_Pass<<endl;*/
+///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if((el_vert_corr<vert_max[ftarget] && el_vert_corr>vert_min[ftarget])||(ffilter_selection=="filtered")){
   h1_el_vertcorr_cut->Fill(el_vert_corr);
 
@@ -2008,7 +2032,7 @@ if(ffilter_selection == "unfiltered"){
 
 }//end of 2pi 0 photon statement
     //Requiring 1 pion, 0 photons
-    if(num_pi==1 && ec_num_n==0 && num_n==0)
+    if(num_pi==1 && ec_num_n==0 && num_n==0 || num_pi_phot == 1)
 	  {
       TLorentzVector V4_total;
       double p_perp = 0;
@@ -2029,6 +2053,8 @@ if(ffilter_selection == "unfiltered"){
         }
         // First reconstruction method
         double en_recon1 = V4_el.E() + p_kin + V4_pi.E();
+        double Ecal = V4_el.E();
+        h1_E_tot_pipl->Fill(Ecal,1/Mott_cross_sec);
         h1_en_recon1->Fill(en_recon1, 1/Mott_cross_sec);
         h1_en_recon1_pipl->Fill(en_recon1, 1/Mott_cross_sec);
 
@@ -2096,14 +2122,13 @@ if(ffilter_selection == "unfiltered"){
       else if(ffilter_selection == "filtered")
       {
         //First reconstruction method
-        TLorentzVector V4_prot_corr, V4_pi_corr;
+        /*TLorentzVector V4_prot_corr, V4_pi_corr;
         TLorentzVector V3_pi_corr;
         V4_pi_corr.SetPxPyPzE(pxf[ind_pi_phot[0]], pyf[ind_pi_phot[0]], pzf[ind_pi_phot[0]],TMath::Sqrt(Mpi*Mpi+pf[ind_pi_phot[0]]*pf[ind_pi_phot[0]]));
         TLorentzVector V4_prot_uncorr1(pxf[index_p[0]],pyf[index_p[0]],pzf[index_p[0]],TMath::Sqrt(m_prot*m_prot+pf[index_p[0]]*pf[index_p[0]]));
         V4_prot_corr.SetPxPyPzE(pxf[index_p[0]+60], pyf[index_p[0]+60], pzf[index_p[0]+60],TMath::Sqrt(m_prot*m_prot+pf[index_p[0]+60]*pf[index_p[0]+60]));
-        //double Ecal = V4_el.E() + V4_prot_corr.E() - m_prot + V4_pi.E();
-        double Ecal = V4_el.E() + V4_prot_uncorr1.E() - m_prot + V4_pi_corr.E();
-
+        //double Ecal = V4_el.E() + V4_prot_uncorr1.E() - m_prot + V4_pi_corr.E();*/
+        double Ecal = V4_el.E();
         h1_E_tot_pimi->Fill(Ecal, 1/Mott_cross_sec);
 
         h2_cal_Wvar->Fill(Ecal, Wvar, 1/Mott_cross_sec);

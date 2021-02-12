@@ -484,7 +484,6 @@ energy_reconstruction::energy_reconstruction(std::string a_target, std::string a
         std::cout<<"Made it past h file filter selection"<<std::endl;
         chain->Add(Form("/work/clas/clase2/amand/genie_filtered_data_e2a_ep_%s_%s_neutrino6_united4_radphot_test_100M.root",ftarget.c_str(), fbeam_en.c_str()));
         tree = chain;
-        std::cout<<"Chain selection success!"<<std::endl;
       }
 #endif // SINGLE_TREE
 
