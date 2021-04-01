@@ -1,7 +1,4 @@
 #define energy_reconstruction_cxx
-//==============================================================================
-// Inclusion statements .h files and libraries
-//==============================================================================
 #include "energy_reconstruction.h"
 #include "Fiducial.h"
 #include <TH2.h>
@@ -152,14 +149,9 @@ Double_t ns_to_s = 1.0E-9;
 double bett = 0;
 double deltt = 0;
 double hist_max = 0;
-//Declaration of counts:
-int pi1prot1 = 0, pi12prot = 0;
 
 void energy_reconstruction::Loop()
 {
-  TH1D::SetDefaultSumw2();
-  TH2D::SetDefaultSumw2();
-
   if (fChain == 0) return;
   en_beam["2261"]=2.261;
   en_beam["4461"]=4.461;
@@ -479,7 +471,9 @@ EC_photon_beta["3He"]=0.93;
 
   ///- - - - - Declaration of Further Histograms - - - - - ///
   TH1F *CosDeltaThetaElectronPhotonAboveThreshold=new TH1F("CosDeltaThetaElectronPhotonAboveThreshold","",100,-1.,1.);
+  CosDeltaThetaElectronPhotonAboveThreshold->Sumw2();
 	TH1F *CosDeltaPhiElectronPhotonAboveThreshold=new TH1F("CosDeltaPhiElectronPhotonAboveThreshold","",100,-1.,1.);
+  CosDeltaPhiElectronPhotonAboveThreshold->Sumw2();
   TH2F *RadCosThetaGammaEgamma = new TH2F("RadCosThetaGammaEgamma","",100,-1.,1.,600,0.,6.);
 	TH2F *RadCosDeltaThetaGammaEgamma = new TH2F("RadCosDeltaThetaGammaEgamma","",100,-1.,1.,600,0.,6.);
 	TH2F *NonRadThetaVsPhiGamma = new TH2F("NonRadThetaVsPhiGamma","",360,0.,360.,180,0.,180.);
@@ -541,193 +535,205 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
     }
   // declaring histograms
   TH1F *h1_en_recon1=new TH1F("calorimetric","", n_bins, x_values);
+  h1_en_recon1->Sumw2();
   TH1F *h1_E_tot_pimi=new TH1F("h1_E_tot_pimi", "", n_bins, x_values);
+  h1_E_tot_pimi->Sumw2();
   TH1F *h1_E_tot_pipl=new TH1F("h1_E_tot_pipl", "", n_bins, x_values);
+  h1_E_tot_pipl->Sumw2();
   TH1F *h1_en_recon1_pipl=new TH1F("cal_pipl", "",n_bins, x_values);
+  h1_en_recon1_pipl->Sumw2();
   TH1F *h1_en_recon2=new TH1F("kin_e","",n_bins, x_values);
+  h1_en_recon2->Sumw2();
   TH1F *h1_en_recon2_pimi=new TH1F("kin_e_pimi","",n_bins, x_values);
+  h1_en_recon2_pimi->Sumw2();
   TH1F *h1_en_recon2_pipl=new TH1F("kin_e_pipl","",n_bins, x_values);
+  h1_en_recon2_pipl->Sumw2();
   TH1F *h1_en_recon3=new TH1F("kin_e_pi","",n_bins, x_values);
+  h1_en_recon3->Sumw2();
   TH1F *h1_en_recon3_pimi=new TH1F("kin_e_pi_pimi","",n_bins, x_values);
+  h1_en_recon3_pimi->Sumw2();
   TH1F *h1_en_recon3_pipl=new TH1F("kin_e_pi_pipl","",n_bins, x_values);
+  h1_en_recon3_pipl->Sumw2();
   TH1F *h1_rot1_2pi_1p=new TH1F("2pi_1p_rot_cal","",n_bins, x_values);
+  h1_rot1_2pi_1p->Sumw2();
   TH1F *h1_E_tot_1p2pi_pimi=new TH1F("h1_E_tot_1p2pi_pimi","",n_bins, x_values);
-
+  h1_E_tot_1p2pi_pimi->Sumw2();
   TH1F *h1_E_tot_1p2pi_pipl=new TH1F("h1_E_tot_1p2pi_pipl","",n_bins, x_values);
-
+  h1_E_tot_1p2pi_pipl->Sumw2();
   TH1F *h1_rot2_2pi_1p=new TH1F("2pi_1p_rot_kin_e","",n_bins, x_values);
+  h1_rot2_2pi_1p->Sumw2();
   TH1F *h1_rot2_2pi_1p_pimi=new TH1F("2pi_1p_rot_kin_e_pimi","",n_bins, x_values);
-
+  h1_rot2_2pi_1p_pimi->Sumw2();
   TH1F *h1_rot2_2pi_1p_pipl=new TH1F("2pi_1p_rot_kin_e_pipl","",n_bins, x_values);
-
+  h1_rot2_2pi_1p_pipl->Sumw2();
   TH1F *h1_rot3_2pi_1p=new TH1F("2pi_1p_rot_kin_e_pi","",n_bins, x_values);
-
+  h1_rot3_2pi_1p->Sumw2();
   TH1F *h1_rot3_2pi_1p_pimi=new TH1F("2pi_1p_rot_kin_e_pi_pimi","",n_bins, x_values);
-
+  h1_rot3_2pi_1p_pimi->Sumw2();
   TH1F *h1_rot3_2pi_1p_pipl=new TH1F("2pi_1p_rot_kin_e_pi_pipl","",n_bins, x_values);
-
+  h1_rot3_2pi_1p_pipl->Sumw2();
   TH1F *h1_rot1_1pi_2p=new TH1F("1pi_2p_rot_cal","",n_bins, x_values);
-
+  h1_rot1_1pi_2p->Sumw2();
   TH1F *h1_E_tot_2p1pi_1p1pi_pimi=new TH1F("h1_E_tot_2p1pi_1p1pi_pimi","",n_bins, x_values);
-
+  h1_E_tot_2p1pi_1p1pi_pimi->Sumw2();
   TH1F *h1_E_tot_2p1pi_1p1pi_pipl=new TH1F("h1_E_tot_2p1pi_1p1pi_pipl","",n_bins, x_values);
-
+  h1_E_tot_2p1pi_1p1pi_pipl->Sumw2();
   TH1F *h1_rot2_1pi_2p=new TH1F("1pi_2p_rot_kin_e","",n_bins, x_values);
-
+  h1_rot2_1pi_2p->Sumw2();
   TH1F *h1_rot2_1pi_2p_pimi=new TH1F("1pi_2p_rot_kin_e_pimi","",n_bins, x_values);
-
+  h1_rot2_1pi_2p_pimi->Sumw2();
   TH1F *h1_rot2_1pi_2p_pipl=new TH1F("1pi_2p_rot_kin_e_pipl","",n_bins, x_values);
-
+  h1_rot2_1pi_2p_pipl->Sumw2();
   TH1F *h1_rot3_1pi_2p=new TH1F("1pi_2p_rot_kin_e_pi","",n_bins, x_values);
-
+  h1_rot3_1pi_2p->Sumw2();
   TH1F *h1_rot3_1pi_2p_pimi=new TH1F("1pi_2p_rot_kin_e_pi_pimi","",n_bins, x_values);
-
+  h1_rot3_1pi_2p_pimi->Sumw2();
   TH1F *h1_rot3_1pi_2p_pipl=new TH1F("1pi_2p_rot_kin_e_pi_pipl","",n_bins, x_values);
-
+  h1_rot3_1pi_2p_pipl->Sumw2();
   TH1F *h1_rot1_2pi_2p=new TH1F("2pi_2p_rot_cal","",n_bins, x_values);
-
+  h1_rot1_2pi_2p->Sumw2();
   TH1F *h1_E_tot_2p2pi_pimi=new TH1F("h1_E_tot_2p2pi_pimi","",n_bins, x_values);
-
+  h1_E_tot_2p2pi_pimi->Sumw2();
   TH1F *h1_E_tot_2p2pi_pipl=new TH1F("h1_E_tot_2p2pi_pipl","",n_bins, x_values);
-
+  h1_E_tot_2p2pi_pipl->Sumw2();
   TH1F *h1_rot2_2pi_2p=new TH1F("2pi_2p_rot_kin_e","",n_bins, x_values);
-
+  h1_rot2_2pi_2p->Sumw2();
   TH1F *h1_rot2_2pi_2p_pimi=new TH1F("2pi_2p_rot_kin_e_pimi","",n_bins, x_values);
-
+  h1_rot2_2pi_2p_pimi->Sumw2();
   TH1F *h1_rot2_2pi_2p_pipl=new TH1F("2pi_2p_rot_kin_e_pipl","",n_bins, x_values);
-
+  h1_rot2_2pi_2p_pipl->Sumw2();
   TH1F *h1_rot3_2pi_2p=new TH1F("2pi_2p_rot_kin_e_pi","",n_bins, x_values);
-
+  h1_rot3_2pi_2p->Sumw2();
   TH1F *h1_rot3_2pi_2p_pimi=new TH1F("2pi_2p_rot_kin_e_pi_pimi","",n_bins, x_values);
-
+  h1_rot3_2pi_2p_pimi->Sumw2();
   TH1F *h1_rot3_2pi_2p_pipl=new TH1F("2pi_2p_rot_kin_e_pi_pipl","",n_bins, x_values);
-
+  h1_rot3_2pi_2p_pipl->Sumw2();
   TH1F *h1_rot1_1pi_3p=new TH1F("1pi_3p_rot_cal","",n_bins, x_values);
-
+  h1_rot1_1pi_3p->Sumw2();
   TH1F *h1_E_tot_3p1pi_pimi=new TH1F("h1_E_tot_3p1pi_pimi","",n_bins, x_values);
-
+  h1_E_tot_3p1pi_pimi->Sumw2();
   TH1F *h1_E_tot_3p1pi_pipl=new TH1F("h1_E_tot_3p1pi_pipl","",n_bins, x_values);
-
+  h1_E_tot_3p1pi_pipl->Sumw2();
   TH1F *h1_rot2_1pi_3p=new TH1F("1pi_3p_rot_kin_e","",n_bins, x_values);
-
+  h1_rot2_1pi_3p->Sumw2();
   TH1F *h1_rot2_1pi_3p_pimi=new TH1F("1pi_3p_rot_kin_e_pimi","",n_bins, x_values);
-
+  h1_rot2_1pi_3p_pimi->Sumw2();
   TH1F *h1_rot2_1pi_3p_pipl=new TH1F("1pi_3p_rot_kin_e_pipl","",n_bins, x_values);
-
+  h1_rot2_1pi_3p_pipl->Sumw2();
   TH1F *h1_rot3_1pi_3p=new TH1F("1pi_3p_rot_kin_e_pi","",n_bins, x_values);
-
+  h1_rot3_1pi_3p->Sumw2();
   TH1F *h1_rot3_1pi_3p_pimi=new TH1F("1pi_3p_rot_kin_e_pi_pimi","",n_bins, x_values);
-
+  h1_rot3_1pi_3p_pimi->Sumw2();
   TH1F *h1_rot3_1pi_3p_pipl=new TH1F("1pi_3p_rot_kin_e_pi_pipl","",n_bins, x_values);
-
+  h1_rot3_1pi_3p_pipl->Sumw2();
   TH1F *h1_rot1_3pi_1p=new TH1F("3pi_1p_rot_cal","",n_bins, x_values);
-
+  h1_rot1_3pi_1p->Sumw2();
   TH1F *h1_E_tot_1p3pi_pimi=new TH1F("h1_E_tot_1p3pi_pimi","",n_bins, x_values);
-
+  h1_E_tot_1p3pi_pimi->Sumw2();
   TH1F *h1_E_tot_1p3pi_pipl=new TH1F("h1_E_tot_1p3pi_pipl","",n_bins, x_values);
-
+  h1_E_tot_1p3pi_pipl->Sumw2();
   TH1F *h1_rot2_3pi_1p=new TH1F("3pi_1p_rot_kin_e","",n_bins, x_values);
-
+  h1_rot2_3pi_1p->Sumw2();
   TH1F *h1_rot2_3pi_1p_pimi=new TH1F("3pi_1p_rot_kin_e_pimi","",n_bins, x_values);
-
+  h1_rot2_3pi_1p_pimi->Sumw2();
   TH1F *h1_rot2_3pi_1p_pipl=new TH1F("3pi_1p_rot_kin_e_pipl","",n_bins, x_values);
-
+  h1_rot2_3pi_1p_pipl->Sumw2();
   TH1F *h1_rot3_3pi_1p=new TH1F("3pi_1p_rot_kin_e_pi","",n_bins, x_values);
-
+  h1_rot3_3pi_1p->Sumw2();
   TH1F *h1_rot3_3pi_1p_pimi=new TH1F("3pi_1p_rot_kin_e_pi_pimi","",n_bins, x_values);
-
+  h1_rot3_3pi_1p_pimi->Sumw2();
   TH1F *h1_rot3_3pi_1p_pipl=new TH1F("3pi_1p_rot_kin_e_pi_pipl","",n_bins, x_values);
-
+  h1_rot3_3pi_1p_pipl->Sumw2();
   TH1F *h1_rot1_1pi_1p_1phot=new TH1F("1pi_1p_1phot_rot_cal","",n_bins, x_values);
-
+  h1_rot1_1pi_1p_1phot->Sumw2();
   TH1F *h1_rot1_1pi_1p_1phot_pimi=new TH1F("1pi_1p_1phot_rot_h1_E_tot_pimi","",n_bins, x_values);
-
+  h1_rot1_1pi_1p_1phot_pimi->Sumw2();
   TH1F *h1_rot1_1pi_1p_1phot_pipl=new TH1F("1pi_1p_1phot_rot_cal_pipl","",n_bins, x_values);
-
+  h1_rot1_1pi_1p_1phot_pipl->Sumw2();
   TH1F *h1_rot2_1pi_1p_1phot=new TH1F("1pi_1p_1phot_rot_kin_e","",n_bins, x_values);
-
+  h1_rot2_1pi_1p_1phot->Sumw2();
   TH1F *h1_rot2_1pi_1p_1phot_pimi=new TH1F("1pi_1p_1phot_rot_kin_e_pimi","",n_bins, x_values);
-
+  h1_rot2_1pi_1p_1phot_pimi->Sumw2();
   TH1F *h1_rot2_1pi_1p_1phot_pipl=new TH1F("1pi_1p_1phot_rot_kin_e_pipl","",n_bins, x_values);
-
+  h1_rot2_1pi_1p_1phot_pipl->Sumw2();
   TH1F *h1_rot3_1pi_1p_1phot=new TH1F("1pi_1p_1phot_rot_kin_e_pi","",n_bins, x_values);
-
+  h1_rot3_1pi_1p_1phot->Sumw2();
   TH1F *h1_rot3_1pi_1p_1phot_pimi=new TH1F("1pi_1p_1phot_rot_kin_e_pi_pimi","",n_bins, x_values);
-
+  h1_rot3_1pi_1p_1phot_pimi->Sumw2();
   TH1F *h1_rot3_1pi_1p_1phot_pipl=new TH1F("1pi_1p_1phot_rot_kin_e_pi_pipl","",n_bins, x_values);
-
+  h1_rot3_1pi_1p_1phot_pipl->Sumw2();
   TH1F *h1_rot1_1pi_2p_1phot=new TH1F("1pi_2p_1phot_rot_cal","",n_bins, x_values);
-
+  h1_rot1_1pi_2p_1phot->Sumw2();
   TH1F *h1_rot1_1pi_2p_1phot_pimi=new TH1F("1pi_2p_1phot_rot_cal_pimi","",n_bins, x_values);
-
+  h1_rot1_1pi_2p_1phot_pimi->Sumw2();
   TH1F *h1_rot1_1pi_2p_1phot_pipl=new TH1F("1pi_2p_1phot_rot_cal_pipl","",n_bins, x_values);
-
+  h1_rot1_1pi_2p_1phot_pipl->Sumw2();
   TH1F *h1_rot2_1pi_2p_1phot=new TH1F("1pi_2p_1phot_rot_kin_e","",n_bins, x_values);
-
+  h1_rot2_1pi_2p_1phot->Sumw2();
   TH1F *h1_rot2_1pi_2p_1phot_pimi=new TH1F("1pi_2p_1phot_rot_kin_e_pimi","",n_bins, x_values);
-
+  h1_rot2_1pi_2p_1phot_pimi->Sumw2();
   TH1F *h1_rot2_1pi_2p_1phot_pipl=new TH1F("1pi_2p_1phot_rot_kin_e_pipl","",n_bins, x_values);
-
+  h1_rot2_1pi_2p_1phot_pipl->Sumw2();
   TH1F *h1_rot3_1pi_2p_1phot=new TH1F("1pi_2p_1phot_rot_kin_e_pi","",n_bins, x_values);
-
+  h1_rot3_1pi_2p_1phot->Sumw2();
   TH1F *h1_rot3_1pi_2p_1phot_pimi=new TH1F("1pi_2p_1phot_rot_kin_e_pi_pimi","",n_bins, x_values);
-
+  h1_rot3_1pi_2p_1phot_pimi->Sumw2();
   TH1F *h1_rot3_1pi_2p_1phot_pipl=new TH1F("1pi_2p_1phot_rot_kin_e_pi_pipl","",n_bins, x_values);
-
+  h1_rot3_1pi_2p_1phot_pipl->Sumw2();
   TH1F *h1_rot1_1pi_1p_2phot=new TH1F("1pi_1p_2phot_rot_cal","",n_bins, x_values);
-
+  h1_rot1_1pi_1p_2phot->Sumw2();
   TH1F *h1_rot1_1pi_1p_2phot_pimi=new TH1F("1pi_1p_2phot_rot_cal_pimi","",n_bins, x_values);
-
+  h1_rot1_1pi_1p_2phot_pimi->Sumw2();
   TH1F *h1_rot1_1pi_1p_2phot_pipl=new TH1F("1pi_1p_2phot_rot_cal_pipl","",n_bins, x_values);
-
+  h1_rot1_1pi_1p_2phot_pipl->Sumw2();
   TH1F *h1_rot2_1pi_1p_2phot=new TH1F("1pi_1p_2phot_rot_kin_e","",n_bins, x_values);
-
+  h1_rot2_1pi_1p_2phot->Sumw2();
   TH1F *h1_rot2_1pi_1p_2phot_pimi=new TH1F("1pi_1p_2phot_rot_kin_e_pimi","",n_bins, x_values);
-
+  h1_rot2_1pi_1p_2phot_pimi->Sumw2();
   TH1F *h1_rot2_1pi_1p_2phot_pipl=new TH1F("1pi_1p_2phot_rot_kin_e_pipl","",n_bins, x_values);
-
+  h1_rot2_1pi_1p_2phot_pipl->Sumw2();
   TH1F *h1_rot3_1pi_1p_2phot=new TH1F("1pi_1p_2phot_rot_kin_e_pi","",n_bins, x_values);
-
+  h1_rot3_1pi_1p_2phot->Sumw2();
   TH1F *h1_rot3_1pi_1p_2phot_pimi=new TH1F("1pi_1p_2phot_rot_kin_e_pi_pimi","",n_bins, x_values);
-
+  h1_rot3_1pi_1p_2phot_pimi->Sumw2();
   TH1F *h1_rot3_1pi_1p_2phot_pipl=new TH1F("1pi_1p_2phot_rot_kin_e_pi_pipl","",n_bins, x_values);
-
+  h1_rot3_1pi_1p_2phot_pipl->Sumw2();
   TH1F *h1_rot1_2pi_1p_1phot=new TH1F("2pi_1p_1phot_rot_cal","",n_bins, x_values);
-
+  h1_rot1_2pi_1p_1phot->Sumw2();
   TH1F *h1_rot1_2pi_1p_1phot_pimi=new TH1F("2pi_1p_1phot_rot_cal_pimi","",n_bins, x_values);
-
+  h1_rot1_2pi_1p_1phot_pimi->Sumw2();
   TH1F *h1_rot1_2pi_1p_1phot_pipl=new TH1F("2pi_1p_1phot_rot_cal_pipl","",n_bins, x_values);
-
+  h1_rot1_2pi_1p_1phot_pipl->Sumw2();
   TH1F *h1_rot2_2pi_1p_1phot=new TH1F("2pi_1p_1phot_rot_kin_e","",n_bins, x_values);
-
+  h1_rot2_2pi_1p_1phot->Sumw2();
   TH1F *h1_rot2_2pi_1p_1phot_pimi=new TH1F("2pi_1p_1phot_rot_kin_e_pimi","",n_bins, x_values);
-
+  h1_rot2_2pi_1p_1phot_pimi->Sumw2();
   TH1F *h1_rot2_2pi_1p_1phot_pipl=new TH1F("2pi_1p_1phot_rot_kin_e_pipl","",n_bins, x_values);
-
+  h1_rot2_2pi_1p_1phot_pipl->Sumw2();
   TH1F *h1_rot3_2pi_1p_1phot=new TH1F("2pi_1p_1phot_rot_kin_e_pi","",n_bins, x_values);
-
+  h1_rot3_2pi_1p_1phot->Sumw2();
   TH1F *h1_rot3_2pi_1p_1phot_pimi=new TH1F("2pi_1p_1phot_rot_kin_e_pi_pimi","",n_bins, x_values);
-
+  h1_rot3_2pi_1p_1phot_pimi->Sumw2();
   TH1F *h1_rot3_2pi_1p_1phot_pipl=new TH1F("2pi_1p_1phot_rot_kin_e_pi_pipl","",n_bins, x_values);
-
+  h1_rot3_2pi_1p_1phot_pipl->Sumw2();
   TH1F *h1_rot1_1pi_3p_1phot=new TH1F("1pi_3p_1phot_rot_cal","",n_bins, x_values);
-
+  h1_rot1_1pi_3p_1phot->Sumw2();
   TH1F *h1_rot1_1pi_3p_1phot_pimi=new TH1F("1pi_3p_1phot_rot_cal_pimi","",n_bins, x_values);
-
+  h1_rot1_1pi_3p_1phot_pimi->Sumw2();
   TH1F *h1_rot1_1pi_3p_1phot_pipl=new TH1F("1pi_3p_1phot_rot_cal_pipl","",n_bins, x_values);
-
+  h1_rot1_1pi_3p_1phot_pipl->Sumw2();
   TH1F *h1_rot2_1pi_3p_1phot=new TH1F("1pi_3p_1phot_rot_kin_e","",n_bins, x_values);
-
+  h1_rot2_1pi_3p_1phot->Sumw2();
   TH1F *h1_rot2_1pi_3p_1phot_pimi=new TH1F("1pi_3p_1phot_rot_kin_e_pimi","",n_bins, x_values);
-
+  h1_rot2_1pi_3p_1phot_pimi->Sumw2();
   TH1F *h1_rot2_1pi_3p_1phot_pipl=new TH1F("1pi_3p_1phot_rot_kin_e_pipl","",n_bins, x_values);
-
+  h1_rot2_1pi_3p_1phot_pipl->Sumw2();
   TH1F *h1_rot3_1pi_3p_1phot=new TH1F("1pi_3p_1phot_rot_kin_e_pi","",n_bins, x_values);
-
+  h1_rot3_1pi_3p_1phot->Sumw2();
   TH1F *h1_rot3_1pi_3p_1phot_pimi=new TH1F("1pi_3p_1phot_rot_kin_e_pi_pimi","",n_bins, x_values);
-
+  h1_rot3_1pi_3p_1phot_pimi->Sumw2();
   TH1F *h1_rot3_1pi_3p_1phot_pipl=new TH1F("1pi_3p_1phot_rot_kin_e_pi_pipl","",n_bins, x_values);
-
+  h1_rot3_1pi_3p_1phot_pipl->Sumw2();
   TH1F *h1_el_mom_ratio = new TH1F("h1_el_mom_ratio","",50,0.97,1.01);
   /// - - - - - 10.15.20 - - - - - ///
   TH1F *h1_el_mom = new TH1F("h1_el_mom", "", 100, .2, 6);
@@ -743,48 +749,48 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
   TH1F *h1_ec_beta_corr=new TH1F("h1_ec_beta_corr","",300,0,2);
   TH1F *h1_ec_beta_corr_cut=new TH1F("h1_ec_beta_corr_cut","",300,0,2);
   TH1F *h1_Q2 = new TH1F("h1_Q2","",400,0,6);
-
+  h1_Q2->Sumw2();
   /// - - - - - 11.5.20 -> Included histogram for x distribution - - - - - //
   TH1F *h1_xbjk = new TH1F("h1_xbjk", "", 400, 0 , 3);
-
+  h1_xbjk->Sumw2();
   TH1F *h1_omega = new TH1F("h1_omega","",200,0,5);
-
+  h1_omega->Sumw2();
   TH1F *h1_Wvar = new TH1F("h1_Wvar","",200,0,3);
-
+  h1_Wvar->Sumw2();
   TH1F *h1_Q2_sub = new TH1F("h1_Q2_sub","",200,0,6);
-
+  h1_Q2_sub->Sumw2();
   TH1F *h1_omega_sub = new TH1F("h1_omega_sub","",200,0,5);
-
+  h1_omega_sub->Sumw2();
   TH1F *h1_Wvar_sub = new TH1F("h1_Wvar_sub","",200,0,3);
-
+  h1_Wvar_sub->Sumw2();
   TH1F *h1_Q2_cut = new TH1F("h1_Q2_cut","",200,0,6);
-
+  h1_Q2_cut->Sumw2();
   TH1F *h1_omega_cut = new TH1F("h1_omega_cut","",200,0,5);
-
+  h1_omega_cut->Sumw2();
   TH1F *h1_Wvar_cut = new TH1F("h1_Wvar_cut","",200,0,3);
-
+  h1_Wvar_cut->Sumw2();
   TH1F *h1_feed_down_cal = new TH1F("h1_feed_down_cal","",200,0,1);
-
+  h1_feed_down_cal->Sumw2();
   TH1F *h1_feed_down_kin = new TH1F("h1_feed_down_kin","",200,0,1);
-
+  h1_feed_down_kin->Sumw2();
   TH1F *h1_p_perp = new TH1F("h1_p_perp","",400,0,1);
-
+  h1_p_perp->Sumw2();
   TH1F *h1_p_perp_sub = new TH1F("h1_p_perp_sub","",400,0,1);
-
+  h1_p_perp_sub->Sumw2();
   TH1F *h1_p_perp_cut = new TH1F("h1_p_perp_cut","",400,0,1);
-
+  h1_p_perp_cut->Sumw2();
   TH1F *h1_cal_p_slice1 = new TH1F("h1_cal_p_slice1","",n_bins, x_values);
-
+  h1_cal_p_slice1->Sumw2();
   TH1F *h1_cal_p_slice2 = new TH1F("h1_cal_p_slice2","",n_bins, x_values);
-
+  h1_cal_p_slice2->Sumw2();
   TH1F *h1_cal_p_slice3 = new TH1F("h1_cal_p_slice3","",n_bins, x_values);
-
+  h1_cal_p_slice3->Sumw2();
   TH1F *h1_cal_p_slice1_sub = new TH1F("h1_cal_p_slice1_sub","",n_bins, x_values);
-
+  h1_cal_p_slice1_sub->Sumw2();
   TH1F *h1_cal_p_slice2_sub = new TH1F("h1_cal_p_slice2_sub","",n_bins, x_values);
-
+  h1_cal_p_slice2_sub->Sumw2();
   TH1F *h1_cal_p_slice3_sub = new TH1F("h1_cal_p_slice3_sub","",n_bins, x_values);
-
+  h1_cal_p_slice3_sub->Sumw2();
   TH2F *h2_e_ec_xy = new TH2F("h2_e_ec_xy","",100,-600,600,100,-600,600);
   TH2F *h2_e_ec_xy_fidcut = new TH2F("h2_e_ec_xy_fidcut","",100,-600,600,100,-600,600);
   TH2F *h2_neut_costheta_phi=new TH2F("h2_neut_costheta_phi","",200,0,360,200,0,1.1);
@@ -814,45 +820,45 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
   TH2F *h2_el_E_p_ratio = new TH2F("h2_el_E_p_ratio","",200,0,4.5,200,0,0.5);
   TH2F *h2_el_E_p_ratio_cut = new TH2F("h2_el_E_p_ratio_cut","",200,0,4.5,200,0,0.5);
   TH2F *h2_Wvar_Q2 = new TH2F("h2_Wvar_Q2","", 200,0,3,200,0,5);
-
+  h2_Wvar_Q2->Sumw2();
   TH2F *h2_Wvar_Q2_sect1 = new TH2F("h2_Wvar_Q2_sect1","", 200,0,3,200,0,5);
-
+  h2_Wvar_Q2_sect1->Sumw2();
   TH2F *h2_omega_Q2 = new TH2F("h2_omega_Q2","",200,0,3.5,200,0,5);
-
+  h2_omega_Q2->Sumw2();
   TH2F *h2_omega_Q2_sect1 = new TH2F("h2_omega_Q2_sect1","",200,0,3.5,200,0,5);
-
+  h2_omega_Q2_sect1->Sumw2();
   TH2F *h2_Wvar_Q2_sub = new TH2F("h2_Wvar_Q2_sub","", 200,0,3,200,0,5);
-
+  h2_Wvar_Q2_sub->Sumw2();
   TH2F *h2_omega_Q2_sub = new TH2F("h2_omega_Q2_sub","",200,0,3.5,200,0,5);
-
+  h2_omega_Q2_sub->Sumw2();
   TH2F *h2_kin_e_Wvar = new TH2F("h2_kin_e_Wvar","",200,0,5,200,0,5);
-
+  h2_kin_e_Wvar->Sumw2();
   TH2F *h2_kin_e_pi_Wvar = new TH2F("h2_kin_e_pi_Wvar","",200,0,5,200,0,5);
-
+  h2_kin_e_pi_Wvar->Sumw2();
   TH2F *h2_cal_Wvar = new TH2F("h2_cal_Wvar","",200,0,5,200,0,5);
-
+  h2_cal_Wvar->Sumw2();
   TH2F *h2_pperp_cal = new TH2F("h2_pperp_cal","",200,0,1,200,0,6);
-
+  h2_pperp_cal->Sumw2();
   TH2F *h2_pperp_kin = new TH2F("h2_pperp_kin","",200,0,1,200,0,6);
-
+  h2_pperp_kin->Sumw2();
   TH2F *h2_p_perp_Wvar = new TH2F("h2_p_perp_Wvar","",200,0,1,200,0,5);
-
+  h2_p_perp_Wvar->Sumw2();
   TH3F *h3_Npi_Np_Nphoton=new TH3F("h3_Npi_Np_Nphoton", "", 11, -0.5, 4.5, 11, -0.5, 4.5, 11, -0.5, 4.5);
   ///- - - - - 11.5.20 -> Added Hardron count Histograms -AM - - - - -///
   TH1F * h1_Nprot=new TH1F("h1_Nprot","",10,-0.5,4.5);
-
+  h1_Nprot->Sumw2();
   TH1F *h1_Npi = new TH1F("h1_Npi", "", 10, -0.5, 4.5);
-
+  h1_Npi -> Sumw2();
   TH1F *h1_Npipl=new TH1F("h1_Npipl","",10,-0.5,4.5);
-
+  h1_Npipl->Sumw2();
   TH1F *h1_Npimi=new TH1F("h1_Npimi","",10,-0.5,4.5);
-
+  h1_Npimi->Sumw2();
   TH1F *h1_Nphot=new TH1F("h1_Nphot","",10,-0.5,4.5);
-
+  h1_Nphot->Sumw2();
   TH1F *h1_Npiphot=new TH1F("h1_Npiphot","",10,-0.5,4.5);
-
+  h1_Npiphot->Sumw2();
   TH1F *h1_Npiphot_norad=new TH1F("h1_Npiphot_norad","",10,-0.5,4.5);
-
+  h1_Npiphot_norad->Sumw2();
 // - - - - - -
 
   // Pulling parameters from f_vz file
@@ -900,6 +906,7 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
     else if ((runnb>18293 && runnb<18301) || (runnb>18305 && runnb<18317) || (runnb>18328 && runnb<18336))fTorusCurrent=1500;
     else fTorusCurrent=2250;
     fTorusCurrent=2250;
+
 
 
     if(n_evnt==1){SetFiducialCutParameters();}
@@ -961,9 +968,6 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
       V4_el_uncorr.SetPxPyPzE(pxl,pyl,pzl,El);
       V3_el.SetXYZ(pxl,pyl,pzl);
     }
-
-    double el_momentum = V3_el.Mag();
-
     h1_el_mom_ratio->Fill(V4_el.Rho()/V4_el_uncorr.Rho());
     double en_recon2 = (m_delta*m_delta-(m_prot-eps)*(m_prot-eps)+2*(m_prot-eps)*V4_el.E())/(2*(m_prot-eps-V4_el.E()+V4_el.Rho()*cz[ind_em]));
     if(ffilter_selection == "filtered")
@@ -989,9 +993,11 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
     double fine_struc_const=0.007297;
     double reco_Q2 = 0;
     reco_Q2 = -(V4_el-V4_beam).Mag2();
-/// - - - - -  Removed Mott_cross_sec, replaced with Q4 for weighting. - - - - - ///
     double Q4 = reco_Q2 * reco_Q2;
-    double WeightIncl = Q4;
+    ///- - - - - Debug (Made Mott_cross_sec) actually equal something for filtered data 10.8.20 -AM - - - - - ///
+    double Mott_cross_sec = 1.0/ Q4;
+    ///- - - - - Changed Mott_cross_sec to be the same regardless of filter type 2.8.21 -AM - - - - - ///
+    double WeightIncl = 1.0 / Mott_cross_sec;
 
     const double pimi_vertcut=2.5,pipl_vertcut=2.5;
     double pimi_vert, pipl_vert, prot_vert, pimi_vert_corr, pipl_vert_corr, prot_vert_corr, prot_theta, prot_phi, prot_phi_mod;
@@ -1041,8 +1047,6 @@ if(ffilter_selection == "unfiltered"){
     //double e_acc_ratio = 1.;
     double nu = -(V4_el-V4_beam).E();
     double W_var = TMath::Sqrt((m_prot+nu)*(m_prot+nu)-V3_q*V3_q);
-
-    /// = = = = = Acceptance Parameters = = = = = ///
     ///- - - - - 11.5.20 -> Changed Q2 -> reco_Q2 - - - - - ///
     if(ffilter_selection == "filtered")
     {
@@ -1057,12 +1061,6 @@ if(ffilter_selection == "unfiltered"){
     {
       if(!EFiducialCut(el_mom1)){ continue; }//theta, phi cuts
     }
-
-    // Explicit cuts on electron momentum
-    if (en_beam=="1161" && el_momentum < 0.4) { continue; }
-    if (en_beam=="2261" && el_momentum < 0.55) { continue; }
-    if (en_beam=="4461" && el_momentum < 1.1) { continue; }
-
     else ///- - - - - Hardron Counts - - - - -///
     {
       for(int i = 0; i<nf; i++)
@@ -1309,20 +1307,20 @@ if(ffilter_selection == "unfiltered"){
 
 
   h1_Q2->Fill(reco_Q2);
-  h1_el_mom->Fill(V4_el_uncorr.Rho(), Q4);
+  h1_el_mom->Fill(V4_el_uncorr.Rho(), 1/Mott_cross_sec);
   //- - - - - 11.5.20 -> Added X distribution - - - - - ///
   double x_bjk = reco_Q2/(2*m_prot*nu);
   h1_xbjk -> Fill(x_bjk);
   ///- - - - - ///
-  h1_omega->Fill(omega, Q4);
-  h1_Wvar->Fill(Wvar, Q4);
-  h2_Wvar_Q2->Fill(Wvar, q2, Q4);
+  h1_omega->Fill(omega, 1/Mott_cross_sec);
+  h1_Wvar->Fill(Wvar, 1/Mott_cross_sec);
+  h2_Wvar_Q2->Fill(Wvar, q2, 1/Mott_cross_sec);
   if(el_phi_mod<30 && el_phi_mod>-30)
   {
-      h2_Wvar_Q2_sect1->Fill(Wvar, q2, Q4);
-      h2_omega_Q2_sect1->Fill(omega, q2, Q4);
+      h2_Wvar_Q2_sect1->Fill(Wvar, q2, 1/Mott_cross_sec);
+      h2_omega_Q2_sect1->Fill(omega, q2, 1/Mott_cross_sec);
   }
-  h2_omega_Q2->Fill(omega,q2, Q4);
+  h2_omega_Q2->Fill(omega,q2, 1/Mott_cross_sec);
 ///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /// - - - - - Hardron Count Histograms - - - - - ///
   h1_Nprot->Fill(num_p);
@@ -1333,6 +1331,41 @@ if(ffilter_selection == "unfiltered"){
   h1_Npiphot->Fill(num_pi_phot);
   h1_Npiphot_norad->Fill(num_pi_phot_nonrad);
 
+  if(num_p ==1)
+  {
+    if(num_pi_phot == 1)
+    {
+      if(charge_pi[0] > 0 )
+      {
+        double Ecal = V4_el.E();
+        h1_E_tot_pipl->Fill(Ecal,1/Mott_cross_sec);
+      }
+      else if(charge_pi[0]<0)
+      {
+        double Ecal = V4_el.E();
+        h1_E_tot_pimi->Fill(Ecal, 1/Mott_cross_sec);
+      }
+    }
+  }
+
+/*  //---- Test -> Filling at hardron count ----///
+  if((num_pi_phot == 1 || num_pi == 1) && num_p == 1)
+  {
+    double Ecal = V4_el.E();
+    Overall_1p1pi_Pass++;
+    if(charge_pi[0] < 0)
+    {
+    //  h1_E_tot_pimi->Fill(Ecal, 1/Mott_cross_sec);
+      Npimi_Pass++;
+    }
+    else if(charge_pi[0] > 0)
+    {
+      Npipl_Pass++;
+    }
+    h1_E_tot_pimi->Fill(Ecal, 1/Mott_cross_sec);
+  }
+  cout<<"1pi1pCount = "<<Overall_1p1pi_Pass<<" Rad_phot_Pass "<<Rad_phot_Pass<<endl;
+  cout<<"Npimi_Pass = "<<Npimi_Pass<<" Npipl_Pass = "<< Npipl_Pass<<endl;*/
 ///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if((el_vert_corr<vert_max[ftarget] && el_vert_corr>vert_min[ftarget])||(ffilter_selection=="filtered")){
   h1_el_vertcorr_cut->Fill(el_vert_corr);
@@ -1422,46 +1455,46 @@ if(ffilter_selection == "unfiltered"){
         {
           for(int j=0;j<3;j++)
           {
-            h1_rot1_3pi_1p->Fill(en_recon1[j], (N1pi1p[j]/N3pi1p)*(Q4));
+            h1_rot1_3pi_1p->Fill(en_recon1[j], (N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
             if(q_pi[j]>0)
             {
-              h1_E_tot_1p3pi_pipl->Fill(en_recon1[j], (N1pi1p[j]/N3pi1p)*(Q4));
+              h1_E_tot_1p3pi_pipl->Fill(en_recon1[j], (N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
             }
             else
             {
-              h1_E_tot_1p3pi_pimi->Fill(en_recon1[j], (N1pi1p[j]/N3pi1p)*(Q4));
-              h2_cal_Wvar->Fill(en_recon1[j], Wvar, -(N1pi1p[j]/N3pi1p)*(Q4));
-              h1_Q2_sub->Fill(q2,-(N1pi1p[j]/N3pi1p)*(Q4));
-              h1_omega_sub->Fill(omega,-(N1pi1p[j]/N3pi1p)*(Q4));
-              h1_Wvar_sub->Fill(Wvar,-(N1pi1p[j]/N3pi1p)*(Q4));
-              h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N1pi1p[j]/N3pi1p)*(Q4));
-              h2_omega_Q2_sub->Fill(omega,q2,-(N1pi1p[j]/N3pi1p)*(Q4));
-              if(p_perp[j] > 0 && p_perp[j] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[j], -(N1pi1p[j]/N3pi1p)*(Q4));
-              if(p_perp[j] > 0.2 && p_perp[j] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[j], -(N1pi1p[j]/N3pi1p)*(Q4));
-              if(p_perp[j] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[j], -(N1pi1p[j]/N3pi1p)*(Q4));
+              h1_E_tot_1p3pi_pimi->Fill(en_recon1[j], (N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
+              h2_cal_Wvar->Fill(en_recon1[j], Wvar, -(N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
+              h1_Q2_sub->Fill(q2,-(N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
+              h1_omega_sub->Fill(omega,-(N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
+              h1_Wvar_sub->Fill(Wvar,-(N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
+              h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
+              h2_omega_Q2_sub->Fill(omega,q2,-(N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
+              if(p_perp[j] > 0 && p_perp[j] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[j], -(N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
+              if(p_perp[j] > 0.2 && p_perp[j] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[j], -(N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
+              if(p_perp[j] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[j], -(N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
 
             }
 
-            h1_rot2_3pi_1p->Fill(en_recon2, (N1pi1p[j]/N3pi1p)*(Q4));
+            h1_rot2_3pi_1p->Fill(en_recon2, (N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
             if(q_pi[j]>0)
             {
-              h1_rot2_3pi_1p_pipl->Fill(en_recon2, (N1pi1p[j]/N3pi1p)*(Q4));
+              h1_rot2_3pi_1p_pipl->Fill(en_recon2, (N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
             }
             else
             {
-              h1_rot2_3pi_1p_pimi->Fill(en_recon2, (N1pi1p[j]/N3pi1p)*(Q4));
-              h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N1pi1p[j]/N3pi1p)*(Q4));
+              h1_rot2_3pi_1p_pimi->Fill(en_recon2, (N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
+              h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
             }
 
-            h1_rot3_3pi_1p->Fill(en_recon3[j], (N1pi1p[j]/N3pi1p)*(Q4));
+            h1_rot3_3pi_1p->Fill(en_recon3[j], (N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
             if(q_pi[j]>0)
             {
-              h1_rot3_3pi_1p_pipl->Fill(en_recon3[j], (N1pi1p[j]/N3pi1p)*(Q4));
+              h1_rot3_3pi_1p_pipl->Fill(en_recon3[j], (N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
             }
             else
             {
-              h1_rot3_3pi_1p_pimi->Fill(en_recon3[j], (N1pi1p[j]/N3pi1p)*(Q4));
-              h2_kin_e_pi_Wvar->Fill(en_recon3[j], Wvar, -(N1pi1p[j]/N3pi1p)*(Q4));
+              h1_rot3_3pi_1p_pimi->Fill(en_recon3[j], (N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
+              h2_kin_e_pi_Wvar->Fill(en_recon3[j], Wvar, -(N1pi1p[j]/N3pi1p)*(1/Mott_cross_sec));
             }
           }
         }
@@ -1496,82 +1529,82 @@ if(ffilter_selection == "unfiltered"){
                                                                                           (2*(m_neut - eps - V4_el.E() - V4_pi[j].E()) + 2*(V4_el.Rho()*cz[ind_em] + V4_pi[j].Rho()*cz[index_pi[j]]));
               if(N_2pion_1prot!=0 && N3pi1p !=0)
               {
-                h1_rot1_3pi_1p->Fill(en_recon1[0], -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_rot1_3pi_1p->Fill(en_recon1[0], -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
 
               if(q_pi1[0]>0)
               {
-                h1_E_tot_1p3pi_pipl->Fill(en_recon1[0], -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_E_tot_1p3pi_pipl->Fill(en_recon1[0], -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_E_tot_1p3pi_pimi->Fill(en_recon1[0], -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h1_Q2_sub->Fill(q2,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h1_omega_sub->Fill(omega,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h1_Wvar_sub->Fill(Wvar,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h2_omega_Q2_sub->Fill(omega,q2,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_E_tot_1p3pi_pimi->Fill(en_recon1[0], -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h1_Q2_sub->Fill(q2,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h1_omega_sub->Fill(omega,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h1_Wvar_sub->Fill(Wvar,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h2_omega_Q2_sub->Fill(omega,q2,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               }
-              h1_rot1_3pi_1p->Fill(en_recon1[1], -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+              h1_rot1_3pi_1p->Fill(en_recon1[1], -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               if(q_pi1[1]>0)
               {
-                h1_E_tot_1p3pi_pipl->Fill(en_recon1[1], -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_E_tot_1p3pi_pipl->Fill(en_recon1[1], -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_E_tot_1p3pi_pimi->Fill(en_recon1[1], -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h1_Q2_sub->Fill(q2,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h1_omega_sub->Fill(omega,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h1_Wvar_sub->Fill(Wvar,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h2_omega_Q2_sub->Fill(omega,q2,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_E_tot_1p3pi_pimi->Fill(en_recon1[1], -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h1_Q2_sub->Fill(q2,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h1_omega_sub->Fill(omega,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h1_Wvar_sub->Fill(Wvar,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h2_omega_Q2_sub->Fill(omega,q2,(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               }
-              h1_rot2_3pi_1p->Fill(en_recon2, -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+              h1_rot2_3pi_1p->Fill(en_recon2, -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               if(q_pi1[0]>0)
               {
-                h1_rot2_3pi_1p_pipl->Fill(en_recon2, -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_rot2_3pi_1p_pipl->Fill(en_recon2, -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_rot2_3pi_1p_pimi->Fill(en_recon2, -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_rot2_3pi_1p_pimi->Fill(en_recon2, -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               }
-              h1_rot2_3pi_1p->Fill(en_recon2, -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+              h1_rot2_3pi_1p->Fill(en_recon2, -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               if(q_pi1[1]>0)
               {
-                h1_rot2_3pi_1p_pipl->Fill(en_recon2, -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_rot2_3pi_1p_pipl->Fill(en_recon2, -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_rot2_3pi_1p_pimi->Fill(en_recon2, -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_rot2_3pi_1p_pimi->Fill(en_recon2, -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               }
-              h1_rot3_3pi_1p->Fill(en_recon3[0], -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+              h1_rot3_3pi_1p->Fill(en_recon3[0], -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               if(q_pi1[0]>0)
               {
-                h1_rot3_3pi_1p_pipl->Fill(en_recon3[0], -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_rot3_3pi_1p_pipl->Fill(en_recon3[0], -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_rot3_3pi_1p_pimi->Fill(en_recon3[0], -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_rot3_3pi_1p_pimi->Fill(en_recon3[0], -(N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, (N_1pion_1prot[0]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               }
-              h1_rot3_3pi_1p->Fill(en_recon3[1], -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+              h1_rot3_3pi_1p->Fill(en_recon3[1], -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               if(q_pi1[1]>0)
               {
-                h1_rot3_3pi_1p_pipl->Fill(en_recon3[1], -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_rot3_3pi_1p_pipl->Fill(en_recon3[1], -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_rot3_3pi_1p_pimi->Fill(en_recon3[1], -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
-                h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, (N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(Q4));
+                h1_rot3_3pi_1p_pimi->Fill(en_recon3[1], -(N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
+                h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, (N_1pion_1prot[1]/N_2pion_1prot)*(N2pi1p[count]/N3pi1p)*(1/Mott_cross_sec));
               }
             }
               count=count+1;
@@ -1628,83 +1661,83 @@ if(ffilter_selection == "unfiltered"){
 
         if(N_2pi_1p_1phot!=0){
             // First reconstruction method
-            h1_rot1_2pi_1p_1phot->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
+            h1_rot1_2pi_1p_1phot->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             if(qpi[0]>0)
             {
-              h1_rot1_2pi_1p_1phot_pipl->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
+              h1_rot1_2pi_1p_1phot_pipl->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             }
             else
             {
-              h1_rot1_2pi_1p_1phot_pimi->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
-              h1_Q2_sub->Fill(q2,-(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
-              h1_omega_sub->Fill(omega,-(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
-              h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
-              h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
-              h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
-              h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
-              if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
-              if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
-              if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
+              h1_rot1_2pi_1p_1phot_pimi->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h1_Q2_sub->Fill(q2,-(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h1_omega_sub->Fill(omega,-(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             }
-            h1_rot1_2pi_1p_1phot->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
+            h1_rot1_2pi_1p_1phot->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             if(qpi[1]>0)
             {
-              h1_rot1_2pi_1p_1phot_pipl->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
+              h1_rot1_2pi_1p_1phot_pipl->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             }
             else
             {
-              h1_rot1_2pi_1p_1phot_pimi->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
-              h1_Q2_sub->Fill(q2,-(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
-              h1_omega_sub->Fill(omega,-(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
-              h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
-              h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
-              h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
-              h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
-              if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
-              if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
-              if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
+              h1_rot1_2pi_1p_1phot_pimi->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h1_Q2_sub->Fill(q2,-(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h1_omega_sub->Fill(omega,-(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             }
             //Second reconstruction method
-            h1_rot2_2pi_1p_1phot->Fill(en_recon2, (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
+            h1_rot2_2pi_1p_1phot->Fill(en_recon2, (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             if(qpi[0]>0)
             {
-              h1_rot2_2pi_1p_1phot_pipl->Fill(en_recon2, (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
+              h1_rot2_2pi_1p_1phot_pipl->Fill(en_recon2, (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             }
             else
             {
-              h1_rot2_2pi_1p_1phot_pimi->Fill(en_recon2, (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
-              h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
+              h1_rot2_2pi_1p_1phot_pimi->Fill(en_recon2, (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             }
-            h1_rot2_2pi_1p_1phot->Fill(en_recon2, (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
+            h1_rot2_2pi_1p_1phot->Fill(en_recon2, (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             if(qpi[1]>0)
             {
-              h1_rot2_2pi_1p_1phot_pipl->Fill(en_recon2, (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
+              h1_rot2_2pi_1p_1phot_pipl->Fill(en_recon2, (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             }
             else
             {
-              h1_rot2_2pi_1p_1phot_pimi->Fill(en_recon2, (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
-              h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
+              h1_rot2_2pi_1p_1phot_pimi->Fill(en_recon2, (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             }
             //Third reconstruction method
-            h1_rot3_2pi_1p_1phot->Fill(en_recon3[0], (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
+            h1_rot3_2pi_1p_1phot->Fill(en_recon3[0], (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             if(qpi[0]>0)
             {
-              h1_rot3_2pi_1p_1phot_pipl->Fill(en_recon3[0], (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
+              h1_rot3_2pi_1p_1phot_pipl->Fill(en_recon3[0], (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             }
             else
             {
-              h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[0], (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
-              h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, -(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(Q4));
+              h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[0], (N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, -(N_1pi_1p_0phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             }
-            h1_rot3_2pi_1p_1phot->Fill(en_recon3[1], (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
+            h1_rot3_2pi_1p_1phot->Fill(en_recon3[1], (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             if(qpi[1]>0)
             {
-              h1_rot3_2pi_1p_1phot_pipl->Fill(en_recon3[1], (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
+              h1_rot3_2pi_1p_1phot_pipl->Fill(en_recon3[1], (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             }
             else
             {
-              h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[1], (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
-              h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, -(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(Q4));
+              h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[1], (N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+              h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, -(N_1pi_1p_0phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
             }
       }
       double N1pi1p0phot[2] = {0};
@@ -1714,83 +1747,83 @@ if(ffilter_selection == "unfiltered"){
 
       if(N_2pi_1p_1phot!=0 && N1pi1p1phot[0]!=0 && N1pi1p1phot[1]!=0){
           // First reconstruction method
-          h1_rot1_2pi_1p_1phot->Fill(en_recon1[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
+          h1_rot1_2pi_1p_1phot->Fill(en_recon1[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           if(qpi[0]>0)
           {
-            h1_rot1_2pi_1p_1phot_pipl->Fill(en_recon1[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
+            h1_rot1_2pi_1p_1phot_pipl->Fill(en_recon1[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot1_2pi_1p_1phot_pimi->Fill(en_recon1[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
-            h1_Q2_sub->Fill(q2,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
-            h1_omega_sub->Fill(omega,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
-            h1_Wvar_sub->Fill(Wvar,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
-            h2_Wvar_Q2_sub->Fill(Wvar, q2,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
-            h2_omega_Q2_sub->Fill(omega,q2,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
-            h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
-            if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
-            if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
-            if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
+            h1_rot1_2pi_1p_1phot_pimi->Fill(en_recon1[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h1_Q2_sub->Fill(q2,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h1_omega_sub->Fill(omega,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h1_Wvar_sub->Fill(Wvar,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h2_Wvar_Q2_sub->Fill(Wvar, q2,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h2_omega_Q2_sub->Fill(omega,q2,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           }
-          h1_rot1_2pi_1p_1phot->Fill(en_recon1[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
+          h1_rot1_2pi_1p_1phot->Fill(en_recon1[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           if(qpi[1]>0)
           {
-            h1_rot1_2pi_1p_1phot_pipl->Fill(en_recon1[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
+            h1_rot1_2pi_1p_1phot_pipl->Fill(en_recon1[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot1_2pi_1p_1phot_pimi->Fill(en_recon1[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
-            h1_Q2_sub->Fill(q2,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
-            h1_omega_sub->Fill(omega,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
-            h1_Wvar_sub->Fill(Wvar,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
-            h2_Wvar_Q2_sub->Fill(Wvar, q2,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
-            h2_omega_Q2_sub->Fill(omega,q2,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
-            h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
-            if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
-            if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
-            if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
+            h1_rot1_2pi_1p_1phot_pimi->Fill(en_recon1[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h1_Q2_sub->Fill(q2,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h1_omega_sub->Fill(omega,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h1_Wvar_sub->Fill(Wvar,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h2_Wvar_Q2_sub->Fill(Wvar, q2,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h2_omega_Q2_sub->Fill(omega,q2,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           }
           //Second reconstruction method
-          h1_rot2_2pi_1p_1phot->Fill(en_recon2, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
+          h1_rot2_2pi_1p_1phot->Fill(en_recon2, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           if(qpi[0]>0)
           {
-            h1_rot2_2pi_1p_1phot_pipl->Fill(en_recon2, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
+            h1_rot2_2pi_1p_1phot_pipl->Fill(en_recon2, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot2_2pi_1p_1phot_pimi->Fill(en_recon2, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
-            h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
+            h1_rot2_2pi_1p_1phot_pimi->Fill(en_recon2, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           }
-          h1_rot2_2pi_1p_1phot->Fill(en_recon2, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
+          h1_rot2_2pi_1p_1phot->Fill(en_recon2, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           if(qpi[1]>0)
           {
-            h1_rot2_2pi_1p_1phot_pipl->Fill(en_recon2, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
+            h1_rot2_2pi_1p_1phot_pipl->Fill(en_recon2, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot2_2pi_1p_1phot_pimi->Fill(en_recon2, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
-            h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
+            h1_rot2_2pi_1p_1phot_pimi->Fill(en_recon2, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           }
           //Third reconstruction method
-          h1_rot3_2pi_1p_1phot->Fill(en_recon3[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
+          h1_rot3_2pi_1p_1phot->Fill(en_recon3[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           if(qpi[0]>0)
           {
-            h1_rot3_2pi_1p_1phot_pipl->Fill(en_recon3[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
+            h1_rot3_2pi_1p_1phot_pipl->Fill(en_recon3[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
-            h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(Q4));
+            h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           }
-          h1_rot3_2pi_1p_1phot->Fill(en_recon3[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
+          h1_rot3_2pi_1p_1phot->Fill(en_recon3[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           if(qpi[1]>0)
           {
-            h1_rot3_2pi_1p_1phot_pipl->Fill(en_recon3[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
+            h1_rot3_2pi_1p_1phot_pipl->Fill(en_recon3[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
-            h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(Q4));
+            h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+            h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_2pi_1p_1phot)*(1/Mott_cross_sec));
           }
     }
     double N_1pi_1p[2] = {0};
@@ -1799,83 +1832,83 @@ if(ffilter_selection == "unfiltered"){
 
     if(N_2pi_1p_1phot!=0 && N_2pi_1p!=0){
         // First reconstruction method
-        h1_rot1_2pi_1p_1phot->Fill(en_recon1[0], -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+        h1_rot1_2pi_1p_1phot->Fill(en_recon1[0], -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_rot1_2pi_1p_1phot_pipl->Fill(en_recon1[0], -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+          h1_rot1_2pi_1p_1phot_pipl->Fill(en_recon1[0], -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot1_2pi_1p_1phot_pimi->Fill(en_recon1[0], -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h1_Q2_sub->Fill(q2,(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h1_omega_sub->Fill(omega,(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h1_Wvar_sub->Fill(Wvar,(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+          h1_rot1_2pi_1p_1phot_pimi->Fill(en_recon1[0], -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         }
-        h1_rot1_2pi_1p_1phot->Fill(en_recon1[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+        h1_rot1_2pi_1p_1phot->Fill(en_recon1[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         if(qpi[1]>0)
         {
-          h1_rot1_2pi_1p_1phot_pipl->Fill(en_recon1[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+          h1_rot1_2pi_1p_1phot_pipl->Fill(en_recon1[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot1_2pi_1p_1phot_pimi->Fill(en_recon1[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h1_Q2_sub->Fill(q2,(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h1_omega_sub->Fill(omega,(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h1_Wvar_sub->Fill(Wvar,(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+          h1_rot1_2pi_1p_1phot_pimi->Fill(en_recon1[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         }
         //Second reconstruction method
-        h1_rot2_2pi_1p_1phot->Fill(en_recon2, -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+        h1_rot2_2pi_1p_1phot->Fill(en_recon2, -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_rot2_2pi_1p_1phot_pipl->Fill(en_recon2, -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+          h1_rot2_2pi_1p_1phot_pipl->Fill(en_recon2, -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot2_2pi_1p_1phot_pimi->Fill(en_recon2, -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+          h1_rot2_2pi_1p_1phot_pimi->Fill(en_recon2, -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         }
-        h1_rot2_2pi_1p_1phot->Fill(en_recon2, -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+        h1_rot2_2pi_1p_1phot->Fill(en_recon2, -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         if(qpi[1]>0)
         {
-          h1_rot2_2pi_1p_1phot_pipl->Fill(en_recon2, -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+          h1_rot2_2pi_1p_1phot_pipl->Fill(en_recon2, -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot2_2pi_1p_1phot_pimi->Fill(en_recon2, -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+          h1_rot2_2pi_1p_1phot_pimi->Fill(en_recon2, -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         }
         //Third reconstruction method
-        h1_rot3_2pi_1p_1phot->Fill(en_recon3[0], -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+        h1_rot3_2pi_1p_1phot->Fill(en_recon3[0], -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_rot3_2pi_1p_1phot_pipl->Fill(en_recon3[0], -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+          h1_rot3_2pi_1p_1phot_pipl->Fill(en_recon3[0], -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[0], -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, (N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+          h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[0], -(N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, (N_1pi_1p[0]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         }
-        h1_rot3_2pi_1p_1phot->Fill(en_recon3[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+        h1_rot3_2pi_1p_1phot->Fill(en_recon3[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         if(qpi[1]>0)
         {
-          h1_rot3_2pi_1p_1phot_pipl->Fill(en_recon3[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+          h1_rot3_2pi_1p_1phot_pipl->Fill(en_recon3[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
-          h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
+          h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
+          h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(1/Mott_cross_sec));
         }
   }
     }//end of 2 pi 1 photon statement
@@ -1917,83 +1950,83 @@ if(ffilter_selection == "unfiltered"){
 
           if(N_2pi_1p!=0){
               // First reconstruction method
-              h1_rot1_2pi_1p->Fill(en_recon1[0], (N_1pi_1p[0]/N_2pi_1p)*(Q4));
+              h1_rot1_2pi_1p->Fill(en_recon1[0], (N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
               if(qpi[0]>0)
               {
-                h1_E_tot_1p2pi_pipl->Fill(en_recon1[0], (N_1pi_1p[0]/N_2pi_1p)*(Q4));
+                h1_E_tot_1p2pi_pipl->Fill(en_recon1[0], (N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_E_tot_1p2pi_pimi->Fill(en_recon1[0], (N_1pi_1p[0]/N_2pi_1p)*(Q4));
-                h1_Q2_sub->Fill(q2,-(N_1pi_1p[0]/N_2pi_1p)*(Q4));
-                h1_omega_sub->Fill(omega,-(N_1pi_1p[0]/N_2pi_1p)*(Q4));
-                h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[0]/N_2pi_1p)*(Q4));
-                h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[0]/N_2pi_1p)*(Q4));
-                h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[0]/N_2pi_1p)*(Q4));
-                h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p[0]/N_2pi_1p)*(Q4));
-                if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_2pi_1p)*(Q4));
-                if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_2pi_1p)*(Q4));
-                if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_2pi_1p)*(Q4));
+                h1_E_tot_1p2pi_pimi->Fill(en_recon1[0], (N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
+                h1_Q2_sub->Fill(q2,-(N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
+                h1_omega_sub->Fill(omega,-(N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
+                h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
+                h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
+                h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
+                h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
+                if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
+                if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
+                if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
               }
-              h1_rot1_2pi_1p->Fill(en_recon1[1], (N_1pi_1p[1]/N_2pi_1p)*(Q4));
+              h1_rot1_2pi_1p->Fill(en_recon1[1], (N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
               if(qpi[1]>0)
               {
-                h1_E_tot_1p2pi_pipl->Fill(en_recon1[1], (N_1pi_1p[1]/N_2pi_1p)*(Q4));
+                h1_E_tot_1p2pi_pipl->Fill(en_recon1[1], (N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_E_tot_1p2pi_pimi->Fill(en_recon1[1], (N_1pi_1p[1]/N_2pi_1p)*(Q4));
-                h1_Q2_sub->Fill(q2,-(N_1pi_1p[1]/N_2pi_1p)*(Q4));
-                h1_omega_sub->Fill(omega,-(N_1pi_1p[1]/N_2pi_1p)*(Q4));
-                h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[1]/N_2pi_1p)*(Q4));
-                h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[1]/N_2pi_1p)*(Q4));
-                h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[1]/N_2pi_1p)*(Q4));
-                h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p[1]/N_2pi_1p)*(Q4));
-                if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_2pi_1p)*(Q4));
-                if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_2pi_1p)*(Q4));
-                if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_2pi_1p)*(Q4));
+                h1_E_tot_1p2pi_pimi->Fill(en_recon1[1], (N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
+                h1_Q2_sub->Fill(q2,-(N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
+                h1_omega_sub->Fill(omega,-(N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
+                h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
+                h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
+                h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
+                h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
+                if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
+                if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
+                if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
               }
               //Second reconstruction method
-              h1_rot2_2pi_1p->Fill(en_recon2, (N_1pi_1p[0]/N_2pi_1p)*(Q4));
+              h1_rot2_2pi_1p->Fill(en_recon2, (N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
               if(qpi[0]>0)
               {
-                h1_rot2_2pi_1p_pipl->Fill(en_recon2, (N_1pi_1p[0]/N_2pi_1p)*(Q4));
+                h1_rot2_2pi_1p_pipl->Fill(en_recon2, (N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_rot2_2pi_1p_pimi->Fill(en_recon2, (N_1pi_1p[0]/N_2pi_1p)*(Q4));
-                h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[0]/N_2pi_1p)*(Q4));
+                h1_rot2_2pi_1p_pimi->Fill(en_recon2, (N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
+                h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
               }
-              h1_rot2_2pi_1p->Fill(en_recon2, (N_1pi_1p[1]/N_2pi_1p)*(Q4));
+              h1_rot2_2pi_1p->Fill(en_recon2, (N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
               if(qpi[1]>0)
               {
-                h1_rot2_2pi_1p_pipl->Fill(en_recon2, (N_1pi_1p[1]/N_2pi_1p)*(Q4));
+                h1_rot2_2pi_1p_pipl->Fill(en_recon2, (N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_rot2_2pi_1p_pimi->Fill(en_recon2, (N_1pi_1p[1]/N_2pi_1p)*(Q4));
-                h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[1]/N_2pi_1p)*(Q4));
+                h1_rot2_2pi_1p_pimi->Fill(en_recon2, (N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
+                h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
               }
               //Third reconstruction method
-              h1_rot3_2pi_1p->Fill(en_recon3[0], (N_1pi_1p[0]/N_2pi_1p)*(Q4));
+              h1_rot3_2pi_1p->Fill(en_recon3[0], (N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
               if(qpi[0]>0)
               {
-                h1_rot3_2pi_1p_pipl->Fill(en_recon3[0], (N_1pi_1p[0]/N_2pi_1p)*(Q4));
+                h1_rot3_2pi_1p_pipl->Fill(en_recon3[0], (N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_rot3_2pi_1p_pimi->Fill(en_recon3[0], (N_1pi_1p[0]/N_2pi_1p)*(Q4));
-                h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, -(N_1pi_1p[0]/N_2pi_1p)*(Q4));
+                h1_rot3_2pi_1p_pimi->Fill(en_recon3[0], (N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
+                h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, -(N_1pi_1p[0]/N_2pi_1p)*(1/Mott_cross_sec));
               }
-              h1_rot3_2pi_1p->Fill(en_recon3[1], (N_1pi_1p[1]/N_2pi_1p)*(Q4));
+              h1_rot3_2pi_1p->Fill(en_recon3[1], (N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
               if(qpi[1]>0)
               {
-                h1_rot3_2pi_1p_pipl->Fill(en_recon3[1], (N_1pi_1p[1]/N_2pi_1p)*(Q4));
+                h1_rot3_2pi_1p_pipl->Fill(en_recon3[1], (N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_rot3_2pi_1p_pimi->Fill(en_recon3[1], (N_1pi_1p[1]/N_2pi_1p)*(Q4));
-                h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, -(N_1pi_1p[1]/N_2pi_1p)*(Q4));
+                h1_rot3_2pi_1p_pimi->Fill(en_recon3[1], (N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
+                h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, -(N_1pi_1p[1]/N_2pi_1p)*(1/Mott_cross_sec));
               }
         }
 
@@ -2020,20 +2053,20 @@ if(ffilter_selection == "unfiltered"){
         }
         // First reconstruction method
         double en_recon1 = V4_el.E() + p_kin + V4_pi.E();
-        double Ecal = V4_el.E() + p_kin + V4_pi.E();
-        h1_E_tot_pipl->Fill(Ecal,Q4);
-        h1_en_recon1->Fill(en_recon1, Q4);
-        h1_en_recon1_pipl->Fill(en_recon1, Q4);
+        double Ecal = V4_el.E();
+        h1_E_tot_pipl->Fill(Ecal,1/Mott_cross_sec);
+        h1_en_recon1->Fill(en_recon1, 1/Mott_cross_sec);
+        h1_en_recon1_pipl->Fill(en_recon1, 1/Mott_cross_sec);
 
         //Second reconstruction method
-        h1_en_recon2->Fill(en_recon2, Q4);
-        h1_en_recon2_pipl->Fill(en_recon2, Q4);
+        h1_en_recon2->Fill(en_recon2, 1/Mott_cross_sec);
+        h1_en_recon2_pipl->Fill(en_recon2, 1/Mott_cross_sec);
 
         //Third reconstruction method
         double en_recon3 = (m_prot*m_prot - (m_prot - eps)*(m_prot - eps) + 2*(m_neut - eps)*(V4_el.E() + V4_pi.E()) - e_mass*e_mass - 2*V4_el.E()*V4_pi.E() + 2*V4_el.Rho()*V4_pi.Rho()*cos(V3_pi.Angle(V3_el)) + Mpi*Mpi)/
                                               (2*(m_neut - eps - V4_el.E() - V4_pi.E()) + 2*(V4_el.Rho()*cz[ind_em] + V4_pi.Rho()*cz[index_pipl[0]]));
-        h1_en_recon3->Fill(en_recon3, Q4);
-        h1_en_recon3_pipl->Fill(en_recon3, Q4);
+        h1_en_recon3->Fill(en_recon3, 1/Mott_cross_sec);
+        h1_en_recon3_pipl->Fill(en_recon3, 1/Mott_cross_sec);
       }
       if(num_pimi==1)
       {
@@ -2042,49 +2075,49 @@ if(ffilter_selection == "unfiltered"){
         V4_total = V4_pi + V4_p_corr + V4_el;
         p_perp = TMath::Sqrt(V4_total.Px()*V4_total.Px()+V4_total.Py()*V4_total.Py());
 
-        h1_p_perp_cut->Fill(p_perp, Q4);
+        h1_p_perp_cut->Fill(p_perp, 1/Mott_cross_sec);
         TVector3 V3_q=(V4_beam-V4_el).Vect();
         double q2 = -(V4_beam-V4_el).Mag2();
         double omega= (V4_beam-V4_el).E();
         double Wvar=TMath::Sqrt((m_prot+omega)*(m_prot+omega)-V3_q*V3_q);
 
-        h1_Q2_cut->Fill(q2, Q4);
-        h1_omega_cut->Fill(omega, Q4);
-        h1_Wvar_cut->Fill(Wvar, Q4);
+        h1_Q2_cut->Fill(q2, 1/Mott_cross_sec);
+        h1_omega_cut->Fill(omega, 1/Mott_cross_sec);
+        h1_Wvar_cut->Fill(Wvar, 1/Mott_cross_sec);
         if(ffilter_selection == "unfiltered")
         {
         // First reconstruction method
         double en_recon1 = V4_el.E() + p_kin + V4_pi.E();
-        h1_en_recon1->Fill(en_recon1, Q4);
-        h1_E_tot_pimi->Fill(en_recon1, Q4);
-        h2_cal_Wvar->Fill(en_recon1, Wvar, Q4);
+        h1_en_recon1->Fill(en_recon1, 1/Mott_cross_sec);
+        h1_E_tot_pimi->Fill(en_recon1, 1/Mott_cross_sec);
+        h2_cal_Wvar->Fill(en_recon1, Wvar, 1/Mott_cross_sec);
         //Second reconstruction method
-        h1_en_recon2->Fill(en_recon2, Q4);
-        h1_en_recon2_pimi->Fill(en_recon2, Q4);
-        h2_kin_e_Wvar->Fill(en_recon2, Wvar, Q4);
+        h1_en_recon2->Fill(en_recon2, 1/Mott_cross_sec);
+        h1_en_recon2_pimi->Fill(en_recon2, 1/Mott_cross_sec);
+        h2_kin_e_Wvar->Fill(en_recon2, Wvar, 1/Mott_cross_sec);
         //Third reconstruction method
         double en_recon3 = (m_prot*m_prot - (m_prot - eps)*(m_prot - eps) + 2*(m_neut - eps)*(V4_el.E() + V4_pi.E()) - e_mass*e_mass - 2*V4_el.E()*V4_pi.E() + 2*V4_el.Rho()*V4_pi.Rho()*cos(V3_pi.Angle(V3_el)) + Mpi*Mpi)/
                                               (2*(m_neut - eps - V4_el.E() - V4_pi.E()) + 2*(V4_el.Rho()*cz[ind_em] + V4_pi.Rho()*cz[index_pimi[0]]));
-        h1_en_recon3->Fill(en_recon3, Q4);
-        h1_en_recon3_pimi->Fill(en_recon3, Q4);
-        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, Q4);
-        h1_Q2_sub->Fill(q2,Q4);
-        h1_omega_sub->Fill(omega,Q4);
-        h1_Wvar_sub->Fill(Wvar,Q4);
-        h2_Wvar_Q2_sub->Fill(Wvar, q2,Q4);
-        h2_omega_Q2_sub->Fill(omega,q2,Q4);
+        h1_en_recon3->Fill(en_recon3, 1/Mott_cross_sec);
+        h1_en_recon3_pimi->Fill(en_recon3, 1/Mott_cross_sec);
+        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, 1/Mott_cross_sec);
+        h1_Q2_sub->Fill(q2,1/Mott_cross_sec);
+        h1_omega_sub->Fill(omega,1/Mott_cross_sec);
+        h1_Wvar_sub->Fill(Wvar,1/Mott_cross_sec);
+        h2_Wvar_Q2_sub->Fill(Wvar, q2,1/Mott_cross_sec);
+        h2_omega_Q2_sub->Fill(omega,q2,1/Mott_cross_sec);
         double p_perp = TMath::Sqrt(V4_total.Px()*V4_total.Px()+V4_total.Py()*V4_total.Py());
-        h1_p_perp->Fill(p_perp,Q4);
-        h1_p_perp_sub->Fill(p_perp,Q4);
-        h2_p_perp_Wvar->Fill(p_perp,Wvar,Q4);
-        h2_pperp_cal->Fill(p_perp,en_recon1,Q4);
-        h2_pperp_kin->Fill(p_perp,en_recon3,Q4);
-        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1->Fill(en_recon1, Q4);
-        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2->Fill(en_recon1, Q4);
-        if(p_perp > 0.4) h1_cal_p_slice3->Fill(en_recon1, Q4);
-        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1, Q4);
-        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1, Q4);
-        if(p_perp > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1, Q4);
+        h1_p_perp->Fill(p_perp,1/Mott_cross_sec);
+        h1_p_perp_sub->Fill(p_perp,1/Mott_cross_sec);
+        h2_p_perp_Wvar->Fill(p_perp,Wvar,1/Mott_cross_sec);
+        h2_pperp_cal->Fill(p_perp,en_recon1,1/Mott_cross_sec);
+        h2_pperp_kin->Fill(p_perp,en_recon3,1/Mott_cross_sec);
+        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1->Fill(en_recon1, 1/Mott_cross_sec);
+        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2->Fill(en_recon1, 1/Mott_cross_sec);
+        if(p_perp > 0.4) h1_cal_p_slice3->Fill(en_recon1, 1/Mott_cross_sec);
+        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1, 1/Mott_cross_sec);
+        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1, 1/Mott_cross_sec);
+        if(p_perp > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1, 1/Mott_cross_sec);
       }
       else if(ffilter_selection == "filtered")
       {
@@ -2096,36 +2129,36 @@ if(ffilter_selection == "unfiltered"){
         V4_prot_corr.SetPxPyPzE(pxf[index_p[0]+60], pyf[index_p[0]+60], pzf[index_p[0]+60],TMath::Sqrt(m_prot*m_prot+pf[index_p[0]+60]*pf[index_p[0]+60]));
         //double Ecal = V4_el.E() + V4_prot_uncorr1.E() - m_prot + V4_pi_corr.E();*/
         double Ecal = V4_el.E();
-        h1_E_tot_pimi->Fill(Ecal, Q4);
+        h1_E_tot_pimi->Fill(Ecal, 1/Mott_cross_sec);
 
-        h2_cal_Wvar->Fill(Ecal, Wvar, Q4);
+        h2_cal_Wvar->Fill(Ecal, Wvar, 1/Mott_cross_sec);
         //Second reconstruction method
-        h1_en_recon2->Fill(en_recon2, Q4);
-        h1_en_recon2_pimi->Fill(en_recon2, Q4);
-        h2_kin_e_Wvar->Fill(en_recon2, Wvar, Q4);
+        h1_en_recon2->Fill(en_recon2, 1/Mott_cross_sec);
+        h1_en_recon2_pimi->Fill(en_recon2, 1/Mott_cross_sec);
+        h2_kin_e_Wvar->Fill(en_recon2, Wvar, 1/Mott_cross_sec);
         //Third reconstruction method
         double en_recon3 = (m_prot*m_prot - (m_prot - eps)*(m_prot - eps) + 2*(m_neut - eps)*(V4_el.E() + V4_pi.E()) - e_mass*e_mass - 2*V4_el.E()*V4_pi.E() + 2*V4_el.Rho()*V4_pi.Rho()*cos(V3_pi.Angle(V3_el)) + Mpi*Mpi)/
                                               (2*(m_neut - eps - V4_el.E() - V4_pi.E()) + 2*(V4_el.Rho()*cz[ind_em] + V4_pi.Rho()*cz[index_pimi[0]]));
-        h1_en_recon3->Fill(en_recon3, Q4);
-        h1_en_recon3_pimi->Fill(en_recon3, Q4);
-        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, Q4);
-        h1_Q2_sub->Fill(q2,Q4);
-        h1_omega_sub->Fill(omega,Q4);
-        h1_Wvar_sub->Fill(Wvar,Q4);
-        h2_Wvar_Q2_sub->Fill(Wvar, q2,Q4);
-        h2_omega_Q2_sub->Fill(omega,q2,Q4);
+        h1_en_recon3->Fill(en_recon3, 1/Mott_cross_sec);
+        h1_en_recon3_pimi->Fill(en_recon3, 1/Mott_cross_sec);
+        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, 1/Mott_cross_sec);
+        h1_Q2_sub->Fill(q2,1/Mott_cross_sec);
+        h1_omega_sub->Fill(omega,1/Mott_cross_sec);
+        h1_Wvar_sub->Fill(Wvar,1/Mott_cross_sec);
+        h2_Wvar_Q2_sub->Fill(Wvar, q2,1/Mott_cross_sec);
+        h2_omega_Q2_sub->Fill(omega,q2,1/Mott_cross_sec);
         double p_perp = TMath::Sqrt(V4_total.Px()*V4_total.Px()+V4_total.Py()*V4_total.Py());
-        h1_p_perp->Fill(p_perp,Q4);
-        h1_p_perp_sub->Fill(p_perp,Q4);
-        h2_p_perp_Wvar->Fill(p_perp,Wvar,Q4);
-        h2_pperp_cal->Fill(p_perp,Ecal,Q4);
-        h2_pperp_kin->Fill(p_perp,en_recon3,Q4);
-        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1->Fill(Ecal, Q4);
-        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2->Fill(Ecal, Q4);
-        if(p_perp > 0.4) h1_cal_p_slice3->Fill(Ecal, Q4);
-        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1_sub->Fill(Ecal, Q4);
-        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2_sub->Fill(Ecal, Q4);
-        if(p_perp > 0.4) h1_cal_p_slice3_sub->Fill(Ecal, Q4);
+        h1_p_perp->Fill(p_perp,1/Mott_cross_sec);
+        h1_p_perp_sub->Fill(p_perp,1/Mott_cross_sec);
+        h2_p_perp_Wvar->Fill(p_perp,Wvar,1/Mott_cross_sec);
+        h2_pperp_cal->Fill(p_perp,Ecal,1/Mott_cross_sec);
+        h2_pperp_kin->Fill(p_perp,en_recon3,1/Mott_cross_sec);
+        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1->Fill(Ecal, 1/Mott_cross_sec);
+        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2->Fill(Ecal, 1/Mott_cross_sec);
+        if(p_perp > 0.4) h1_cal_p_slice3->Fill(Ecal, 1/Mott_cross_sec);
+        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1_sub->Fill(Ecal, 1/Mott_cross_sec);
+        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2_sub->Fill(Ecal, 1/Mott_cross_sec);
+        if(p_perp > 0.4) h1_cal_p_slice3_sub->Fill(Ecal, 1/Mott_cross_sec);
       }
     }
   }//end of 1pi 0 photon statement
@@ -2164,46 +2197,46 @@ if(ffilter_selection == "unfiltered"){
     //fill histograms here
     if(N_1pi_1p_1phot!=0)
     {
-      h1_rot1_1pi_1p_1phot->Fill(en_recon1, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
+      h1_rot1_1pi_1p_1phot->Fill(en_recon1, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot1_1pi_1p_1phot_pipl->Fill(en_recon1, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
+        h1_rot1_1pi_1p_1phot_pipl->Fill(en_recon1, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot1_1pi_1p_1phot_pimi->Fill(en_recon1, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
-        h1_Q2_sub->Fill(q2,-(N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
-        h1_omega_sub->Fill(omega,-(N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
-        h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
-        h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
-        h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
-        h2_cal_Wvar->Fill(en_recon1, Wvar, -(N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
-        h1_p_perp_sub->Fill(p_perp,-(N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
-        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1, -(N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
-        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1, -(N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
-        if(p_perp > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1, -(N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
+        h1_rot1_1pi_1p_1phot_pimi->Fill(en_recon1, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
+        h1_Q2_sub->Fill(q2,-(N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
+        h1_omega_sub->Fill(omega,-(N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
+        h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
+        h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
+        h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
+        h2_cal_Wvar->Fill(en_recon1, Wvar, -(N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
+        h1_p_perp_sub->Fill(p_perp,-(N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
+        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1, -(N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
+        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1, -(N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
+        if(p_perp > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1, -(N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot2_1pi_1p_1phot->Fill(en_recon2, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
+      h1_rot2_1pi_1p_1phot->Fill(en_recon2, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot2_1pi_1p_1phot_pipl->Fill(en_recon2, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
+        h1_rot2_1pi_1p_1phot_pipl->Fill(en_recon2, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot2_1pi_1p_1phot_pimi->Fill(en_recon2, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
-        h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
+        h1_rot2_1pi_1p_1phot_pimi->Fill(en_recon2, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot3_1pi_1p_1phot->Fill(en_recon3, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
+      h1_rot3_1pi_1p_1phot->Fill(en_recon3, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot3_1pi_1p_1phot_pipl->Fill(en_recon3, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
+        h1_rot3_1pi_1p_1phot_pipl->Fill(en_recon3, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot3_1pi_1p_1phot_pimi->Fill(en_recon3, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
-        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p_0phot/N_1pi_1p_1phot)*(Q4));
+        h1_rot3_1pi_1p_1phot_pimi->Fill(en_recon3, (N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p_0phot/N_1pi_1p_1phot)*(1/Mott_cross_sec));
       }
     }
   }//end of 1 pi 1 photon statement
@@ -2245,47 +2278,47 @@ if(ffilter_selection == "unfiltered"){
 
     if(N_1pi_1p_2phot!=0)
     {
-      h1_rot1_1pi_1p_2phot->Fill(en_recon1, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
+      h1_rot1_1pi_1p_2phot->Fill(en_recon1, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot1_1pi_1p_2phot_pipl->Fill(en_recon1, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
+        h1_rot1_1pi_1p_2phot_pipl->Fill(en_recon1, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot1_1pi_1p_2phot_pimi->Fill(en_recon1, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
-        h1_Q2_sub->Fill(q2,-(N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
-        h1_omega_sub->Fill(omega,-(N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
-        h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
-        h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
-        h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
-        h2_cal_Wvar->Fill(en_recon1, Wvar, -(N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
-        h1_p_perp_sub->Fill(p_perp,-(N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
-        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1, -(N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
-        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1, -(N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
-        if(p_perp > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1, -(N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
+        h1_rot1_1pi_1p_2phot_pimi->Fill(en_recon1, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h1_Q2_sub->Fill(q2,-(N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h1_omega_sub->Fill(omega,-(N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h2_cal_Wvar->Fill(en_recon1, Wvar, -(N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h1_p_perp_sub->Fill(p_perp,-(N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1, -(N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1, -(N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        if(p_perp > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1, -(N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
 
       }
 
-      h1_rot2_1pi_1p_2phot->Fill(en_recon2, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
+      h1_rot2_1pi_1p_2phot->Fill(en_recon2, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot2_1pi_1p_2phot_pipl->Fill(en_recon2, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
+        h1_rot2_1pi_1p_2phot_pipl->Fill(en_recon2, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot2_1pi_1p_2phot_pimi->Fill(en_recon2, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
-        h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
+        h1_rot2_1pi_1p_2phot_pimi->Fill(en_recon2, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot3_1pi_1p_2phot->Fill(en_recon3, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
+      h1_rot3_1pi_1p_2phot->Fill(en_recon3, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot3_1pi_1p_2phot_pipl->Fill(en_recon3, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
+        h1_rot3_1pi_1p_2phot_pipl->Fill(en_recon3, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot3_1pi_1p_2phot_pimi->Fill(en_recon3, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
-        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p_0phot/N_1pi_1p_2phot)*(Q4));
+        h1_rot3_1pi_1p_2phot_pimi->Fill(en_recon3, (N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p_0phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       }
     }
     double N1pi1p0phot = 0;
@@ -2294,46 +2327,46 @@ if(ffilter_selection == "unfiltered"){
     rot_1phot_1pi_1p(V3_phot[1], V3_pi, q[index_pi[0]], V3_p, V3_q, ec_radstat_n[1], &N_1pi_1p_0phot, &N1pi1p1phot, N_tot);
     if(N_1pi_1p_2phot!=0 && N1pi1p1phot!=0)
     {
-      h1_rot1_1pi_1p_2phot->Fill(en_recon1, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
+      h1_rot1_1pi_1p_2phot->Fill(en_recon1, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot1_1pi_1p_2phot_pipl->Fill(en_recon1, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
+        h1_rot1_1pi_1p_2phot_pipl->Fill(en_recon1, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot1_1pi_1p_2phot_pimi->Fill(en_recon1, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
-        h1_Q2_sub->Fill(q2,(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
-        h1_omega_sub->Fill(omega,(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
-        h1_Wvar_sub->Fill(Wvar,(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
-        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
-        h2_omega_Q2_sub->Fill(omega,q2,(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
-        h2_cal_Wvar->Fill(en_recon1, Wvar, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
-        h1_p_perp_sub->Fill(p_perp,(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
-        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
-        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
-        if(p_perp > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
+        h1_rot1_1pi_1p_2phot_pimi->Fill(en_recon1, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h1_Q2_sub->Fill(q2,(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h1_omega_sub->Fill(omega,(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h1_Wvar_sub->Fill(Wvar,(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h2_omega_Q2_sub->Fill(omega,q2,(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h2_cal_Wvar->Fill(en_recon1, Wvar, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h1_p_perp_sub->Fill(p_perp,(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        if(p_perp > 0 && p_perp < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        if(p_perp > 0.2 && p_perp < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        if(p_perp > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot2_1pi_1p_2phot->Fill(en_recon2, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
+      h1_rot2_1pi_1p_2phot->Fill(en_recon2, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot2_1pi_1p_2phot_pipl->Fill(en_recon2, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
+        h1_rot2_1pi_1p_2phot_pipl->Fill(en_recon2, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot2_1pi_1p_2phot_pimi->Fill(en_recon2, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
-        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
+        h1_rot2_1pi_1p_2phot_pimi->Fill(en_recon2, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot3_1pi_1p_2phot->Fill(en_recon3, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
+      h1_rot3_1pi_1p_2phot->Fill(en_recon3, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot3_1pi_1p_2phot_pipl->Fill(en_recon3, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
+        h1_rot3_1pi_1p_2phot_pipl->Fill(en_recon3, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot3_1pi_1p_2phot_pimi->Fill(en_recon3, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
-        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
+        h1_rot3_1pi_1p_2phot_pimi->Fill(en_recon3, -(N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
+        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(1/Mott_cross_sec));
       }
     }
   }//end of 1 pi 2 photon statement
@@ -2383,12 +2416,6 @@ if(num_p == 2)
       V4_p_corr[i].SetPxPyPzE(prot_mom_corr[i]*cx[index_p[i]],prot_mom_corr[i]*cy[index_p[i]],prot_mom_corr[i]*cz[index_p[i]],TMath::Sqrt(m_prot*m_prot+prot_mom_corr[i]*prot_mom_corr[i]));
       p2_kin[i] = V4_p_corr[i].E() - m_prot;
     }
-    ///- - - - - Included Kinetic energy of proton - - - - - ///
-    if(ffilter_selection == "filtered")
-    {
-      V4_p_corr[i].SetPxPyPzE(pxf[index_p[i]+60], pyf[index_p[i]+60], pzf[index_p[i]+60],TMath::Sqrt(m_prot*m_prot+pf[index_p[i]+60]*pf[index_p[i]+60]));
-      p2_kin[i] = V4_p_corr[i].E() - m_prot;
-    }
   }
   //Requiring 1 pion, 1 photon
   if(num_pi==1 && ec_num_n == 1)
@@ -2425,59 +2452,59 @@ if(num_p == 2)
     //fill histograms here
     if(N_1pi_2p_1phot!=0)
     {
-      h1_rot1_1pi_2p_1phot->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-      h1_rot1_1pi_2p_1phot->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
+      h1_rot1_1pi_2p_1phot->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+      h1_rot1_1pi_2p_1phot->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot1_1pi_2p_1phot_pipl->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_rot1_1pi_2p_1phot_pipl->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
+        h1_rot1_1pi_2p_1phot_pipl->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot1_1pi_2p_1phot_pipl->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot1_1pi_2p_1phot_pimi->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_rot1_1pi_2p_1phot_pimi->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
-        h1_Q2_sub->Fill(q2,-(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_omega_sub->Fill(omega,-(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-        h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-        h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_Q2_sub->Fill(q2,-(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
-        h1_omega_sub->Fill(omega,-(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
-        h1_p_perp_sub->Fill(p_perp[0],-(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
-        h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
-        h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
-        h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(Q4));
-        h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
-        h1_p_perp_sub->Fill(p_perp[1],-(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(Q4));
+        h1_rot1_1pi_2p_1phot_pimi->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot1_1pi_2p_1phot_pimi->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_Q2_sub->Fill(q2,-(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_omega_sub->Fill(omega,-(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_Q2_sub->Fill(q2,-(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_omega_sub->Fill(omega,-(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_p_perp_sub->Fill(p_perp[0],-(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p_0phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_p_perp_sub->Fill(p_perp[1],-(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot2_1pi_2p_1phot->Fill(en_recon2, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(Q4));
+      h1_rot2_1pi_2p_1phot->Fill(en_recon2, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot2_1pi_2p_1phot_pipl->Fill(en_recon2, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(Q4));
+        h1_rot2_1pi_2p_1phot_pipl->Fill(en_recon2, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot2_1pi_2p_1phot_pimi->Fill(en_recon2, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(Q4));
-        h2_kin_e_Wvar->Fill(en_recon2, Wvar, -((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(Q4));
+        h1_rot2_1pi_2p_1phot_pimi->Fill(en_recon2, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_Wvar->Fill(en_recon2, Wvar, -((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot3_1pi_2p_1phot->Fill(en_recon3, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(Q4));
+      h1_rot3_1pi_2p_1phot->Fill(en_recon3, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot3_1pi_2p_1phot_pipl->Fill(en_recon3, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(Q4));
+        h1_rot3_1pi_2p_1phot_pipl->Fill(en_recon3, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot3_1pi_2p_1phot_pimi->Fill(en_recon3, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(Q4));
-        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(Q4));
+        h1_rot3_1pi_2p_1phot_pimi->Fill(en_recon3, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1])/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
     }
     double N1pi1p0phot[2] = {0};
@@ -2486,67 +2513,67 @@ if(num_p == 2)
     rot_1phot_1pi_1p(V3_phot, V3_pi, q[index_pi[0]], V3_p[1], V3_q, ec_radstat_n[0], &N1pi1p0phot[1], &N1pi1p1phot[1], N_tot);
     if(N_1pi_2p_1phot!=0 && N1pi1p1phot[0]!=0 && N1pi1p1phot[1]!=0)
     {
-      h1_rot1_1pi_2p_1phot->Fill(en_recon1[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-      h1_rot1_1pi_2p_1phot->Fill(en_recon1[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
+      h1_rot1_1pi_2p_1phot->Fill(en_recon1[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+      h1_rot1_1pi_2p_1phot->Fill(en_recon1[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot1_1pi_2p_1phot_pipl->Fill(en_recon1[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_rot1_1pi_2p_1phot_pipl->Fill(en_recon1[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
+        h1_rot1_1pi_2p_1phot_pipl->Fill(en_recon1[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot1_1pi_2p_1phot_pipl->Fill(en_recon1[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot1_1pi_2p_1phot_pimi->Fill(en_recon1[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_rot1_1pi_2p_1phot_pimi->Fill(en_recon1[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
-        h1_Q2_sub->Fill(q2,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_omega_sub->Fill(omega,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_Wvar_sub->Fill(Wvar,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h2_omega_Q2_sub->Fill(omega,q2,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_Q2_sub->Fill(q2,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
-        h1_p_perp_sub->Fill(p_perp[0],(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_omega_sub->Fill(omega,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
-        h1_Wvar_sub->Fill(Wvar,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
-        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
-        h2_omega_Q2_sub->Fill(omega,q2,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
-        h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
-        h1_p_perp_sub->Fill(p_perp[1],(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
+        h1_rot1_1pi_2p_1phot_pimi->Fill(en_recon1[0], -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot1_1pi_2p_1phot_pimi->Fill(en_recon1[1], -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_Q2_sub->Fill(q2,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_omega_sub->Fill(omega,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_Wvar_sub->Fill(Wvar,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_omega_Q2_sub->Fill(omega,q2,(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_Q2_sub->Fill(q2,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_p_perp_sub->Fill(p_perp[0],(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_omega_sub->Fill(omega,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_Wvar_sub->Fill(Wvar,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_omega_Q2_sub->Fill(omega,q2,(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_p_perp_sub->Fill(p_perp[1],(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot2_1pi_2p_1phot->Fill(en_recon2, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-      h1_rot2_1pi_2p_1phot->Fill(en_recon2, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
+      h1_rot2_1pi_2p_1phot->Fill(en_recon2, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+      h1_rot2_1pi_2p_1phot->Fill(en_recon2, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot2_1pi_2p_1phot_pipl->Fill(en_recon2, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_rot2_1pi_2p_1phot_pipl->Fill(en_recon2, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
+        h1_rot2_1pi_2p_1phot_pipl->Fill(en_recon2, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot2_1pi_2p_1phot_pipl->Fill(en_recon2, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot2_1pi_2p_1phot_pimi->Fill(en_recon2, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_rot2_1pi_2p_1phot_pimi->Fill(en_recon2, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
-        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
+        h1_rot2_1pi_2p_1phot_pimi->Fill(en_recon2, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot2_1pi_2p_1phot_pimi->Fill(en_recon2, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot3_1pi_2p_1phot->Fill(en_recon3, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-      h1_rot3_1pi_2p_1phot->Fill(en_recon3, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
+      h1_rot3_1pi_2p_1phot->Fill(en_recon3, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+      h1_rot3_1pi_2p_1phot->Fill(en_recon3, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot3_1pi_2p_1phot_pipl->Fill(en_recon3, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_rot3_1pi_2p_1phot_pipl->Fill(en_recon3, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
+        h1_rot3_1pi_2p_1phot_pipl->Fill(en_recon3, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot3_1pi_2p_1phot_pipl->Fill(en_recon3, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot3_1pi_2p_1phot_pimi->Fill(en_recon3, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h1_rot3_1pi_2p_1phot_pimi->Fill(en_recon3, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
-        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(Q4));
-        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(Q4));
+        h1_rot3_1pi_2p_1phot_pimi->Fill(en_recon3, -(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot3_1pi_2p_1phot_pimi->Fill(en_recon3, -(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot[0]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot[1]/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
     }
     double N_1pi_1p[2] = {0};
@@ -2555,67 +2582,67 @@ if(num_p == 2)
 
     if(N_1pi_2p_1phot!=0 && N_1pi_2p!=0)
     {
-      h1_rot1_1pi_2p_1phot->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-      h1_rot1_1pi_2p_1phot->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
+      h1_rot1_1pi_2p_1phot->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+      h1_rot1_1pi_2p_1phot->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot1_1pi_2p_1phot_pipl->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_rot1_1pi_2p_1phot_pipl->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
+        h1_rot1_1pi_2p_1phot_pipl->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot1_1pi_2p_1phot_pipl->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot1_1pi_2p_1phot_pimi->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_rot1_1pi_2p_1phot_pimi->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_Q2_sub->Fill(q2,(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_omega_sub->Fill(omega,(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_Wvar_sub->Fill(Wvar,(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_Q2_sub->Fill(q2,(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_p_perp_sub->Fill(p_perp[0],(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_omega_sub->Fill(omega,(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_Wvar_sub->Fill(Wvar,(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_p_perp_sub->Fill(p_perp[1],(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
+        h1_rot1_1pi_2p_1phot_pimi->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot1_1pi_2p_1phot_pimi->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_Q2_sub->Fill(q2,(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_omega_sub->Fill(omega,(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_Wvar_sub->Fill(Wvar,(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_Q2_sub->Fill(q2,(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_p_perp_sub->Fill(p_perp[0],(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_omega_sub->Fill(omega,(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_Wvar_sub->Fill(Wvar,(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_p_perp_sub->Fill(p_perp[1],(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot2_1pi_2p_1phot->Fill(en_recon2, -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-      h1_rot2_1pi_2p_1phot->Fill(en_recon2, -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
+      h1_rot2_1pi_2p_1phot->Fill(en_recon2, -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+      h1_rot2_1pi_2p_1phot->Fill(en_recon2, -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot2_1pi_2p_1phot_pipl->Fill(en_recon2, -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_rot2_1pi_2p_1phot_pipl->Fill(en_recon2, -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
+        h1_rot2_1pi_2p_1phot_pipl->Fill(en_recon2, -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot2_1pi_2p_1phot_pipl->Fill(en_recon2, -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot2_1pi_2p_1phot_pimi->Fill(en_recon2, -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_rot2_1pi_2p_1phot_pimi->Fill(en_recon2, -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
+        h1_rot2_1pi_2p_1phot_pimi->Fill(en_recon2, -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot2_1pi_2p_1phot_pimi->Fill(en_recon2, -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot3_1pi_2p_1phot->Fill(en_recon3, -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-      h1_rot3_1pi_2p_1phot->Fill(en_recon3, -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
+      h1_rot3_1pi_2p_1phot->Fill(en_recon3, -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+      h1_rot3_1pi_2p_1phot->Fill(en_recon3, -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot3_1pi_2p_1phot_pipl->Fill(en_recon3, -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_rot3_1pi_2p_1phot_pipl->Fill(en_recon3, -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
+        h1_rot3_1pi_2p_1phot_pipl->Fill(en_recon3, -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot3_1pi_2p_1phot_pipl->Fill(en_recon3, -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot3_1pi_2p_1phot_pimi->Fill(en_recon3, -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h1_rot3_1pi_2p_1phot_pimi->Fill(en_recon3, -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
-        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(Q4));
+        h1_rot3_1pi_2p_1phot_pimi->Fill(en_recon3, -(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h1_rot3_1pi_2p_1phot_pimi->Fill(en_recon3, -(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot/N_1pi_2p_1phot)*(1/Mott_cross_sec));
       }
     }
   }
@@ -2657,85 +2684,85 @@ rot_1pi_2p(V3_pi, qpi, V3_p, V3_q, N_1pi_1p, &N_1pi_2p, N_tot);
     //fill the histograms here
       if(N_1pi_2p!=0){
           // First reconstruction method
-          h1_rot1_1pi_2p->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(Q4));
+          h1_rot1_1pi_2p->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
           if(qpi>0)
           {
-            h1_E_tot_2p1pi_1p1pi_pipl->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(Q4));
+            h1_E_tot_2p1pi_1p1pi_pipl->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_E_tot_2p1pi_1p1pi_pimi->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(Q4));
-            h1_Q2_sub->Fill(q2,-(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-            h1_omega_sub->Fill(omega,-(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-            h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-            h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-            h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-            h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-            h1_p_perp_sub->Fill(p_perp[0],-(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-            if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-            if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-            if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(Q4));
+            h1_E_tot_2p1pi_1p1pi_pimi->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+            h1_Q2_sub->Fill(q2,-(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+            h1_omega_sub->Fill(omega,-(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+            h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+            h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+            h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+            h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+            h1_p_perp_sub->Fill(p_perp[0],-(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+            if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+            if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+            if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
           }
-          h1_rot1_1pi_2p->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(Q4));
+          h1_rot1_1pi_2p->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
           if(qpi>0)
           {
-            h1_E_tot_2p1pi_1p1pi_pipl->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(Q4));
+            h1_E_tot_2p1pi_1p1pi_pipl->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_E_tot_2p1pi_1p1pi_pimi->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(Q4));
-            h1_Q2_sub->Fill(q2,-(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-            h1_omega_sub->Fill(omega,-(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-            h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-            h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-            h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-            h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-            h1_p_perp_sub->Fill(p_perp[1],-(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-            if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-            if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-            if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_2p)*(Q4));
+            h1_E_tot_2p1pi_1p1pi_pimi->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+            h1_Q2_sub->Fill(q2,-(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+            h1_omega_sub->Fill(omega,-(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+            h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+            h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+            h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+            h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+            h1_p_perp_sub->Fill(p_perp[1],-(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+            if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+            if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+            if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
           }
           //Second reconstruction method
-          h1_rot2_1pi_2p->Fill(en_recon2, (N_1pi_1p[0]/N_1pi_2p)*(Q4));
+          h1_rot2_1pi_2p->Fill(en_recon2, (N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
           if(qpi>0)
           {
-            h1_rot2_1pi_2p_pipl->Fill(en_recon2, (N_1pi_1p[0]/N_1pi_2p)*(Q4));
+            h1_rot2_1pi_2p_pipl->Fill(en_recon2, (N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot2_1pi_2p_pimi->Fill(en_recon2, (N_1pi_1p[0]/N_1pi_2p)*(Q4));
-            h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[0]/N_1pi_2p)*(Q4));
+            h1_rot2_1pi_2p_pimi->Fill(en_recon2, (N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+            h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
           }
-          h1_rot2_1pi_2p->Fill(en_recon2, (N_1pi_1p[1]/N_1pi_2p)*(Q4));
+          h1_rot2_1pi_2p->Fill(en_recon2, (N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
           if(qpi>0)
           {
-            h1_rot2_1pi_2p_pipl->Fill(en_recon2, (N_1pi_1p[1]/N_1pi_2p)*(Q4));
+            h1_rot2_1pi_2p_pipl->Fill(en_recon2, (N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot2_1pi_2p_pimi->Fill(en_recon2, (N_1pi_1p[1]/N_1pi_2p)*(Q4));
-            h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[1]/N_1pi_2p)*(Q4));
+            h1_rot2_1pi_2p_pimi->Fill(en_recon2, (N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+            h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
           }
           //Third reconstruction method
-          h1_rot3_1pi_2p->Fill(en_recon3, (N_1pi_1p[0]/N_1pi_2p)*(Q4));
+          h1_rot3_1pi_2p->Fill(en_recon3, (N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
           if(qpi>0)
           {
-            h1_rot3_1pi_2p_pipl->Fill(en_recon3, (N_1pi_1p[0]/N_1pi_2p)*(Q4));
+            h1_rot3_1pi_2p_pipl->Fill(en_recon3, (N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot3_1pi_2p_pimi->Fill(en_recon3, (N_1pi_1p[0]/N_1pi_2p)*(Q4));
-            h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p[0]/N_1pi_2p)*(Q4));
+            h1_rot3_1pi_2p_pimi->Fill(en_recon3, (N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+            h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
           }
-          h1_rot3_1pi_2p->Fill(en_recon3, (N_1pi_1p[1]/N_1pi_2p)*(Q4));
+          h1_rot3_1pi_2p->Fill(en_recon3, (N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
           if(qpi>0)
           {
-            h1_rot3_1pi_2p_pipl->Fill(en_recon3, (N_1pi_1p[1]/N_1pi_2p)*(Q4));
+            h1_rot3_1pi_2p_pipl->Fill(en_recon3, (N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot3_1pi_2p_pimi->Fill(en_recon3, (N_1pi_1p[1]/N_1pi_2p)*(Q4));
-            h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p[1]/N_1pi_2p)*(Q4));
+            h1_rot3_1pi_2p_pimi->Fill(en_recon3, (N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+            h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
           }
     }
 }//end of 1pi 0 photon statement
@@ -2851,358 +2878,358 @@ rot_angle=gRandom->Uniform(0,2*TMath::Pi());
 //fill the histograms here
 
         // First reconstruction method
-        h1_rot1_2pi_2p->Fill(en_recon1[0], (N_1pi_1p_[0]/N_all2)*(Q4));
+        h1_rot1_2pi_2p->Fill(en_recon1[0], (N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_E_tot_2p2pi_pipl->Fill(en_recon1[0], (N_1pi_1p_[0]/N_all2)*(Q4));
+          h1_E_tot_2p2pi_pipl->Fill(en_recon1[0], (N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_E_tot_2p2pi_pimi->Fill(en_recon1[0], (N_1pi_1p_[0]/N_all2)*(Q4));
-          h1_Q2_sub->Fill(q2,-(N_1pi_1p_[0]/N_all2)*(Q4));
-          h1_omega_sub->Fill(omega,-(N_1pi_1p_[0]/N_all2)*(Q4));
-          h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_[0]/N_all2)*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_[0]/N_all2)*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_[0]/N_all2)*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p_[0]/N_all2)*(Q4));
-          h1_p_perp_sub->Fill(p_perp[0],-(N_1pi_1p_[0]/N_all2)*(Q4));
-          if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p_[0]/N_all2)*(Q4));
-          if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p_[0]/N_all2)*(Q4));
-          if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p_[0]/N_all2)*(Q4));
+          h1_E_tot_2p2pi_pimi->Fill(en_recon1[0], (N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,-(N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,-(N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
+          h1_p_perp_sub->Fill(p_perp[0],-(N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
+          if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
+          if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
+          if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p_[0]/N_all2)*(1/Mott_cross_sec));
 
         }
-        h1_rot1_2pi_2p->Fill(en_recon1[1], (N_1pi_1p_[1]/N_all2)*(Q4));
+        h1_rot1_2pi_2p->Fill(en_recon1[1], (N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
         if(qpi[1]>0)
         {
-          h1_E_tot_2p2pi_pipl->Fill(en_recon1[1], (N_1pi_1p_[1]/N_all2)*(Q4));
+          h1_E_tot_2p2pi_pipl->Fill(en_recon1[1], (N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_E_tot_2p2pi_pimi->Fill(en_recon1[1], (N_1pi_1p_[1]/N_all2)*(Q4));
-          h1_Q2_sub->Fill(q2,-(N_1pi_1p_[1]/N_all2)*(Q4));
-          h1_omega_sub->Fill(omega,-(N_1pi_1p_[1]/N_all2)*(Q4));
-          h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_[1]/N_all2)*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_[1]/N_all2)*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_[1]/N_all2)*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p_[1]/N_all2)*(Q4));
-          h1_p_perp_sub->Fill(p_perp[1],-(N_1pi_1p_[1]/N_all2)*(Q4));
-          if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p_[1]/N_all2)*(Q4));
-          if(p_perp[1]> 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p_[1]/N_all2)*(Q4));
-          if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p_[1]/N_all2)*(Q4));
+          h1_E_tot_2p2pi_pimi->Fill(en_recon1[1], (N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,-(N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,-(N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
+          h1_p_perp_sub->Fill(p_perp[1],-(N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
+          if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
+          if(p_perp[1]> 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
+          if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p_[1]/N_all2)*(1/Mott_cross_sec));
         }
-        h1_rot1_2pi_2p->Fill(en_recon1[2], (N_1pi_1p_[2]/N_all2)*(Q4));
+        h1_rot1_2pi_2p->Fill(en_recon1[2], (N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_E_tot_2p2pi_pipl->Fill(en_recon1[2], (N_1pi_1p_[2]/N_all2)*(Q4));
+          h1_E_tot_2p2pi_pipl->Fill(en_recon1[2], (N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_E_tot_2p2pi_pimi->Fill(en_recon1[2], (N_1pi_1p_[2]/N_all2)*(Q4));
-          h1_Q2_sub->Fill(q2,-(N_1pi_1p_[2]/N_all2)*(Q4));
-          h1_omega_sub->Fill(omega,-(N_1pi_1p_[2]/N_all2)*(Q4));
-          h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_[2]/N_all2)*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_[2]/N_all2)*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_[2]/N_all2)*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[2], Wvar, -(N_1pi_1p_[2]/N_all2)*(Q4));
-          h1_p_perp_sub->Fill(p_perp[2],-(N_1pi_1p_[2]/N_all2)*(Q4));
-          if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], -(N_1pi_1p_[2]/N_all2)*(Q4));
-          if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], -(N_1pi_1p_[2]/N_all2)*(Q4));
-          if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], -(N_1pi_1p_[2]/N_all2)*(Q4));
+          h1_E_tot_2p2pi_pimi->Fill(en_recon1[2], (N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,-(N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,-(N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[2], Wvar, -(N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
+          h1_p_perp_sub->Fill(p_perp[2],-(N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
+          if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], -(N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
+          if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], -(N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
+          if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], -(N_1pi_1p_[2]/N_all2)*(1/Mott_cross_sec));
         }
-        h1_rot1_2pi_2p->Fill(en_recon1[3], (N_1pi_1p_[3]/N_all2)*(Q4));
+        h1_rot1_2pi_2p->Fill(en_recon1[3], (N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
         if(qpi[1]>0)
         {
-          h1_E_tot_2p2pi_pipl->Fill(en_recon1[3], (N_1pi_1p_[3]/N_all2)*(Q4));
+          h1_E_tot_2p2pi_pipl->Fill(en_recon1[3], (N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_E_tot_2p2pi_pimi->Fill(en_recon1[3], (N_1pi_1p_[3]/N_all2)*(Q4));
-          h1_Q2_sub->Fill(q2,-(N_1pi_1p_[3]/N_all2)*(Q4));
-          h1_omega_sub->Fill(omega,-(N_1pi_1p_[3]/N_all2)*(Q4));
-          h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_[3]/N_all2)*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_[3]/N_all2)*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_[3]/N_all2)*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[3], Wvar, -(N_1pi_1p_[3]/N_all2)*(Q4));
-          h1_p_perp_sub->Fill(p_perp[3],-(N_1pi_1p_[3]/N_all2)*(Q4));
-          if(p_perp[3] > 0 && p_perp[3] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[3], -(N_1pi_1p_[3]/N_all2)*(Q4));
-          if(p_perp[3] > 0.2 && p_perp[3] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[3], -(N_1pi_1p_[3]/N_all2)*(Q4));
-          if(p_perp[3] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[3], -(N_1pi_1p_[3]/N_all2)*(Q4));
+          h1_E_tot_2p2pi_pimi->Fill(en_recon1[3], (N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,-(N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,-(N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[3], Wvar, -(N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
+          h1_p_perp_sub->Fill(p_perp[3],-(N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
+          if(p_perp[3] > 0 && p_perp[3] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[3], -(N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
+          if(p_perp[3] > 0.2 && p_perp[3] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[3], -(N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
+          if(p_perp[3] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[3], -(N_1pi_1p_[3]/N_all2)*(1/Mott_cross_sec));
         }
 
-        h1_rot1_2pi_2p->Fill(en_recon1[0], -(P_2p2pi_1p2pi[0][0])*(Q4));
+        h1_rot1_2pi_2p->Fill(en_recon1[0], -(P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_E_tot_2p2pi_pipl->Fill(en_recon1[0], -(P_2p2pi_1p2pi[0][0])*(Q4));
+          h1_E_tot_2p2pi_pipl->Fill(en_recon1[0], -(P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_E_tot_2p2pi_pimi->Fill(en_recon1[0], -(P_2p2pi_1p2pi[0][0])*(Q4));
-          h1_Q2_sub->Fill(q2,(P_2p2pi_1p2pi[0][0])*(Q4));
-          h1_omega_sub->Fill(omega,(P_2p2pi_1p2pi[0][0])*(Q4));
-          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_1p2pi[0][0])*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_1p2pi[0][0])*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_1p2pi[0][0])*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[0], Wvar, (P_2p2pi_1p2pi[0][0])*(Q4));
-          h1_p_perp_sub->Fill(p_perp[0],(P_2p2pi_1p2pi[0][0])*(Q4));
-          if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (P_2p2pi_1p2pi[0][0])*(Q4));
-          if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (P_2p2pi_1p2pi[0][0])*(Q4));
-          if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (P_2p2pi_1p2pi[0][0])*(Q4));
+          h1_E_tot_2p2pi_pimi->Fill(en_recon1[0], -(P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,(P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,(P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[0], Wvar, (P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
+          h1_p_perp_sub->Fill(p_perp[0],(P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
+          if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
+          if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
+          if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (P_2p2pi_1p2pi[0][0])*(1/Mott_cross_sec));
         }
-        h1_rot1_2pi_2p->Fill(en_recon1[1], -(P_2p2pi_1p2pi[0][1])*(Q4));
+        h1_rot1_2pi_2p->Fill(en_recon1[1], -(P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
         if(qpi[1]>0)
         {
-          h1_E_tot_2p2pi_pipl->Fill(en_recon1[1], -(P_2p2pi_1p2pi[0][1])*(Q4));
+          h1_E_tot_2p2pi_pipl->Fill(en_recon1[1], -(P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_E_tot_2p2pi_pimi->Fill(en_recon1[1], -(P_2p2pi_1p2pi[0][1])*(Q4));
-          h1_Q2_sub->Fill(q2,(P_2p2pi_1p2pi[0][1])*(Q4));
-          h1_omega_sub->Fill(omega,(P_2p2pi_1p2pi[0][1])*(Q4));
-          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_1p2pi[0][1])*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_1p2pi[0][1])*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_1p2pi[0][1])*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[1], Wvar, (P_2p2pi_1p2pi[0][1])*(Q4));
-          h1_p_perp_sub->Fill(p_perp[1],(P_2p2pi_1p2pi[0][1])*(Q4));
-          if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (P_2p2pi_1p2pi[0][1])*(Q4));
-          if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (P_2p2pi_1p2pi[0][1])*(Q4));
-          if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (P_2p2pi_1p2pi[0][1])*(Q4));
+          h1_E_tot_2p2pi_pimi->Fill(en_recon1[1], -(P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,(P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,(P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[1], Wvar, (P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
+          h1_p_perp_sub->Fill(p_perp[1],(P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
+          if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
+          if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
+          if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (P_2p2pi_1p2pi[0][1])*(1/Mott_cross_sec));
         }
-        h1_rot1_2pi_2p->Fill(en_recon1[2], -(P_2p2pi_1p2pi[1][0])*(Q4));
+        h1_rot1_2pi_2p->Fill(en_recon1[2], -(P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_E_tot_2p2pi_pipl->Fill(en_recon1[2], -(P_2p2pi_1p2pi[1][0])*(Q4));
+          h1_E_tot_2p2pi_pipl->Fill(en_recon1[2], -(P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_E_tot_2p2pi_pimi->Fill(en_recon1[2], -(P_2p2pi_1p2pi[1][0])*(Q4));
-          h1_Q2_sub->Fill(q2,(P_2p2pi_1p2pi[1][0])*(Q4));
-          h1_omega_sub->Fill(omega,(P_2p2pi_1p2pi[1][0])*(Q4));
-          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_1p2pi[1][0])*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_1p2pi[1][0])*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_1p2pi[1][0])*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[2], Wvar, (P_2p2pi_1p2pi[1][0])*(Q4));
-          h1_p_perp_sub->Fill(p_perp[2],(P_2p2pi_1p2pi[1][0])*(Q4));
-          if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], (P_2p2pi_1p2pi[1][0])*(Q4));
-          if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], (P_2p2pi_1p2pi[1][0])*(Q4));
-          if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], (P_2p2pi_1p2pi[1][0])*(Q4));
+          h1_E_tot_2p2pi_pimi->Fill(en_recon1[2], -(P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,(P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,(P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[2], Wvar, (P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
+          h1_p_perp_sub->Fill(p_perp[2],(P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
+          if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], (P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
+          if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], (P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
+          if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], (P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
         }
-        h1_rot1_2pi_2p->Fill(en_recon1[3], -(P_2p2pi_1p2pi[1][1])*(Q4));
+        h1_rot1_2pi_2p->Fill(en_recon1[3], -(P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
         if(qpi[1]>0)
         {
-          h1_E_tot_2p2pi_pipl->Fill(en_recon1[3], -(P_2p2pi_1p2pi[1][1])*(Q4));
+          h1_E_tot_2p2pi_pipl->Fill(en_recon1[3], -(P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_E_tot_2p2pi_pimi->Fill(en_recon1[3], -(P_2p2pi_1p2pi[1][1])*(Q4));
-          h1_Q2_sub->Fill(q2,(P_2p2pi_1p2pi[1][1])*(Q4));
-          h1_omega_sub->Fill(omega,(P_2p2pi_1p2pi[1][1])*(Q4));
-          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_1p2pi[1][1])*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_1p2pi[1][1])*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_1p2pi[1][1])*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[3], Wvar, (P_2p2pi_1p2pi[1][1])*(Q4));
-          h1_p_perp_sub->Fill(p_perp[3],(P_2p2pi_1p2pi[1][1])*(Q4));
-          if(p_perp[3] > 0 && p_perp[3] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[3], (P_2p2pi_1p2pi[1][1])*(Q4));
-          if(p_perp[3] > 0.2 && p_perp[3] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[3], (P_2p2pi_1p2pi[1][1])*(Q4));
-          if(p_perp[3] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[3], (P_2p2pi_1p2pi[1][1])*(Q4));
+          h1_E_tot_2p2pi_pimi->Fill(en_recon1[3], -(P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,(P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,(P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[3], Wvar, (P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
+          h1_p_perp_sub->Fill(p_perp[3],(P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
+          if(p_perp[3] > 0 && p_perp[3] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[3], (P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
+          if(p_perp[3] > 0.2 && p_perp[3] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[3], (P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
+          if(p_perp[3] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[3], (P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
         }
 
-        h1_rot1_2pi_2p->Fill(en_recon1[0], -(P_2p2pi_2p1pi[0][0])*(Q4));
+        h1_rot1_2pi_2p->Fill(en_recon1[0], -(P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_E_tot_2p2pi_pipl->Fill(en_recon1[0], -(P_2p2pi_2p1pi[0][0])*(Q4));
+          h1_E_tot_2p2pi_pipl->Fill(en_recon1[0], -(P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_E_tot_2p2pi_pimi->Fill(en_recon1[0], -(P_2p2pi_2p1pi[0][0])*(Q4));
-          h1_Q2_sub->Fill(q2,(P_2p2pi_2p1pi[0][0])*(Q4));
-          h1_omega_sub->Fill(omega,(P_2p2pi_2p1pi[0][0])*(Q4));
-          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_2p1pi[0][0])*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_2p1pi[0][0])*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_2p1pi[0][0])*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[0], Wvar, (P_2p2pi_2p1pi[0][0])*(Q4));
-          h1_p_perp_sub->Fill(p_perp[0],(P_2p2pi_2p1pi[0][0])*(Q4));
-          if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (P_2p2pi_2p1pi[0][0])*(Q4));
-          if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (P_2p2pi_2p1pi[0][0])*(Q4));
-          if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (P_2p2pi_2p1pi[0][0])*(Q4));
+          h1_E_tot_2p2pi_pimi->Fill(en_recon1[0], -(P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,(P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,(P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[0], Wvar, (P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
+          h1_p_perp_sub->Fill(p_perp[0],(P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
+          if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
+          if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
+          if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (P_2p2pi_2p1pi[0][0])*(1/Mott_cross_sec));
         }
-        h1_rot1_2pi_2p->Fill(en_recon1[1], -(P_2p2pi_2p1pi[0][1])*(Q4));
+        h1_rot1_2pi_2p->Fill(en_recon1[1], -(P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
         if(qpi[1]>0)
         {
-          h1_E_tot_2p2pi_pipl->Fill(en_recon1[1], -(P_2p2pi_2p1pi[0][1])*(Q4));
+          h1_E_tot_2p2pi_pipl->Fill(en_recon1[1], -(P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_E_tot_2p2pi_pimi->Fill(en_recon1[1], -(P_2p2pi_2p1pi[0][1])*(Q4));
-          h1_Q2_sub->Fill(q2,(P_2p2pi_2p1pi[0][1])*(Q4));
-          h1_omega_sub->Fill(omega,(P_2p2pi_2p1pi[0][1])*(Q4));
-          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_2p1pi[0][1])*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_2p1pi[0][1])*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_2p1pi[0][1])*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[1], Wvar, (P_2p2pi_2p1pi[0][1])*(Q4));
-          h1_p_perp_sub->Fill(p_perp[1],(P_2p2pi_2p1pi[0][1])*(Q4));
-          if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (P_2p2pi_2p1pi[0][1])*(Q4));
-          if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (P_2p2pi_2p1pi[0][1])*(Q4));
-          if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (P_2p2pi_2p1pi[0][1])*(Q4));
+          h1_E_tot_2p2pi_pimi->Fill(en_recon1[1], -(P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,(P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,(P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[1], Wvar, (P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
+          h1_p_perp_sub->Fill(p_perp[1],(P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
+          if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
+          if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
+          if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (P_2p2pi_2p1pi[0][1])*(1/Mott_cross_sec));
         }
-        h1_rot1_2pi_2p->Fill(en_recon1[2], -(P_2p2pi_2p1pi[1][0])*(Q4));
+        h1_rot1_2pi_2p->Fill(en_recon1[2], -(P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_E_tot_2p2pi_pipl->Fill(en_recon1[2], -(P_2p2pi_2p1pi[1][0])*(Q4));
+          h1_E_tot_2p2pi_pipl->Fill(en_recon1[2], -(P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_E_tot_2p2pi_pimi->Fill(en_recon1[2], -(P_2p2pi_2p1pi[1][0])*(Q4));
-          h1_Q2_sub->Fill(q2,(P_2p2pi_2p1pi[1][0])*(Q4));
-          h1_omega_sub->Fill(omega,(P_2p2pi_2p1pi[1][0])*(Q4));
-          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_2p1pi[1][0])*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_2p1pi[1][0])*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_2p1pi[1][0])*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[2], Wvar, (P_2p2pi_2p1pi[1][0])*(Q4));
-          h1_p_perp_sub->Fill(p_perp[2],(P_2p2pi_2p1pi[1][0])*(Q4));
-          if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], (P_2p2pi_2p1pi[1][0])*(Q4));
-          if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], (P_2p2pi_2p1pi[1][0])*(Q4));
-          if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], (P_2p2pi_2p1pi[1][0])*(Q4));
+          h1_E_tot_2p2pi_pimi->Fill(en_recon1[2], -(P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,(P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,(P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[2], Wvar, (P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
+          h1_p_perp_sub->Fill(p_perp[2],(P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
+          if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], (P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
+          if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], (P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
+          if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], (P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
         }
-        h1_rot1_2pi_2p->Fill(en_recon1[3], -(P_2p2pi_2p1pi[1][1])*(Q4));
+        h1_rot1_2pi_2p->Fill(en_recon1[3], -(P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
         if(qpi[1]>0)
         {
-          h1_E_tot_2p2pi_pipl->Fill(en_recon1[3], -(P_2p2pi_2p1pi[1][1])*(Q4));
+          h1_E_tot_2p2pi_pipl->Fill(en_recon1[3], -(P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_E_tot_2p2pi_pimi->Fill(en_recon1[3], -(P_2p2pi_2p1pi[1][1])*(Q4));
-          h1_Q2_sub->Fill(q2,(P_2p2pi_2p1pi[1][1])*(Q4));
-          h1_omega_sub->Fill(omega,(P_2p2pi_2p1pi[1][1])*(Q4));
-          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_2p1pi[1][1])*(Q4));
-          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_2p1pi[1][1])*(Q4));
-          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_2p1pi[1][1])*(Q4));
-          h2_cal_Wvar->Fill(en_recon1[3], Wvar, (P_2p2pi_2p1pi[1][1])*(Q4));
-          h1_p_perp_sub->Fill(p_perp[3],(P_2p2pi_2p1pi[1][1])*(Q4));
-          if(p_perp[3] > 0 && p_perp[3] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[3], (P_2p2pi_2p1pi[1][1])*(Q4));
-          if(p_perp[3] > 0.2 && p_perp[3] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[3], (P_2p2pi_2p1pi[1][1])*(Q4));
-          if(p_perp[3] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[3], (P_2p2pi_2p1pi[1][1])*(Q4));
+          h1_E_tot_2p2pi_pimi->Fill(en_recon1[3], -(P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
+          h1_Q2_sub->Fill(q2,(P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
+          h1_omega_sub->Fill(omega,(P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
+          h1_Wvar_sub->Fill(Wvar,(P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
+          h2_Wvar_Q2_sub->Fill(Wvar, q2,(P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
+          h2_omega_Q2_sub->Fill(omega,q2,(P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
+          h2_cal_Wvar->Fill(en_recon1[3], Wvar, (P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
+          h1_p_perp_sub->Fill(p_perp[3],(P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
+          if(p_perp[3] > 0 && p_perp[3] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[3], (P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
+          if(p_perp[3] > 0.2 && p_perp[3] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[3], (P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
+          if(p_perp[3] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[3], (P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
         }
         //Second reconstruction method
-        h1_rot2_2pi_2p->Fill(en_recon2, ((N_1pi_1p_[0]+N_1pi_1p_[1]+N_1pi_1p_[2]+N_1pi_1p_[3])/N_all2)*(Q4));
+        h1_rot2_2pi_2p->Fill(en_recon2, ((N_1pi_1p_[0]+N_1pi_1p_[1]+N_1pi_1p_[2]+N_1pi_1p_[3])/N_all2)*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_rot2_2pi_2p_pipl->Fill(en_recon2, ((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(Q4));
+          h1_rot2_2pi_2p_pipl->Fill(en_recon2, ((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot2_2pi_2p_pimi->Fill(en_recon2, ((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(Q4));
-          h2_kin_e_Wvar->Fill(en_recon2, Wvar, -((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(Q4));
+          h1_rot2_2pi_2p_pimi->Fill(en_recon2, ((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(1/Mott_cross_sec));
+          h2_kin_e_Wvar->Fill(en_recon2, Wvar, -((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(1/Mott_cross_sec));
         }
         if(qpi[1]>0)
         {
-          h1_rot2_2pi_2p_pipl->Fill(en_recon2, ((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(Q4));
+          h1_rot2_2pi_2p_pipl->Fill(en_recon2, ((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot2_2pi_2p_pimi->Fill(en_recon2, ((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(Q4));
-          h2_kin_e_Wvar->Fill(en_recon2, Wvar, -((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(Q4));
+          h1_rot2_2pi_2p_pimi->Fill(en_recon2, ((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(1/Mott_cross_sec));
+          h2_kin_e_Wvar->Fill(en_recon2, Wvar, -((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(1/Mott_cross_sec));
         }
-        h1_rot2_2pi_2p->Fill(en_recon2, -(P_2p2pi_1p2pi[0][0] +  P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][0] +  P_2p2pi_1p2pi[1][1])*(Q4));
+        h1_rot2_2pi_2p->Fill(en_recon2, -(P_2p2pi_1p2pi[0][0] +  P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][0] +  P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_rot2_2pi_2p_pipl->Fill(en_recon2, -(P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(Q4));
+          h1_rot2_2pi_2p_pipl->Fill(en_recon2, -(P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot2_2pi_2p_pimi->Fill(en_recon2, -(P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(Q4));
-          h2_kin_e_Wvar->Fill(en_recon2, Wvar, (P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(Q4));
+          h1_rot2_2pi_2p_pimi->Fill(en_recon2, -(P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
+          h2_kin_e_Wvar->Fill(en_recon2, Wvar, (P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
         }
         if(qpi[1]>0)
         {
-          h1_rot2_2pi_2p_pipl->Fill(en_recon2, -(P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(Q4));
+          h1_rot2_2pi_2p_pipl->Fill(en_recon2, -(P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot2_2pi_2p_pimi->Fill(en_recon2, -(P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(Q4));
-          h2_kin_e_Wvar->Fill(en_recon2, Wvar, (P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(Q4));
+          h1_rot2_2pi_2p_pimi->Fill(en_recon2, -(P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
+          h2_kin_e_Wvar->Fill(en_recon2, Wvar, (P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
         }
-        h1_rot2_2pi_2p->Fill(en_recon2, -(P_2p2pi_2p1pi[0][0] +  P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][0] +  P_2p2pi_2p1pi[1][1])*(Q4));
+        h1_rot2_2pi_2p->Fill(en_recon2, -(P_2p2pi_2p1pi[0][0] +  P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][0] +  P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_rot2_2pi_2p_pipl->Fill(en_recon2, -(P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(Q4));
+          h1_rot2_2pi_2p_pipl->Fill(en_recon2, -(P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot2_2pi_2p_pimi->Fill(en_recon2, -(P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(Q4));
-          h2_kin_e_Wvar->Fill(en_recon2, Wvar, (P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(Q4));
+          h1_rot2_2pi_2p_pimi->Fill(en_recon2, -(P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
+          h2_kin_e_Wvar->Fill(en_recon2, Wvar, (P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
         }
         if(qpi[1]>0)
         {
-          h1_rot2_2pi_2p_pipl->Fill(en_recon2, -(P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(Q4));
+          h1_rot2_2pi_2p_pipl->Fill(en_recon2, -(P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot2_2pi_2p_pimi->Fill(en_recon2, -(P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(Q4));
-          h2_kin_e_Wvar->Fill(en_recon2, Wvar, (P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(Q4));
+          h1_rot2_2pi_2p_pimi->Fill(en_recon2, -(P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
+          h2_kin_e_Wvar->Fill(en_recon2, Wvar, (P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
         }
 
         //Third reconstruction method
         //1st pi
-        h1_rot3_2pi_2p->Fill(en_recon3[0], ((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(Q4));
+        h1_rot3_2pi_2p->Fill(en_recon3[0], ((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_rot3_2pi_2p_pipl->Fill(en_recon3[0], ((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(Q4));
+          h1_rot3_2pi_2p_pipl->Fill(en_recon3[0], ((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot3_2pi_2p_pimi->Fill(en_recon3[0], ((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(Q4));
-          h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, -((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(Q4));
+          h1_rot3_2pi_2p_pimi->Fill(en_recon3[0], ((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(1/Mott_cross_sec));
+          h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, -((N_1pi_1p_[0]+N_1pi_1p_[2])/N_all2)*(1/Mott_cross_sec));
         }
-        h1_rot3_2pi_2p->Fill(en_recon3[0], -(P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(Q4));
+        h1_rot3_2pi_2p->Fill(en_recon3[0], -(P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_rot3_2pi_2p_pipl->Fill(en_recon3[0], -(P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(Q4));
+          h1_rot3_2pi_2p_pipl->Fill(en_recon3[0], -(P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot3_2pi_2p_pimi->Fill(en_recon3[0], -(P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(Q4));
-          h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, (P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(Q4));
+          h1_rot3_2pi_2p_pimi->Fill(en_recon3[0], -(P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
+          h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, (P_2p2pi_1p2pi[0][0] + P_2p2pi_1p2pi[1][0])*(1/Mott_cross_sec));
         }
-        h1_rot3_2pi_2p->Fill(en_recon3[0], -(P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(Q4));
+        h1_rot3_2pi_2p->Fill(en_recon3[0], -(P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
         if(qpi[0]>0)
         {
-          h1_rot3_2pi_2p_pipl->Fill(en_recon3[0], -(P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(Q4));
+          h1_rot3_2pi_2p_pipl->Fill(en_recon3[0], -(P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot3_2pi_2p_pimi->Fill(en_recon3[0], -(P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(Q4));
-          h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, (P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(Q4));
+          h1_rot3_2pi_2p_pimi->Fill(en_recon3[0], -(P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
+          h2_kin_e_pi_Wvar->Fill(en_recon3[0], Wvar, (P_2p2pi_2p1pi[0][0] + P_2p2pi_2p1pi[1][0])*(1/Mott_cross_sec));
         }
         //2nd pi
-        h1_rot3_2pi_2p->Fill(en_recon3[1], ((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(Q4));
+        h1_rot3_2pi_2p->Fill(en_recon3[1], ((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(1/Mott_cross_sec));
         if(qpi[1]>0)
         {
-          h1_rot3_2pi_2p_pipl->Fill(en_recon3[1], ((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(Q4));
+          h1_rot3_2pi_2p_pipl->Fill(en_recon3[1], ((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot3_2pi_2p_pimi->Fill(en_recon3[1], ((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(Q4));
-          h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, -((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(Q4));
+          h1_rot3_2pi_2p_pimi->Fill(en_recon3[1], ((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(1/Mott_cross_sec));
+          h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, -((N_1pi_1p_[1]+N_1pi_1p_[3])/N_all2)*(1/Mott_cross_sec));
         }
-        h1_rot3_2pi_2p->Fill(en_recon3[1], -(P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(Q4));
+        h1_rot3_2pi_2p->Fill(en_recon3[1], -(P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
         if(qpi[1]>0)
         {
-          h1_rot3_2pi_2p_pipl->Fill(en_recon3[1], -(P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(Q4));
+          h1_rot3_2pi_2p_pipl->Fill(en_recon3[1], -(P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot3_2pi_2p_pimi->Fill(en_recon3[1], -(P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(Q4));
-          h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, (P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(Q4));
+          h1_rot3_2pi_2p_pimi->Fill(en_recon3[1], -(P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
+          h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, (P_2p2pi_1p2pi[0][1] + P_2p2pi_1p2pi[1][1])*(1/Mott_cross_sec));
         }
-        h1_rot3_2pi_2p->Fill(en_recon3[1], -(P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(Q4));
+        h1_rot3_2pi_2p->Fill(en_recon3[1], -(P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
         if(qpi[1]>0)
         {
-          h1_rot3_2pi_2p_pipl->Fill(en_recon3[1], -(P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(Q4));
+          h1_rot3_2pi_2p_pipl->Fill(en_recon3[1], -(P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
         }
         else
         {
-          h1_rot3_2pi_2p_pimi->Fill(en_recon3[1], -(P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(Q4));
-          h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, (P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(Q4));
+          h1_rot3_2pi_2p_pimi->Fill(en_recon3[1], -(P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
+          h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, (P_2p2pi_2p1pi[0][1] + P_2p2pi_2p1pi[1][1])*(1/Mott_cross_sec));
         }
 
 }
@@ -3308,62 +3335,62 @@ if(num_p == 3){
 
     if(N_1pi_3p_1phot!=0)
     {
-      h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(Q4));
-      h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(Q4));
-      h1_rot1_1pi_3p_1phot->Fill(en_recon1[2], (N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(Q4));
+      h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+      h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+      h1_rot1_1pi_3p_1phot->Fill(en_recon1[2], (N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(Q4));
-        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(Q4));
-        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[2], (N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(Q4));
+        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[2], (N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(Q4));
-        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(Q4));
-        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[2], (N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(Q4));
-        h1_Q2_sub->Fill(q2,-((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
-        h1_omega_sub->Fill(omega,-((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
-        h1_Wvar_sub->Fill(Wvar,-((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
-        h2_Wvar_Q2_sub->Fill(Wvar, q2,-((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
-        h2_omega_Q2_sub->Fill(omega,q2,-((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
-        h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(Q4));
-        h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(Q4));
-        h2_cal_Wvar->Fill(en_recon1[2], Wvar, -(N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(Q4));
-        h1_p_perp_sub->Fill(p_perp[0], -(N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(Q4));
-        h1_p_perp_sub->Fill(p_perp[1], -(N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(Q4));
-        h1_p_perp_sub->Fill(p_perp[2], -(N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(Q4));
-        if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(Q4));
-        if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(Q4));
-        if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(Q4));
-        if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(Q4));
-        if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(Q4));
-        if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(Q4));
-        if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], -(N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(Q4));
-        if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], -(N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(Q4));
-        if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], -(N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(Q4));
+        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], (N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], (N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[2], (N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h1_Q2_sub->Fill(q2,-((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h1_omega_sub->Fill(omega,-((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h1_Wvar_sub->Fill(Wvar,-((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h2_Wvar_Q2_sub->Fill(Wvar, q2,-((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h2_omega_Q2_sub->Fill(omega,q2,-((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h2_cal_Wvar->Fill(en_recon1[2], Wvar, -(N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h1_p_perp_sub->Fill(p_perp[0], -(N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h1_p_perp_sub->Fill(p_perp[1], -(N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h1_p_perp_sub->Fill(p_perp[2], -(N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p_0phot[0]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p_0phot[1]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], -(N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], -(N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], -(N_1pi_1p_0phot[2]/N_1pi_3p_1phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot2_1pi_3p_1phot->Fill(en_recon2, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
+      h1_rot2_1pi_3p_1phot->Fill(en_recon2, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
+        h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
-        h2_kin_e_Wvar->Fill(en_recon2, Wvar, -((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
+        h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_Wvar->Fill(en_recon2, Wvar, -((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
       }
 
-      h1_rot3_1pi_3p_1phot->Fill(en_recon3, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
+      h1_rot3_1pi_3p_1phot->Fill(en_recon3, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
       if(q[index_pi[0]]>0)
       {
-        h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
+        h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
       }
       else
       {
-        h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
-        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(Q4));
+        h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, ((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
+        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -((N_1pi_1p_0phot[0]+N_1pi_1p_0phot[1]+N_1pi_1p_0phot[2])/N_1pi_3p_1phot)*(1/Mott_cross_sec));
       }
     }
     TVector3 V3_prot[2];
@@ -3375,69 +3402,69 @@ if(num_p == 3){
         //fill the histograms here
           if(N_1pi_2p!=0 && N_1pi_3p_1phot!=0){
               // First reconstruction method
-              h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-              h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
+              h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+              h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
               if(qpi>0)
               {
-                h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
+                h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                h1_Q2_sub->Fill(q2,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h1_omega_sub->Fill(omega,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h1_Wvar_sub->Fill(Wvar,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h1_Q2_sub->Fill(q2,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                h1_omega_sub->Fill(omega,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                h1_Wvar_sub->Fill(Wvar,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                h1_p_perp_sub->Fill(p_perp[0], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h1_p_perp_sub->Fill(p_perp[1], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
+                h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_Q2_sub->Fill(q2,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_omega_sub->Fill(omega,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_Wvar_sub->Fill(Wvar,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_Q2_sub->Fill(q2,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_omega_sub->Fill(omega,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_Wvar_sub->Fill(Wvar,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_p_perp_sub->Fill(p_perp[0], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_p_perp_sub->Fill(p_perp[1], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
               }
 
               //Second reconstruction method
-              h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-              h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
+              h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+              h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
               if(qpi>0)
               {
-                h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
+                h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
+                h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
               }
 
               //Third reconstruction method
-              h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-              h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
+              h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+              h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
               if(qpi>0)
               {
-                h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
+                h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
               }
               else
               {
-                h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
+                h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
               }
         }
         N_1pi_1p[0] = 0;
@@ -3449,69 +3476,69 @@ if(num_p == 3){
             //fill the histograms here
               if(N_1pi_2p!=0 && N_1pi_3p_1phot!=0){
                   // First reconstruction method
-                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[2], -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[2], -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                   if(qpi>0)
                   {
-                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[2], -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[2], -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                   }
                   else
                   {
-                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[2], -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                    h1_Q2_sub->Fill(q2,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h1_omega_sub->Fill(omega,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h1_Wvar_sub->Fill(Wvar,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h1_Q2_sub->Fill(q2,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                    h1_omega_sub->Fill(omega,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                    h1_Wvar_sub->Fill(Wvar,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                    h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                    h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                    h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h2_cal_Wvar->Fill(en_recon1[2], Wvar, (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                    h1_p_perp_sub->Fill(p_perp[0], (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h1_p_perp_sub->Fill(p_perp[2], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                    if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                    if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                    if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[2], -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_Q2_sub->Fill(q2,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_omega_sub->Fill(omega,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_Wvar_sub->Fill(Wvar,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_Q2_sub->Fill(q2,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_omega_sub->Fill(omega,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_Wvar_sub->Fill(Wvar,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h2_cal_Wvar->Fill(en_recon1[2], Wvar, (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_p_perp_sub->Fill(p_perp[0], (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_p_perp_sub->Fill(p_perp[2], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                    if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[0]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                    if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                    if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                   }
 
                   //Second reconstruction method
-                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                   if(qpi>0)
                   {
-                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                   }
                   else
                   {
-                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                   }
 
                   //Third reconstruction method
-                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                   if(qpi>0)
                   {
-                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                   }
                   else
                   {
-                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                    h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(Q4));
-                    h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(1/Mott_cross_sec));
+                    h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_2p_0phot[1]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                   }
             }
             N_1pi_1p[0] = 0;
@@ -3523,69 +3550,69 @@ if(num_p == 3){
                 //fill the histograms here
                   if(N_1pi_2p!=0 && N_1pi_3p_1phot!=0){
                       // First reconstruction method
-                      h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                      h1_rot1_1pi_3p_1phot->Fill(en_recon1[2], -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                      h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                      h1_rot1_1pi_3p_1phot->Fill(en_recon1[2], -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                       if(qpi>0)
                       {
-                        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[2], -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[2], -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                       }
                       else
                       {
-                        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[2], -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                        h1_Q2_sub->Fill(q2,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h1_omega_sub->Fill(omega,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h1_Wvar_sub->Fill(Wvar,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h1_Q2_sub->Fill(q2,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                        h1_omega_sub->Fill(omega,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                        h1_Wvar_sub->Fill(Wvar,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                        h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                        h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h2_cal_Wvar->Fill(en_recon1[2], Wvar, (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                        h1_p_perp_sub->Fill(p_perp[1], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h1_p_perp_sub->Fill(p_perp[2], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                        if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        if(p_perp[2]> 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                        if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                        if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[2], -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_Q2_sub->Fill(q2,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_omega_sub->Fill(omega,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_Wvar_sub->Fill(Wvar,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_Q2_sub->Fill(q2,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_omega_sub->Fill(omega,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_Wvar_sub->Fill(Wvar,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h2_cal_Wvar->Fill(en_recon1[2], Wvar, (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_p_perp_sub->Fill(p_perp[1], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_p_perp_sub->Fill(p_perp[2], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                        if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        if(p_perp[2]> 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                        if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                        if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                       }
 
                       //Second reconstruction method
-                      h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                      h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                      h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                      h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                       if(qpi>0)
                       {
-                        h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                        h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                       }
                       else
                       {
-                        h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                        h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                       }
 
                       //Third reconstruction method
-                      h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                      h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                      h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                      h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                       if(qpi>0)
                       {
-                        h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                        h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                       }
                       else
                       {
-                        h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
-                        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(Q4));
-                        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(Q4));
+                        h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(1/Mott_cross_sec));
+                        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_2p_0phot[2]/N_1pi_3p_1phot)*(N_1pi_1p[2]/N_1pi_2p)*(1/Mott_cross_sec));
                       }
                 }
 
@@ -3595,124 +3622,124 @@ if(num_p == 3){
                 rot_1pi_3p(V3_pi, qpi, V3_prot, V3_q, N_1pi_1p_, N_1pi_2p_, &N_1pi_3p_, N_tot);
 
                 if(N_1pi_3p_!=0 && N_1pi_3p_1phot!=0){
-                h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
+                h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
                 if(qpi>0)
                 {
-                  h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
+                  h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
                 else
                 {
-                  h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
-                  h1_Q2_sub->Fill(q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
-                  h1_omega_sub->Fill(omega,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
-                  h1_Wvar_sub->Fill(Wvar,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
-                  h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
-                  h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
-                  h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
-                  h1_p_perp_sub->Fill(p_perp[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
-                  if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
-                  if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
-                  if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
+                  h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h1_Q2_sub->Fill(q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h1_omega_sub->Fill(omega,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h1_Wvar_sub->Fill(Wvar,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h1_p_perp_sub->Fill(p_perp[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
-                h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
+                h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
                 if(qpi>0)
                 {
-                  h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
+                  h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
                 else
                 {
-                  h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
-                  h1_Q2_sub->Fill(q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
-                  h1_omega_sub->Fill(omega,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
-                  h1_Wvar_sub->Fill(Wvar,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
-                  h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
-                  h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
-                  h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
-                  h1_p_perp_sub->Fill(p_perp[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
-                  if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
-                  if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
-                  if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
+                  h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h1_Q2_sub->Fill(q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h1_omega_sub->Fill(omega,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h1_Wvar_sub->Fill(Wvar,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h1_p_perp_sub->Fill(p_perp[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
-                h1_rot1_1pi_3p_1phot->Fill(en_recon1[2], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
+                h1_rot1_1pi_3p_1phot->Fill(en_recon1[2], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
                 if(qpi>0)
                 {
-                  h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[2], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
+                  h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[2], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
                 else
                 {
-                  h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[2], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
-                  h1_Q2_sub->Fill(q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
-                  h1_omega_sub->Fill(omega,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
-                  h1_Wvar_sub->Fill(Wvar,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
-                  h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
-                  h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
-                  h2_cal_Wvar->Fill(en_recon1[2], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
-                  h1_p_perp_sub->Fill(p_perp[2], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
-                  if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
-                  if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
-                  if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
+                  h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[2], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h1_Q2_sub->Fill(q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h1_omega_sub->Fill(omega,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h1_Wvar_sub->Fill(Wvar,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_cal_Wvar->Fill(en_recon1[2], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h1_p_perp_sub->Fill(p_perp[2], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
 
-                h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
+                h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
                 if(qpi>0)
                 {
-                  h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
+                  h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
                 else
                 {
-                  h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
-                  h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
+                  h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
-                h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
+                h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
                 if(qpi>0)
                 {
-                  h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
+                  h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
                 else
                 {
-                  h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
-                  h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
+                  h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
-                h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
+                h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
                 if(qpi>0)
                 {
-                  h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
+                  h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
                 else
                 {
-                  h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
-                  h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
+                  h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
 
-                h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
+                h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
                 if(qpi>0)
                 {
-                  h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
+                  h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
                 else
                 {
-                  h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
-                  h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(Q4));
+                  h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[0]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
-                h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
+                h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
                 if(qpi>0)
                 {
-                  h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
+                  h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
                 else
                 {
-                  h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
-                  h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(Q4));
+                  h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[1]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
-                h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
+                h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
                 if(qpi>0)
                 {
-                  h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
+                  h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
                 else
                 {
-                  h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
-                  h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(Q4));
+                  h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
+                  h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_[2]/N_1pi_3p_)*(1/Mott_cross_sec));
                 }
               }
 
@@ -3737,76 +3764,76 @@ if(num_p == 3){
                       if(N_1pi_3p_1phot!=0 && N_1pion_2prot!=0 && N_1pi_3p_!=0)
                       {
 
-                      h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                      h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       if(qpi>0)
                       {
-                        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       }
                       else
                       {
-                        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        h1_Q2_sub->Fill(q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        h1_omega_sub->Fill(omega,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        h1_Wvar_sub->Fill(Wvar,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        h1_p_perp_sub->Fill(p_perp[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        h1_Q2_sub->Fill(q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        h1_omega_sub->Fill(omega,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        h1_Wvar_sub->Fill(Wvar,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        h1_p_perp_sub->Fill(p_perp[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       }
-                      h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                      h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       if(qpi>0)
                       {
-                        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                        h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       }
                       else
                       {
-                        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                        h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       }
 
-                      h1_rot2_1pi_3p_1phot->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                      h1_rot2_1pi_3p_1phot->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       if(qpi>0)
                       {
-                        h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                        h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       }
                       else
                       {
-                        h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                        h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       }
-                      h1_rot2_1pi_3p_1phot->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                      h1_rot2_1pi_3p_1phot->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       if(qpi>0)
                       {
-                        h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                        h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       }
                       else
                       {
-                        h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                        h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       }
 
-                      h1_rot3_1pi_3p_1phot->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                      h1_rot3_1pi_3p_1phot->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       if(qpi>0)
                       {
-                        h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                        h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       }
                       else
                       {
-                        h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                        h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       }
-                      h1_rot3_1pi_3p_1phot->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                      h1_rot3_1pi_3p_1phot->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       if(qpi>0)
                       {
-                        h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                        h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       }
                       else
                       {
-                        h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
-                        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(Q4));
+                        h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
+                        h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p_[count]/N_1pi_3p_)*(1/Mott_cross_sec));
                       }
                       count=count+1;
                     }
@@ -3833,59 +3860,59 @@ if(num_p == 3){
                 //fill histograms here
                 if(N_1pi_2p_1phot_!=0 && N_1pi_3p_1phot!=0)
                 {
-                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
+                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   if(q[index_pi[0]]>0)
                   {
-                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
                   else
                   {
-                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h1_Q2_sub->Fill(q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_omega_sub->Fill(omega,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_Wvar_sub->Fill(Wvar,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_Q2_sub->Fill(q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h1_omega_sub->Fill(omega,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h1_Wvar_sub->Fill(Wvar,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h1_p_perp_sub->Fill(p_perp[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_p_perp_sub->Fill(p_perp[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_Q2_sub->Fill(q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_omega_sub->Fill(omega,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_Wvar_sub->Fill(Wvar,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_Q2_sub->Fill(q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_omega_sub->Fill(omega,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_Wvar_sub->Fill(Wvar,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_omega_Q2_sub->Fill(omega,q2,(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_p_perp_sub->Fill(p_perp[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_p_perp_sub->Fill(p_perp[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p_0phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
 
-                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(Q4));
+                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   if(q[index_pi[0]]>0)
                   {
-                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
                   else
                   {
-                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(Q4));
-                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
 
-                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(Q4));
+                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   if(q[index_pi[0]]>0)
                   {
-                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
                   else
                   {
-                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(Q4));
-                      h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                      h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*((N_1pi_1p_0phot_[0]+N_1pi_1p_0phot_[1])/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
                 }
                 double N1pi1p0phot[2] = {0};
@@ -3894,67 +3921,67 @@ if(num_p == 3){
                 rot_1phot_1pi_1p(V3_phot, V3_pi, q[index_pi[0]], V3_p[1], V3_q, ec_radstat_n[0], &N1pi1p0phot[1], &N1pi1p1phot[1], N_tot);
                 if(N_1pi_2p_1phot_!=0 && N_1pi_3p_1phot!=0 && N1pi1p1phot[0]!=0 && N1pi1p1phot[1]!=0 && N_1pi_2p_1phot_!=0)
                 {
-                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
+                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   if(q[index_pi[0]]>0)
                   {
-                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
                   else
                   {
-                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h1_Q2_sub->Fill(q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_omega_sub->Fill(omega,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_Wvar_sub->Fill(Wvar,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_Q2_sub->Fill(q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h1_omega_sub->Fill(omega,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h1_Wvar_sub->Fill(Wvar,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h1_p_perp_sub->Fill(p_perp[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_p_perp_sub->Fill(p_perp[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_Q2_sub->Fill(q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_omega_sub->Fill(omega,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_Wvar_sub->Fill(Wvar,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_Q2_sub->Fill(q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_omega_sub->Fill(omega,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_Wvar_sub->Fill(Wvar,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_p_perp_sub->Fill(p_perp[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_p_perp_sub->Fill(p_perp[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
 
-                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
+                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   if(q[index_pi[0]]>0)
                   {
-                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
                   else
                   {
-                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
 
-                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
+                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   if(q[index_pi[0]]>0)
                   {
-                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
                   else
                   {
-                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
-                    h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(Q4));
-                    h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[0]/N1pi1p1phot[0])*(N_1pi_1p_1phot_[0]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N1pi1p0phot[1]/N1pi1p1phot[1])*(N_1pi_1p_1phot_[1]/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
                 }
                 N_1pi_1p[0] = 0;
@@ -3964,67 +3991,67 @@ if(num_p == 3){
 
                 if(N_1pi_2p_1phot_!=0 && N_1pi_2p!=0 && N_1pi_3p_1phot!=0)
                 {
-                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
+                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                  h1_rot1_1pi_3p_1phot->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   if(q[index_pi[0]]>0)
                   {
-                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot1_1pi_3p_1phot_pipl->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
                   else
                   {
-                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_Q2_sub->Fill(q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_omega_sub->Fill(omega,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_Wvar_sub->Fill(Wvar,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_Q2_sub->Fill(q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_omega_sub->Fill(omega,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_Wvar_sub->Fill(Wvar,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_p_perp_sub->Fill(p_perp[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_p_perp_sub->Fill(p_perp[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[0], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot1_1pi_3p_1phot_pimi->Fill(en_recon1[1], (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_Q2_sub->Fill(q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_omega_sub->Fill(omega,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_Wvar_sub->Fill(Wvar,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_Q2_sub->Fill(q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_omega_sub->Fill(omega,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_Wvar_sub->Fill(Wvar,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_p_perp_sub->Fill(p_perp[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_p_perp_sub->Fill(p_perp[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
 
-                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
+                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                  h1_rot2_1pi_3p_1phot->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   if(q[index_pi[0]]>0)
                   {
-                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot2_1pi_3p_1phot_pipl->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
                   else
                   {
-                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot2_1pi_3p_1phot_pimi->Fill(en_recon2, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
 
-                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
+                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                  h1_rot3_1pi_3p_1phot->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   if(q[index_pi[0]]>0)
                   {
-                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot3_1pi_3p_1phot_pipl->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
                   else
                   {
-                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
-                    h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(Q4));
+                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h1_rot3_1pi_3p_1phot_pimi->Fill(en_recon3, (N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[0]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
+                    h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_3p_0phot/N_1pi_3p_1phot)*(N_1pi_1p[1]/N_1pi_2p)*(N_1pi_2p_0phot_/N_1pi_2p_1phot_)*(1/Mott_cross_sec));
                   }
                 }
               }
@@ -4070,123 +4097,123 @@ if(num_p == 3){
     rot_1pi_3p(V3_pi, qpi, V3_prot, V3_q, N_1pi_1p, N_1pi_2p, &N_1pi_3p, N_tot);
 
     if(N_1pi_3p!=0){
-    h1_rot1_1pi_3p->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_3p)*(Q4));
+    h1_rot1_1pi_3p->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
     if(qpi>0)
     {
-      h1_E_tot_3p1pi_pipl->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_3p)*(Q4));
+      h1_E_tot_3p1pi_pipl->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
     }
     else
     {
-      h1_E_tot_3p1pi_pimi->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_3p)*(Q4));
-      h1_Q2_sub->Fill(q2,-(N_1pi_1p[0]/N_1pi_3p)*(Q4));
-      h1_omega_sub->Fill(omega,-(N_1pi_1p[0]/N_1pi_3p)*(Q4));
-      h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[0]/N_1pi_3p)*(Q4));
-      h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[0]/N_1pi_3p)*(Q4));
-      h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[0]/N_1pi_3p)*(Q4));
-      h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p[0]/N_1pi_3p)*(Q4));
-      h1_p_perp_sub->Fill(p_perp[0],-(N_1pi_1p[0]/N_1pi_3p)*(Q4));
-      if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_3p)*(Q4));
-      if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_3p)*(Q4));
-      if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_3p)*(Q4));
+      h1_E_tot_3p1pi_pimi->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
+      h1_Q2_sub->Fill(q2,-(N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
+      h1_omega_sub->Fill(omega,-(N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
+      h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_cal_Wvar->Fill(en_recon1[0], Wvar, -(N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
+      h1_p_perp_sub->Fill(p_perp[0],-(N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
+      if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
+      if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
+      if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
     }
-    h1_rot1_1pi_3p->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_3p)*(Q4));
+    h1_rot1_1pi_3p->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
     if(qpi>0)
     {
-      h1_E_tot_3p1pi_pipl->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_3p)*(Q4));
+      h1_E_tot_3p1pi_pipl->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
     }
     else
     {
-      h1_E_tot_3p1pi_pimi->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_3p)*(Q4));
-      h1_Q2_sub->Fill(q2,-(N_1pi_1p[1]/N_1pi_3p)*(Q4));
-      h1_omega_sub->Fill(omega,-(N_1pi_1p[1]/N_1pi_3p)*(Q4));
-      h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[1]/N_1pi_3p)*(Q4));
-      h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[1]/N_1pi_3p)*(Q4));
-      h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[1]/N_1pi_3p)*(Q4));
-      h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p[1]/N_1pi_3p)*(Q4));
-      h1_p_perp_sub->Fill(p_perp[1],-(N_1pi_1p[1]/N_1pi_3p)*(Q4));
-      if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_3p)*(Q4));
-      if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_3p)*(Q4));
-      if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_3p)*(Q4));
+      h1_E_tot_3p1pi_pimi->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
+      h1_Q2_sub->Fill(q2,-(N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
+      h1_omega_sub->Fill(omega,-(N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
+      h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_cal_Wvar->Fill(en_recon1[1], Wvar, -(N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
+      h1_p_perp_sub->Fill(p_perp[1],-(N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
+      if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
+      if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
+      if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], -(N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
     }
-    h1_rot1_1pi_3p->Fill(en_recon1[2], (N_1pi_1p[2]/N_1pi_3p)*(Q4));
+    h1_rot1_1pi_3p->Fill(en_recon1[2], (N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
     if(qpi>0)
     {
-      h1_E_tot_3p1pi_pipl->Fill(en_recon1[2], (N_1pi_1p[2]/N_1pi_3p)*(Q4));
+      h1_E_tot_3p1pi_pipl->Fill(en_recon1[2], (N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
     }
     else
     {
-      h1_E_tot_3p1pi_pimi->Fill(en_recon1[2], (N_1pi_1p[2]/N_1pi_3p)*(Q4));
-      h1_Q2_sub->Fill(q2,-(N_1pi_1p[2]/N_1pi_3p)*(Q4));
-      h1_omega_sub->Fill(omega,-(N_1pi_1p[2]/N_1pi_3p)*(Q4));
-      h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[2]/N_1pi_3p)*(Q4));
-      h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[2]/N_1pi_3p)*(Q4));
-      h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[2]/N_1pi_3p)*(Q4));
-      h2_cal_Wvar->Fill(en_recon1[2], Wvar, -(N_1pi_1p[2]/N_1pi_3p)*(Q4));
-      h1_p_perp_sub->Fill(p_perp[2],-(N_1pi_1p[2]/N_1pi_3p)*(Q4));
-      if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], -(N_1pi_1p[2]/N_1pi_3p)*(Q4));
-      if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], -(N_1pi_1p[2]/N_1pi_3p)*(Q4));
-      if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], -(N_1pi_1p[2]/N_1pi_3p)*(Q4));
+      h1_E_tot_3p1pi_pimi->Fill(en_recon1[2], (N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
+      h1_Q2_sub->Fill(q2,-(N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
+      h1_omega_sub->Fill(omega,-(N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
+      h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_Wvar_Q2_sub->Fill(Wvar, q2,-(N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_omega_Q2_sub->Fill(omega,q2,-(N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_cal_Wvar->Fill(en_recon1[2], Wvar, -(N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
+      h1_p_perp_sub->Fill(p_perp[2],-(N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
+      if(p_perp[2] > 0 && p_perp[2] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[2], -(N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
+      if(p_perp[2] > 0.2 && p_perp[2] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[2], -(N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
+      if(p_perp[2] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[2], -(N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
     }
 
-    h1_rot2_1pi_3p->Fill(en_recon2, (N_1pi_1p[0]/N_1pi_3p)*(Q4));
+    h1_rot2_1pi_3p->Fill(en_recon2, (N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
     if(qpi>0)
     {
-      h1_rot2_1pi_3p_pipl->Fill(en_recon2, (N_1pi_1p[0]/N_1pi_3p)*(Q4));
+      h1_rot2_1pi_3p_pipl->Fill(en_recon2, (N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
     }
     else
     {
-      h1_rot2_1pi_3p_pimi->Fill(en_recon2, (N_1pi_1p[0]/N_1pi_3p)*(Q4));
-      h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[0]/N_1pi_3p)*(Q4));
+      h1_rot2_1pi_3p_pimi->Fill(en_recon2, (N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
     }
-    h1_rot2_1pi_3p->Fill(en_recon2, (N_1pi_1p[1]/N_1pi_3p)*(Q4));
+    h1_rot2_1pi_3p->Fill(en_recon2, (N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
     if(qpi>0)
     {
-      h1_rot2_1pi_3p_pipl->Fill(en_recon2, (N_1pi_1p[1]/N_1pi_3p)*(Q4));
+      h1_rot2_1pi_3p_pipl->Fill(en_recon2, (N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
     }
     else
     {
-      h1_rot2_1pi_3p_pimi->Fill(en_recon2, (N_1pi_1p[1]/N_1pi_3p)*(Q4));
-      h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[1]/N_1pi_3p)*(Q4));
+      h1_rot2_1pi_3p_pimi->Fill(en_recon2, (N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
     }
-    h1_rot2_1pi_3p->Fill(en_recon2, (N_1pi_1p[2]/N_1pi_3p)*(Q4));
+    h1_rot2_1pi_3p->Fill(en_recon2, (N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
     if(qpi>0)
     {
-      h1_rot2_1pi_3p_pipl->Fill(en_recon2, (N_1pi_1p[2]/N_1pi_3p)*(Q4));
+      h1_rot2_1pi_3p_pipl->Fill(en_recon2, (N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
     }
     else
     {
-      h1_rot2_1pi_3p_pimi->Fill(en_recon2, (N_1pi_1p[2]/N_1pi_3p)*(Q4));
-      h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[2]/N_1pi_3p)*(Q4));
+      h1_rot2_1pi_3p_pimi->Fill(en_recon2, (N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
     }
-    h1_rot3_1pi_3p->Fill(en_recon3, (N_1pi_1p[0]/N_1pi_3p)*(Q4));
+    h1_rot3_1pi_3p->Fill(en_recon3, (N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
     if(qpi>0)
     {
-      h1_rot3_1pi_3p_pipl->Fill(en_recon3, (N_1pi_1p[0]/N_1pi_3p)*(Q4));
+      h1_rot3_1pi_3p_pipl->Fill(en_recon3, (N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
     }
     else
     {
-      h1_rot3_1pi_3p_pimi->Fill(en_recon3, (N_1pi_1p[0]/N_1pi_3p)*(Q4));
-      h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p[0]/N_1pi_3p)*(Q4));
+      h1_rot3_1pi_3p_pimi->Fill(en_recon3, (N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p[0]/N_1pi_3p)*(1/Mott_cross_sec));
     }
-    h1_rot3_1pi_3p->Fill(en_recon3, (N_1pi_1p[1]/N_1pi_3p)*(Q4));
+    h1_rot3_1pi_3p->Fill(en_recon3, (N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
     if(qpi>0)
     {
-      h1_rot3_1pi_3p_pipl->Fill(en_recon3, (N_1pi_1p[1]/N_1pi_3p)*(Q4));
+      h1_rot3_1pi_3p_pipl->Fill(en_recon3, (N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
     }
     else
     {
-      h1_rot3_1pi_3p_pimi->Fill(en_recon3, (N_1pi_1p[1]/N_1pi_3p)*(Q4));
-      h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p[1]/N_1pi_3p)*(Q4));
+      h1_rot3_1pi_3p_pimi->Fill(en_recon3, (N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p[1]/N_1pi_3p)*(1/Mott_cross_sec));
     }
-    h1_rot3_1pi_3p->Fill(en_recon3, (N_1pi_1p[2]/N_1pi_3p)*(Q4));
+    h1_rot3_1pi_3p->Fill(en_recon3, (N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
     if(qpi>0)
     {
-      h1_rot3_1pi_3p_pipl->Fill(en_recon3, (N_1pi_1p[2]/N_1pi_3p)*(Q4));
+      h1_rot3_1pi_3p_pipl->Fill(en_recon3, (N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
     }
     else
     {
-      h1_rot3_1pi_3p_pimi->Fill(en_recon3, (N_1pi_1p[2]/N_1pi_3p)*(Q4));
-      h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p[2]/N_1pi_3p)*(Q4));
+      h1_rot3_1pi_3p_pimi->Fill(en_recon3, (N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
+      h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, -(N_1pi_1p[2]/N_1pi_3p)*(1/Mott_cross_sec));
     }
   }
 
@@ -4214,83 +4241,83 @@ if(num_p == 3){
           p_perp[1] = TMath::Sqrt(V4_total[1].Px()*V4_total[1].Px()+V4_total[1].Py()*V4_total[1].Py());
           if(N_1pion_2prot!=0 && N_1pi_3p!=0)
           {
-          h1_rot1_1pi_3p->Fill(en_recon1[0], -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+          h1_rot1_1pi_3p->Fill(en_recon1[0], -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           if(qpi>0)
           {
-            h1_E_tot_3p1pi_pipl->Fill(en_recon1[0], -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+            h1_E_tot_3p1pi_pipl->Fill(en_recon1[0], -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_E_tot_3p1pi_pimi->Fill(en_recon1[0], -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h1_Q2_sub->Fill(q2,(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h1_omega_sub->Fill(omega,(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h1_Wvar_sub->Fill(Wvar,(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h2_omega_Q2_sub->Fill(omega,q2,(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h1_p_perp_sub->Fill(p_perp[0],(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+            h1_E_tot_3p1pi_pimi->Fill(en_recon1[0], -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h1_Q2_sub->Fill(q2,(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h1_omega_sub->Fill(omega,(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h1_Wvar_sub->Fill(Wvar,(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h2_omega_Q2_sub->Fill(omega,q2,(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h2_cal_Wvar->Fill(en_recon1[0], Wvar, (N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h1_p_perp_sub->Fill(p_perp[0],(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            if(p_perp[0] > 0 && p_perp[0] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[0], (N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            if(p_perp[0] > 0.2 && p_perp[0] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[0], (N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], (N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           }
-          h1_rot1_1pi_3p->Fill(en_recon1[1], -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+          h1_rot1_1pi_3p->Fill(en_recon1[1], -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           if(qpi>0)
           {
-            h1_E_tot_3p1pi_pipl->Fill(en_recon1[1], -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+            h1_E_tot_3p1pi_pipl->Fill(en_recon1[1], -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_E_tot_3p1pi_pimi->Fill(en_recon1[1], -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h1_Q2_sub->Fill(q2,(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h1_omega_sub->Fill(omega,(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h1_Wvar_sub->Fill(Wvar,(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h2_omega_Q2_sub->Fill(omega,q2,(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h1_p_perp_sub->Fill(p_perp[1],(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+            h1_E_tot_3p1pi_pimi->Fill(en_recon1[1], -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h1_Q2_sub->Fill(q2,(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h1_omega_sub->Fill(omega,(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h1_Wvar_sub->Fill(Wvar,(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h2_Wvar_Q2_sub->Fill(Wvar, q2,(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h2_omega_Q2_sub->Fill(omega,q2,(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h2_cal_Wvar->Fill(en_recon1[1], Wvar, (N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h1_p_perp_sub->Fill(p_perp[1],(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            if(p_perp[1] > 0 && p_perp[1] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[1], (N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            if(p_perp[1] > 0.2 && p_perp[1] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[1], (N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            if(p_perp[1] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[1], (N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           }
-          h1_rot2_1pi_3p->Fill(en_recon2, -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+          h1_rot2_1pi_3p->Fill(en_recon2, -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           if(qpi>0)
           {
-            h1_rot2_1pi_3p_pipl->Fill(en_recon2, -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+            h1_rot2_1pi_3p_pipl->Fill(en_recon2, -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot2_1pi_3p_pimi->Fill(en_recon2, -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+            h1_rot2_1pi_3p_pimi->Fill(en_recon2, -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           }
-          h1_rot2_1pi_3p->Fill(en_recon2, -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+          h1_rot2_1pi_3p->Fill(en_recon2, -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           if(qpi>0)
           {
-            h1_rot2_1pi_3p_pipl->Fill(en_recon2, -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+            h1_rot2_1pi_3p_pipl->Fill(en_recon2, -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot2_1pi_3p_pimi->Fill(en_recon2, -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+            h1_rot2_1pi_3p_pimi->Fill(en_recon2, -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h2_kin_e_Wvar->Fill(en_recon2, Wvar, (N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           }
-          h1_rot3_1pi_3p->Fill(en_recon3, -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+          h1_rot3_1pi_3p->Fill(en_recon3, -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           if(qpi>0)
           {
-            h1_rot3_1pi_3p_pipl->Fill(en_recon3, -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+            h1_rot3_1pi_3p_pipl->Fill(en_recon3, -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot3_1pi_3p_pimi->Fill(en_recon3, -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+            h1_rot3_1pi_3p_pimi->Fill(en_recon3, -(N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pion_1prot[0]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           }
-          h1_rot3_1pi_3p->Fill(en_recon3, -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+          h1_rot3_1pi_3p->Fill(en_recon3, -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           if(qpi>0)
           {
-            h1_rot3_1pi_3p_pipl->Fill(en_recon3, -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+            h1_rot3_1pi_3p_pipl->Fill(en_recon3, -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           }
           else
           {
-            h1_rot3_1pi_3p_pimi->Fill(en_recon3, -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
-            h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(Q4));
+            h1_rot3_1pi_3p_pimi->Fill(en_recon3, -(N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
+            h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N_1pion_1prot[1]/N_1pion_2prot)*(N_1pi_2p[count]/N_1pi_3p)*(1/Mott_cross_sec));
           }
           count=count+1;
         }
@@ -4579,7 +4606,11 @@ h1_sub_cal_all->Add(h1_rot1_2pi_1p, -1);
 h1_sub_cal_all->Add(h1_rot1_2pi_2p, -1);
 h1_sub_cal_all->Add(h1_rot1_1pi_3p, -1);
 h1_sub_cal_all->Add(h1_rot1_3pi_1p, -1);
-
+h1_sub_cal_all->Add(h1_rot1_1pi_1p_1phot, -1);
+h1_sub_cal_all->Add(h1_rot1_1pi_2p_1phot, -1);
+h1_sub_cal_all->Add(h1_rot1_1pi_1p_2phot, -1);
+h1_sub_cal_all->Add(h1_rot1_2pi_1p_1phot, -1);
+h1_sub_cal_all->Add(h1_rot1_1pi_3p_1phot, -1);
 
 
 TH1F* h1_E_cal_pimi_sub = (TH1F*) h1_E_tot_pimi->Clone("h1_E_cal_pimi_sub");
@@ -4593,7 +4624,11 @@ h1_E_cal_pimi_sub->Add(h1_E_tot_3p1pi_pimi, -1);
 h1_E_cal_pimi_sub->Write("process4");
 h1_E_cal_pimi_sub->Add(h1_E_tot_1p3pi_pimi, -1);
 h1_E_cal_pimi_sub->Write("process5");
-
+h1_E_cal_pimi_sub->Add(h1_rot1_1pi_1p_1phot_pimi, -1);
+h1_E_cal_pimi_sub->Add(h1_rot1_1pi_2p_1phot_pimi, -1);
+h1_E_cal_pimi_sub->Add(h1_rot1_1pi_1p_2phot_pimi, -1);
+h1_E_cal_pimi_sub->Add(h1_rot1_2pi_1p_1phot_pimi, -1);
+h1_E_cal_pimi_sub->Add(h1_rot1_1pi_3p_1phot_pimi, -1);
 
 TH1F* h1_E_cal_pipl_sub = (TH1F*) h1_en_recon1_pipl->Clone("h1_E_cal_pipl_sub");
 h1_E_cal_pipl_sub->Add(h1_E_tot_2p1pi_1p1pi_pipl, -1);
@@ -4601,7 +4636,11 @@ h1_E_cal_pipl_sub->Add(h1_E_tot_1p2pi_pipl, -1);
 h1_E_cal_pipl_sub->Add(h1_E_tot_2p2pi_pipl, -1);
 h1_E_cal_pipl_sub->Add(h1_E_tot_3p1pi_pipl, -1);
 h1_E_cal_pipl_sub->Add(h1_E_tot_1p3pi_pipl, -1);
-
+h1_E_cal_pipl_sub->Add(h1_rot1_1pi_1p_1phot_pipl, -1);
+h1_E_cal_pipl_sub->Add(h1_rot1_1pi_2p_1phot_pipl, -1);
+h1_E_cal_pipl_sub->Add(h1_rot1_1pi_1p_2phot_pipl, -1);
+h1_E_cal_pipl_sub->Add(h1_rot1_2pi_1p_1phot_pipl, -1);
+h1_E_cal_pipl_sub->Add(h1_rot1_1pi_3p_1phot_pipl, -1);
 
 TH1F* h1_sub_kin_e_all = (TH1F*) h1_en_recon2->Clone("sub_kin_e_all");
 h1_sub_kin_e_all->Add(h1_rot2_1pi_2p, -1);
@@ -4609,7 +4648,11 @@ h1_sub_kin_e_all->Add(h1_rot2_2pi_1p, -1);
 h1_sub_kin_e_all->Add(h1_rot2_2pi_2p, -1);
 h1_sub_kin_e_all->Add(h1_rot2_1pi_3p, -1);
 h1_sub_kin_e_all->Add(h1_rot2_3pi_1p, -1);
-
+h1_sub_kin_e_all->Add(h1_rot2_1pi_1p_1phot, -1);
+h1_sub_kin_e_all->Add(h1_rot2_1pi_2p_1phot, -1);
+h1_sub_kin_e_all->Add(h1_rot2_1pi_1p_2phot, -1);
+h1_sub_kin_e_all->Add(h1_rot2_2pi_1p_1phot, -1);
+h1_sub_kin_e_all->Add(h1_rot2_1pi_3p_1phot, -1);
 
 TH1F* h1_sub_kin_e_all_pimi = (TH1F*) h1_en_recon2_pimi->Clone("sub_kin_e_all_pimi");
 h1_sub_kin_e_all_pimi->Add(h1_rot2_1pi_2p_pimi, -1);
@@ -4617,7 +4660,11 @@ h1_sub_kin_e_all_pimi->Add(h1_rot2_2pi_1p_pimi, -1);
 h1_sub_kin_e_all_pimi->Add(h1_rot2_2pi_2p_pimi, -1);
 h1_sub_kin_e_all_pimi->Add(h1_rot2_1pi_3p_pimi, -1);
 h1_sub_kin_e_all_pimi->Add(h1_rot2_3pi_1p_pimi, -1);
-
+h1_sub_kin_e_all_pimi->Add(h1_rot2_1pi_1p_1phot_pimi, -1);
+h1_sub_kin_e_all_pimi->Add(h1_rot2_1pi_2p_1phot_pimi, -1);
+h1_sub_kin_e_all_pimi->Add(h1_rot2_1pi_1p_2phot_pimi, -1);
+h1_sub_kin_e_all_pimi->Add(h1_rot2_1pi_1p_1phot_pimi, -1);
+h1_sub_kin_e_all_pimi->Add(h1_rot2_1pi_3p_1phot_pimi, -1);
 
 TH1F* h1_sub_kin_e_all_pipl = (TH1F*) h1_en_recon2_pipl->Clone("sub_kin_e_all_pipl");
 h1_sub_kin_e_all_pipl->Add(h1_rot2_1pi_2p_pipl, -1);
@@ -4625,7 +4672,11 @@ h1_sub_kin_e_all_pipl->Add(h1_rot2_2pi_1p_pipl, -1);
 h1_sub_kin_e_all_pipl->Add(h1_rot2_2pi_2p_pipl, -1);
 h1_sub_kin_e_all_pipl->Add(h1_rot2_1pi_3p_pipl, -1);
 h1_sub_kin_e_all_pipl->Add(h1_rot2_3pi_1p_pipl, -1);
-
+h1_sub_kin_e_all_pipl->Add(h1_rot2_1pi_1p_1phot_pipl, -1);
+h1_sub_kin_e_all_pimi->Add(h1_rot2_1pi_2p_1phot_pimi, -1);
+h1_sub_kin_e_all_pipl->Add(h1_rot2_1pi_1p_2phot_pipl, -1);
+h1_sub_kin_e_all_pipl->Add(h1_rot2_2pi_1p_1phot_pipl, -1);
+h1_sub_kin_e_all_pimi->Add(h1_rot2_1pi_3p_1phot_pimi, -1);
 
 TH1F* h1_sub_kin_e_pi_all = (TH1F*) h1_en_recon3->Clone("sub_kin_e_pi_all");
 h1_sub_kin_e_pi_all->Add(h1_rot3_1pi_2p, -1);
@@ -4633,7 +4684,11 @@ h1_sub_kin_e_pi_all->Add(h1_rot3_2pi_1p, -1);
 h1_sub_kin_e_pi_all->Add(h1_rot3_2pi_2p, -1);
 h1_sub_kin_e_pi_all->Add(h1_rot3_1pi_3p, -1);
 h1_sub_kin_e_pi_all->Add(h1_rot3_3pi_1p, -1);
-
+h1_sub_kin_e_pi_all->Add(h1_rot3_1pi_1p_1phot, -1);
+h1_sub_kin_e_pi_all->Add(h1_rot3_1pi_2p_1phot, -1);
+h1_sub_kin_e_pi_all->Add(h1_rot3_1pi_1p_2phot, -1);
+h1_sub_kin_e_pi_all->Add(h1_rot3_2pi_1p_1phot, -1);
+h1_sub_kin_e_pi_all->Add(h1_rot3_1pi_3p_1phot, -1);
 
 TH1F* h1_sub_kin_e_pi_all_pimi = (TH1F*) h1_en_recon3_pimi->Clone("sub_kin_e_pi_all_pimi");
 h1_sub_kin_e_pi_all_pimi->Add(h1_rot3_1pi_2p_pimi, -1);
@@ -4641,7 +4696,11 @@ h1_sub_kin_e_pi_all_pimi->Add(h1_rot3_2pi_1p_pimi, -1);
 h1_sub_kin_e_pi_all_pimi->Add(h1_rot3_2pi_2p_pimi, -1);
 h1_sub_kin_e_pi_all_pimi->Add(h1_rot3_1pi_3p_pimi, -1);
 h1_sub_kin_e_pi_all_pimi->Add(h1_rot3_3pi_1p_pimi, -1);
-
+h1_sub_kin_e_pi_all_pimi->Add(h1_rot3_1pi_1p_1phot_pimi, -1);
+h1_sub_kin_e_pi_all_pimi->Add(h1_rot3_1pi_2p_1phot_pimi, -1);
+h1_sub_kin_e_pi_all_pimi->Add(h1_rot3_1pi_1p_2phot_pimi, -1);
+h1_sub_kin_e_pi_all_pimi->Add(h1_rot3_2pi_1p_1phot_pimi, -1);
+h1_sub_kin_e_pi_all_pimi->Add(h1_rot3_1pi_3p_1phot_pimi, -1);
 
 TH1F* h1_sub_kin_e_pi_all_pipl = (TH1F*) h1_en_recon3_pipl->Clone("sub_kin_e_pi_all_pipl");
 h1_sub_kin_e_pi_all_pipl->Add(h1_rot3_1pi_2p_pipl, -1);
@@ -4649,7 +4708,11 @@ h1_sub_kin_e_pi_all_pipl->Add(h1_rot3_2pi_1p_pipl, -1);
 h1_sub_kin_e_pi_all_pipl->Add(h1_rot3_2pi_2p_pipl, -1);
 h1_sub_kin_e_pi_all_pipl->Add(h1_rot3_1pi_3p_pipl, -1);
 h1_sub_kin_e_pi_all_pipl->Add(h1_rot3_3pi_1p_pipl, -1);
-
+h1_sub_kin_e_pi_all_pipl->Add(h1_rot3_1pi_1p_1phot_pipl, -1);
+h1_sub_kin_e_pi_all_pipl->Add(h1_rot3_1pi_2p_1phot_pipl, -1);
+h1_sub_kin_e_pi_all_pipl->Add(h1_rot3_1pi_1p_2phot_pipl, -1);
+h1_sub_kin_e_pi_all_pipl->Add(h1_rot3_2pi_1p_1phot_pipl, -1);
+h1_sub_kin_e_pi_all_pipl->Add(h1_rot3_1pi_3p_1phot_pipl, -1);
 
 gDirectory->Write("hist_Files", TObject::kOverwrite);
 }
