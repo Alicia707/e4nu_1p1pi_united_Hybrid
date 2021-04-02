@@ -423,7 +423,7 @@ EC_photon_beta["3He"]=0.93;
 
   Long64_t nentries = fChain->GetEntriesFast();
   //nentries = 100000000; //Number of Entries
-  nentries = 2000000;
+  //nentries = 2000000;
   TFile *file_in=new TFile(Form("el_Epratio_mom_%s.root",fbeam_en.c_str()));
   TFile *file_in1=new TFile(Form("protdeltat_mom_%s.root",fbeam_en.c_str()));
   TFile *file_in2=new TFile(Form("pimideltat_mom_%s.root",fbeam_en.c_str()));
@@ -552,182 +552,94 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
   TH1F *h1_en_recon3_pipl=new TH1F("kin_e_pi_pipl","",n_bins, x_values);
   TH1F *h1_rot1_2pi_1p=new TH1F("2pi_1p_rot_cal","",n_bins, x_values);
   TH1F *h1_E_tot_1p2pi_pimi=new TH1F("h1_E_tot_1p2pi_pimi","",n_bins, x_values);
-
   TH1F *h1_E_tot_1p2pi_pipl=new TH1F("h1_E_tot_1p2pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot2_2pi_1p=new TH1F("2pi_1p_rot_kin_e","",n_bins, x_values);
   TH1F *h1_rot2_2pi_1p_pimi=new TH1F("2pi_1p_rot_kin_e_pimi","",n_bins, x_values);
-
   TH1F *h1_rot2_2pi_1p_pipl=new TH1F("2pi_1p_rot_kin_e_pipl","",n_bins, x_values);
-
   TH1F *h1_rot3_2pi_1p=new TH1F("2pi_1p_rot_kin_e_pi","",n_bins, x_values);
-
   TH1F *h1_rot3_2pi_1p_pimi=new TH1F("2pi_1p_rot_kin_e_pi_pimi","",n_bins, x_values);
-
   TH1F *h1_rot3_2pi_1p_pipl=new TH1F("2pi_1p_rot_kin_e_pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_2p=new TH1F("1pi_2p_rot_cal","",n_bins, x_values);
-
   TH1F *h1_E_tot_2p1pi_1p1pi_pimi=new TH1F("h1_E_tot_2p1pi_1p1pi_pimi","",n_bins, x_values);
-
   TH1F *h1_E_tot_2p1pi_1p1pi_pipl=new TH1F("h1_E_tot_2p1pi_1p1pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_2p=new TH1F("1pi_2p_rot_kin_e","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_2p_pimi=new TH1F("1pi_2p_rot_kin_e_pimi","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_2p_pipl=new TH1F("1pi_2p_rot_kin_e_pipl","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_2p=new TH1F("1pi_2p_rot_kin_e_pi","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_2p_pimi=new TH1F("1pi_2p_rot_kin_e_pi_pimi","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_2p_pipl=new TH1F("1pi_2p_rot_kin_e_pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot1_2pi_2p=new TH1F("2pi_2p_rot_cal","",n_bins, x_values);
-
   TH1F *h1_E_tot_2p2pi_pimi=new TH1F("h1_E_tot_2p2pi_pimi","",n_bins, x_values);
-
   TH1F *h1_E_tot_2p2pi_pipl=new TH1F("h1_E_tot_2p2pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot2_2pi_2p=new TH1F("2pi_2p_rot_kin_e","",n_bins, x_values);
-
   TH1F *h1_rot2_2pi_2p_pimi=new TH1F("2pi_2p_rot_kin_e_pimi","",n_bins, x_values);
-
   TH1F *h1_rot2_2pi_2p_pipl=new TH1F("2pi_2p_rot_kin_e_pipl","",n_bins, x_values);
-
   TH1F *h1_rot3_2pi_2p=new TH1F("2pi_2p_rot_kin_e_pi","",n_bins, x_values);
-
   TH1F *h1_rot3_2pi_2p_pimi=new TH1F("2pi_2p_rot_kin_e_pi_pimi","",n_bins, x_values);
-
   TH1F *h1_rot3_2pi_2p_pipl=new TH1F("2pi_2p_rot_kin_e_pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_3p=new TH1F("1pi_3p_rot_cal","",n_bins, x_values);
-
   TH1F *h1_E_tot_3p1pi_pimi=new TH1F("h1_E_tot_3p1pi_pimi","",n_bins, x_values);
-
   TH1F *h1_E_tot_3p1pi_pipl=new TH1F("h1_E_tot_3p1pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_3p=new TH1F("1pi_3p_rot_kin_e","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_3p_pimi=new TH1F("1pi_3p_rot_kin_e_pimi","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_3p_pipl=new TH1F("1pi_3p_rot_kin_e_pipl","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_3p=new TH1F("1pi_3p_rot_kin_e_pi","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_3p_pimi=new TH1F("1pi_3p_rot_kin_e_pi_pimi","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_3p_pipl=new TH1F("1pi_3p_rot_kin_e_pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot1_3pi_1p=new TH1F("3pi_1p_rot_cal","",n_bins, x_values);
-
   TH1F *h1_E_tot_1p3pi_pimi=new TH1F("h1_E_tot_1p3pi_pimi","",n_bins, x_values);
-
   TH1F *h1_E_tot_1p3pi_pipl=new TH1F("h1_E_tot_1p3pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot2_3pi_1p=new TH1F("3pi_1p_rot_kin_e","",n_bins, x_values);
-
   TH1F *h1_rot2_3pi_1p_pimi=new TH1F("3pi_1p_rot_kin_e_pimi","",n_bins, x_values);
-
   TH1F *h1_rot2_3pi_1p_pipl=new TH1F("3pi_1p_rot_kin_e_pipl","",n_bins, x_values);
-
   TH1F *h1_rot3_3pi_1p=new TH1F("3pi_1p_rot_kin_e_pi","",n_bins, x_values);
-
   TH1F *h1_rot3_3pi_1p_pimi=new TH1F("3pi_1p_rot_kin_e_pi_pimi","",n_bins, x_values);
-
   TH1F *h1_rot3_3pi_1p_pipl=new TH1F("3pi_1p_rot_kin_e_pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_1p_1phot=new TH1F("1pi_1p_1phot_rot_cal","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_1p_1phot_pimi=new TH1F("1pi_1p_1phot_rot_h1_E_tot_pimi","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_1p_1phot_pipl=new TH1F("1pi_1p_1phot_rot_cal_pipl","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_1p_1phot=new TH1F("1pi_1p_1phot_rot_kin_e","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_1p_1phot_pimi=new TH1F("1pi_1p_1phot_rot_kin_e_pimi","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_1p_1phot_pipl=new TH1F("1pi_1p_1phot_rot_kin_e_pipl","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_1p_1phot=new TH1F("1pi_1p_1phot_rot_kin_e_pi","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_1p_1phot_pimi=new TH1F("1pi_1p_1phot_rot_kin_e_pi_pimi","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_1p_1phot_pipl=new TH1F("1pi_1p_1phot_rot_kin_e_pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_2p_1phot=new TH1F("1pi_2p_1phot_rot_cal","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_2p_1phot_pimi=new TH1F("1pi_2p_1phot_rot_cal_pimi","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_2p_1phot_pipl=new TH1F("1pi_2p_1phot_rot_cal_pipl","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_2p_1phot=new TH1F("1pi_2p_1phot_rot_kin_e","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_2p_1phot_pimi=new TH1F("1pi_2p_1phot_rot_kin_e_pimi","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_2p_1phot_pipl=new TH1F("1pi_2p_1phot_rot_kin_e_pipl","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_2p_1phot=new TH1F("1pi_2p_1phot_rot_kin_e_pi","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_2p_1phot_pimi=new TH1F("1pi_2p_1phot_rot_kin_e_pi_pimi","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_2p_1phot_pipl=new TH1F("1pi_2p_1phot_rot_kin_e_pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_1p_2phot=new TH1F("1pi_1p_2phot_rot_cal","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_1p_2phot_pimi=new TH1F("1pi_1p_2phot_rot_cal_pimi","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_1p_2phot_pipl=new TH1F("1pi_1p_2phot_rot_cal_pipl","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_1p_2phot=new TH1F("1pi_1p_2phot_rot_kin_e","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_1p_2phot_pimi=new TH1F("1pi_1p_2phot_rot_kin_e_pimi","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_1p_2phot_pipl=new TH1F("1pi_1p_2phot_rot_kin_e_pipl","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_1p_2phot=new TH1F("1pi_1p_2phot_rot_kin_e_pi","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_1p_2phot_pimi=new TH1F("1pi_1p_2phot_rot_kin_e_pi_pimi","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_1p_2phot_pipl=new TH1F("1pi_1p_2phot_rot_kin_e_pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot1_2pi_1p_1phot=new TH1F("2pi_1p_1phot_rot_cal","",n_bins, x_values);
-
   TH1F *h1_rot1_2pi_1p_1phot_pimi=new TH1F("2pi_1p_1phot_rot_cal_pimi","",n_bins, x_values);
-
   TH1F *h1_rot1_2pi_1p_1phot_pipl=new TH1F("2pi_1p_1phot_rot_cal_pipl","",n_bins, x_values);
-
   TH1F *h1_rot2_2pi_1p_1phot=new TH1F("2pi_1p_1phot_rot_kin_e","",n_bins, x_values);
-
   TH1F *h1_rot2_2pi_1p_1phot_pimi=new TH1F("2pi_1p_1phot_rot_kin_e_pimi","",n_bins, x_values);
-
   TH1F *h1_rot2_2pi_1p_1phot_pipl=new TH1F("2pi_1p_1phot_rot_kin_e_pipl","",n_bins, x_values);
-
   TH1F *h1_rot3_2pi_1p_1phot=new TH1F("2pi_1p_1phot_rot_kin_e_pi","",n_bins, x_values);
-
   TH1F *h1_rot3_2pi_1p_1phot_pimi=new TH1F("2pi_1p_1phot_rot_kin_e_pi_pimi","",n_bins, x_values);
-
   TH1F *h1_rot3_2pi_1p_1phot_pipl=new TH1F("2pi_1p_1phot_rot_kin_e_pi_pipl","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_3p_1phot=new TH1F("1pi_3p_1phot_rot_cal","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_3p_1phot_pimi=new TH1F("1pi_3p_1phot_rot_cal_pimi","",n_bins, x_values);
-
   TH1F *h1_rot1_1pi_3p_1phot_pipl=new TH1F("1pi_3p_1phot_rot_cal_pipl","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_3p_1phot=new TH1F("1pi_3p_1phot_rot_kin_e","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_3p_1phot_pimi=new TH1F("1pi_3p_1phot_rot_kin_e_pimi","",n_bins, x_values);
-
   TH1F *h1_rot2_1pi_3p_1phot_pipl=new TH1F("1pi_3p_1phot_rot_kin_e_pipl","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_3p_1phot=new TH1F("1pi_3p_1phot_rot_kin_e_pi","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_3p_1phot_pimi=new TH1F("1pi_3p_1phot_rot_kin_e_pi_pimi","",n_bins, x_values);
-
   TH1F *h1_rot3_1pi_3p_1phot_pipl=new TH1F("1pi_3p_1phot_rot_kin_e_pi_pipl","",n_bins, x_values);
-
   TH1F *h1_el_mom_ratio = new TH1F("h1_el_mom_ratio","",50,0.97,1.01);
   /// - - - - - 10.15.20 - - - - - ///
   TH1F *h1_el_mom = new TH1F("h1_el_mom", "", 100, .2, 6);
@@ -746,45 +658,25 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
 
   /// - - - - - 11.5.20 -> Included histogram for x distribution - - - - - //
   TH1F *h1_xbjk = new TH1F("h1_xbjk", "", 400, 0 , 3);
-
   TH1F *h1_omega = new TH1F("h1_omega","",200,0,5);
-
   TH1F *h1_Wvar = new TH1F("h1_Wvar","",200,0,3);
-
   TH1F *h1_Q2_sub = new TH1F("h1_Q2_sub","",200,0,6);
-
   TH1F *h1_omega_sub = new TH1F("h1_omega_sub","",200,0,5);
-
   TH1F *h1_Wvar_sub = new TH1F("h1_Wvar_sub","",200,0,3);
-
   TH1F *h1_Q2_cut = new TH1F("h1_Q2_cut","",200,0,6);
-
   TH1F *h1_omega_cut = new TH1F("h1_omega_cut","",200,0,5);
-
   TH1F *h1_Wvar_cut = new TH1F("h1_Wvar_cut","",200,0,3);
-
   TH1F *h1_feed_down_cal = new TH1F("h1_feed_down_cal","",200,0,1);
-
   TH1F *h1_feed_down_kin = new TH1F("h1_feed_down_kin","",200,0,1);
-
   TH1F *h1_p_perp = new TH1F("h1_p_perp","",400,0,1);
-
   TH1F *h1_p_perp_sub = new TH1F("h1_p_perp_sub","",400,0,1);
-
   TH1F *h1_p_perp_cut = new TH1F("h1_p_perp_cut","",400,0,1);
-
   TH1F *h1_cal_p_slice1 = new TH1F("h1_cal_p_slice1","",n_bins, x_values);
-
   TH1F *h1_cal_p_slice2 = new TH1F("h1_cal_p_slice2","",n_bins, x_values);
-
   TH1F *h1_cal_p_slice3 = new TH1F("h1_cal_p_slice3","",n_bins, x_values);
-
   TH1F *h1_cal_p_slice1_sub = new TH1F("h1_cal_p_slice1_sub","",n_bins, x_values);
-
   TH1F *h1_cal_p_slice2_sub = new TH1F("h1_cal_p_slice2_sub","",n_bins, x_values);
-
   TH1F *h1_cal_p_slice3_sub = new TH1F("h1_cal_p_slice3_sub","",n_bins, x_values);
-
   TH2F *h2_e_ec_xy = new TH2F("h2_e_ec_xy","",100,-600,600,100,-600,600);
   TH2F *h2_e_ec_xy_fidcut = new TH2F("h2_e_ec_xy_fidcut","",100,-600,600,100,-600,600);
   TH2F *h2_neut_costheta_phi=new TH2F("h2_neut_costheta_phi","",200,0,360,200,0,1.1);
@@ -814,43 +706,25 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
   TH2F *h2_el_E_p_ratio = new TH2F("h2_el_E_p_ratio","",200,0,4.5,200,0,0.5);
   TH2F *h2_el_E_p_ratio_cut = new TH2F("h2_el_E_p_ratio_cut","",200,0,4.5,200,0,0.5);
   TH2F *h2_Wvar_Q2 = new TH2F("h2_Wvar_Q2","", 200,0,3,200,0,5);
-
   TH2F *h2_Wvar_Q2_sect1 = new TH2F("h2_Wvar_Q2_sect1","", 200,0,3,200,0,5);
-
   TH2F *h2_omega_Q2 = new TH2F("h2_omega_Q2","",200,0,3.5,200,0,5);
-
   TH2F *h2_omega_Q2_sect1 = new TH2F("h2_omega_Q2_sect1","",200,0,3.5,200,0,5);
-
   TH2F *h2_Wvar_Q2_sub = new TH2F("h2_Wvar_Q2_sub","", 200,0,3,200,0,5);
-
   TH2F *h2_omega_Q2_sub = new TH2F("h2_omega_Q2_sub","",200,0,3.5,200,0,5);
-
   TH2F *h2_kin_e_Wvar = new TH2F("h2_kin_e_Wvar","",200,0,5,200,0,5);
-
   TH2F *h2_kin_e_pi_Wvar = new TH2F("h2_kin_e_pi_Wvar","",200,0,5,200,0,5);
-
   TH2F *h2_cal_Wvar = new TH2F("h2_cal_Wvar","",200,0,5,200,0,5);
-
   TH2F *h2_pperp_cal = new TH2F("h2_pperp_cal","",200,0,1,200,0,6);
-
   TH2F *h2_pperp_kin = new TH2F("h2_pperp_kin","",200,0,1,200,0,6);
-
   TH2F *h2_p_perp_Wvar = new TH2F("h2_p_perp_Wvar","",200,0,1,200,0,5);
-
   TH3F *h3_Npi_Np_Nphoton=new TH3F("h3_Npi_Np_Nphoton", "", 11, -0.5, 4.5, 11, -0.5, 4.5, 11, -0.5, 4.5);
   ///- - - - - 11.5.20 -> Added Hardron count Histograms -AM - - - - -///
   TH1F * h1_Nprot=new TH1F("h1_Nprot","",10,-0.5,4.5);
-
   TH1F *h1_Npi = new TH1F("h1_Npi", "", 10, -0.5, 4.5);
-
   TH1F *h1_Npipl=new TH1F("h1_Npipl","",10,-0.5,4.5);
-
   TH1F *h1_Npimi=new TH1F("h1_Npimi","",10,-0.5,4.5);
-
   TH1F *h1_Nphot=new TH1F("h1_Nphot","",10,-0.5,4.5);
-
   TH1F *h1_Npiphot=new TH1F("h1_Npiphot","",10,-0.5,4.5);
-
   TH1F *h1_Npiphot_norad=new TH1F("h1_Npiphot_norad","",10,-0.5,4.5);
 
 // - - - - - -
@@ -870,6 +744,33 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
   }
   int n_evnt=1;
   Long64_t nbytes = 0, nb = 0;
+
+  ///= = = = = Event Counters = = = = =///
+	/// - - - 1pi - - -//
+	 int OneProtOnePiAll  = 0;
+	 int OneProtOnePiPipl = 0;
+	 int OneProtOnePiPimi = 0;
+	 ///---
+	 int TwoProtOnePiAll  = 0;
+	 int TwoProtOnePiPipl = 0;
+	 int TwoProtOnePiPimi = 0;
+	 ///---
+	 int ThreeProtOnePiAll  = 0;
+	 int ThreeProtOnePiPipl = 0;
+	 int ThreeProtOnePiPimi = 0;
+	 /// - - - 2pi - - -//
+	 int OneProtTwoPiAll  = 0;
+	 int OneProtTwoPiPipl = 0;
+	 int OneProtTwoPiPimi = 0;
+	 ///---
+	 int TwoProtTwoPiAll  = 0;
+	 int TwoProtTwoPiPipl = 0;
+	 int TwoProtTwoPiPimi = 0;
+	 /// - - - 3pi - - -//
+	 int OneProtThreePiAll  = 0;
+	 int OneProtThreePiPipl = 0;
+	 int OneProtThreePiPimi = 0;
+
   //- - - - - Beggining of Event Loop - - - - - //
   for (Long64_t jentry=0; jentry<nentries;jentry++)
   {
@@ -1059,9 +960,9 @@ if(ffilter_selection == "unfiltered"){
     }
 
     // Explicit cuts on electron momentum
-    if (en_beam=="1161" && el_momentum < 0.4) { continue; }
-    if (en_beam=="2261" && el_momentum < 0.55) { continue; }
-    if (en_beam=="4461" && el_momentum < 1.1) { continue; }
+    if (fbeam_en == "1161" && el_momentum < 0.4) { continue; }
+    if (fbeam_en == "2261" && el_momentum < 0.55) { continue; }
+    if (fbeam_en == "4461" && el_momentum < 1.1) { continue; }
 
     else ///- - - - - Hardron Counts - - - - -///
     {
@@ -1345,8 +1246,8 @@ if(ffilter_selection == "unfiltered"){
   double p_kin;
     //Beginning of rotations
     //Requiring one proton
-
-   if (num_p == 1)
+    ///- - - - - Beggining of One Proton Statement - - - - -///
+    if (num_p == 1)
       {
       h2_phot_pi_1p->Fill(num_pi, ec_num_n);
       TLorentzVector V4_p;
@@ -1377,8 +1278,10 @@ if(ffilter_selection == "unfiltered"){
 
       p_kin = V4_p_corr.E() - m_prot;
       //Requiring 3 pions, 0 photons
-      if(num_pi==3 && ec_num_n==0 && num_n==0)
+      /// - - - - - One proton 3 pion statement - - - - - ///
+      if(num_pi==3)
       {
+        OneProtThreePiAll++;
         TLorentzVector V4_pi[3], V4_total[3];
         TVector3 V3_pi[3];
         double q_pi[3] = {0};
@@ -1423,12 +1326,20 @@ if(ffilter_selection == "unfiltered"){
           for(int j=0;j<3;j++)
           {
             h1_rot1_3pi_1p->Fill(en_recon1[j], (N1pi1p[j]/N3pi1p)*(Q4));
+            h1_rot2_3pi_1p->Fill(en_recon2, (N1pi1p[j]/N3pi1p)*(Q4));
+            h1_rot3_3pi_1p->Fill(en_recon3[j], (N1pi1p[j]/N3pi1p)*(Q4));
+            ///- - - - - One Proton Three Pion Pipl - - - - -///
             if(q_pi[j]>0)
             {
+              OneProtThreePiPipl++;
               h1_E_tot_1p3pi_pipl->Fill(en_recon1[j], (N1pi1p[j]/N3pi1p)*(Q4));
+              h1_rot2_3pi_1p_pipl->Fill(en_recon2, (N1pi1p[j]/N3pi1p)*(Q4));
+              h1_rot3_3pi_1p_pipl->Fill(en_recon3[j], (N1pi1p[j]/N3pi1p)*(Q4));
             }
+            ///- - - - - One Proton Three Pion Pimi - - - - -///
             else
             {
+              OneProtThreePiPimi++;
               h1_E_tot_1p3pi_pimi->Fill(en_recon1[j], (N1pi1p[j]/N3pi1p)*(Q4));
               h2_cal_Wvar->Fill(en_recon1[j], Wvar, -(N1pi1p[j]/N3pi1p)*(Q4));
               h1_Q2_sub->Fill(q2,-(N1pi1p[j]/N3pi1p)*(Q4));
@@ -1439,27 +1350,8 @@ if(ffilter_selection == "unfiltered"){
               if(p_perp[j] > 0 && p_perp[j] < 0.2) h1_cal_p_slice1_sub->Fill(en_recon1[j], -(N1pi1p[j]/N3pi1p)*(Q4));
               if(p_perp[j] > 0.2 && p_perp[j] < 0.4) h1_cal_p_slice2_sub->Fill(en_recon1[j], -(N1pi1p[j]/N3pi1p)*(Q4));
               if(p_perp[j] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[j], -(N1pi1p[j]/N3pi1p)*(Q4));
-
-            }
-
-            h1_rot2_3pi_1p->Fill(en_recon2, (N1pi1p[j]/N3pi1p)*(Q4));
-            if(q_pi[j]>0)
-            {
-              h1_rot2_3pi_1p_pipl->Fill(en_recon2, (N1pi1p[j]/N3pi1p)*(Q4));
-            }
-            else
-            {
               h1_rot2_3pi_1p_pimi->Fill(en_recon2, (N1pi1p[j]/N3pi1p)*(Q4));
               h2_kin_e_Wvar->Fill(en_recon2, Wvar, -(N1pi1p[j]/N3pi1p)*(Q4));
-            }
-
-            h1_rot3_3pi_1p->Fill(en_recon3[j], (N1pi1p[j]/N3pi1p)*(Q4));
-            if(q_pi[j]>0)
-            {
-              h1_rot3_3pi_1p_pipl->Fill(en_recon3[j], (N1pi1p[j]/N3pi1p)*(Q4));
-            }
-            else
-            {
               h1_rot3_3pi_1p_pimi->Fill(en_recon3[j], (N1pi1p[j]/N3pi1p)*(Q4));
               h2_kin_e_pi_Wvar->Fill(en_recon3[j], Wvar, -(N1pi1p[j]/N3pi1p)*(Q4));
             }
@@ -1580,8 +1472,10 @@ if(ffilter_selection == "unfiltered"){
         }
       }//end of 3pi 0 photon statetment
       //Requiring 2 pions, 1 photon
-      if (num_pi==2 && ec_num_n==1)
+      ///- - - - - Beggining of One Proton Two Pion Statement - - - - -//
+      if (num_pi == 2)
       {
+        OneProtTwoPiAll++;
         TLorentzVector V4_pi[2], V4_total[2];
         TVector3 V3_pi[2];
         double p_perp[2] = {0};
@@ -1618,6 +1512,16 @@ if(ffilter_selection == "unfiltered"){
           en_recon1[g] = V4_el.E() + p_kin + V4_pi[g].E();
           en_recon3[g] = (m_prot*m_prot - (m_prot - eps)*(m_prot - eps) + 2*(m_neut - eps)*(V4_el.E() + V4_pi[g].E()) - e_mass*e_mass - 2*V4_el.E()*V4_pi[g].E() + 2*V4_el.Rho()*V4_pi[g].Rho()*cos(V3_pi[g].Angle(V3_el)) + Mpi*Mpi)/
                                                 (2*(m_neut - eps - V4_el.E() - V4_pi[g].E()) + 2*(V4_el.Rho()*cz[ind_em] + V4_pi[g].Rho()*cz[index_pi[g]]));
+          ///- - - - - One Proton Two Pion pipl - - - - -///
+          if(qpi[g]>0)
+          {
+            OneProtTwoPiPipl++;
+          }
+          else if(qpi[g]<0)
+          {
+            OneProtTwoPiPimi++;
+          }
+          ///- - - - - One Proton Two Pion pimi ^ - - - - -///
         }
         double N_1pi_1p_0phot[2] = {0};
         double N_1pi_1p_1phot[2] = {0};
@@ -1877,10 +1781,11 @@ if(ffilter_selection == "unfiltered"){
           h1_rot3_2pi_1p_1phot_pimi->Fill(en_recon3[1], -(N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
           h2_kin_e_pi_Wvar->Fill(en_recon3[1], Wvar, (N_1pi_1p[1]/N_2pi_1p)*(N_2pi_1p_0phot/N_2pi_1p_1phot)*(Q4));
         }
-  }
+      }
     }//end of 2 pi 1 photon statement
     //Requiring 2 pions, 0 photons
-      if (num_pi==2 && ec_num_n==0 && num_n==0 ) {
+      if (num_pi == 2)
+      {
         TLorentzVector V4_pi[2], V4_total[2];
         TVector3 V3_pi[2];
         double p_perp[2] = {0};
@@ -1999,12 +1904,14 @@ if(ffilter_selection == "unfiltered"){
 
 }//end of 2pi 0 photon statement
     //Requiring 1 pion, 0 photons
-    if(num_pi==1 && ec_num_n==0 && num_n==0 || num_pi_phot == 1)
+    if(num_pi==1)
 	  {
+      OneProtOnePiAll++;
       TLorentzVector V4_total;
       double p_perp = 0;
-      if(num_pipl==1 )
+      if(num_pipl == 1)
       {
+        OneProtOnePiPipl++;
         TLorentzVector V4_pi;
         TVector3 V3_pi;
         /// - - - - - Filter Selection Implementation -AM 9.25.20 - - - - - ///
@@ -2037,6 +1944,7 @@ if(ffilter_selection == "unfiltered"){
       }
       if(num_pimi==1)
       {
+        OneProtOnePiPimi++;
         TLorentzVector V4_pi(p[index_pimi[0]]*cx[index_pimi[0]],p[index_pimi[0]]*cy[index_pimi[0]],p[index_pimi[0]]*cz[index_pimi[0]], TMath::Sqrt(p[index_pimi[0]]*p[index_pimi[0]]+Mpi*Mpi));
         TVector3 V3_pi = V4_pi.Vect();
         V4_total = V4_pi + V4_p_corr + V4_el;
@@ -2089,13 +1997,13 @@ if(ffilter_selection == "unfiltered"){
       else if(ffilter_selection == "filtered")
       {
         //First reconstruction method
-        /*TLorentzVector V4_prot_corr, V4_pi_corr;
+        TLorentzVector V4_prot_corr, V4_pi_corr;
         TLorentzVector V3_pi_corr;
         V4_pi_corr.SetPxPyPzE(pxf[ind_pi_phot[0]], pyf[ind_pi_phot[0]], pzf[ind_pi_phot[0]],TMath::Sqrt(Mpi*Mpi+pf[ind_pi_phot[0]]*pf[ind_pi_phot[0]]));
         TLorentzVector V4_prot_uncorr1(pxf[index_p[0]],pyf[index_p[0]],pzf[index_p[0]],TMath::Sqrt(m_prot*m_prot+pf[index_p[0]]*pf[index_p[0]]));
         V4_prot_corr.SetPxPyPzE(pxf[index_p[0]+60], pyf[index_p[0]+60], pzf[index_p[0]+60],TMath::Sqrt(m_prot*m_prot+pf[index_p[0]+60]*pf[index_p[0]+60]));
-        //double Ecal = V4_el.E() + V4_prot_uncorr1.E() - m_prot + V4_pi_corr.E();*/
-        double Ecal = V4_el.E();
+        double Ecal = V4_el.E() + V4_prot_uncorr1.E() - m_prot + V4_pi_corr.E();
+        //double Ecal = V4_el.E();
         h1_E_tot_pimi->Fill(Ecal, Q4);
 
         h2_cal_Wvar->Fill(Ecal, Wvar, Q4);
@@ -2130,7 +2038,7 @@ if(ffilter_selection == "unfiltered"){
     }
   }//end of 1pi 0 photon statement
   //Requiring 1 pion, 1 photon
-  if(num_pi==1 && ec_num_n==1)
+  if(num_pi==1)
   {
     ///Ali please look here :) line 2199 in genie ///
     TLorentzVector V4_total;
@@ -2208,7 +2116,7 @@ if(ffilter_selection == "unfiltered"){
     }
   }//end of 1 pi 1 photon statement
   //Requiring 1 pion, 2 photons
-  if(num_pi==1 && ec_num_n==2)
+  if(num_pi==1)
   {
     TLorentzVector V4_total;
     TLorentzVector V4_pi;
@@ -2343,7 +2251,7 @@ TLorentzVector V4_pi, V4_p[2], V4_prot_uncorr1;
 double p2_kin[2];
 
 //Outer loop requiring 2 protons
-
+///- - - - - Beggining of Two Proton Statement - - - - -///
 if(num_p == 2)
 {
   h2_phot_pi_2p->Fill(num_pi, ec_num_n);
@@ -2391,8 +2299,23 @@ if(num_p == 2)
     }
   }
   //Requiring 1 pion, 1 photon
-  if(num_pi==1 && ec_num_n == 1)
+  /// - - - - - Beggining of Two Proton One Pion - - - - - ///
+  if(num_pi==1)
   {
+    TwoProtOnePiAll++;
+
+    ///- - - - - Beggining of Two Proton One Pion pimi and pipl - - - - -///
+    for(int x = 0; x<2; x++)
+    {
+      if(qpi[x]>0)
+      {
+        TwoProtOnePiPipl++;
+      }
+      else if(qpi[x]<0)
+      {
+        TwoProtOnePiPimi++;
+      }
+    }
     double p_perp[2] = {0};
     /// - - - - - Filter Selection Implementation -AM 9.27.20 - - - - - ///
     if(ffilter_selection == "filtered")
@@ -2621,7 +2544,7 @@ if(num_p == 2)
   }
   //end of 1pi 1phot statement
   //Requiring 1 pion, 0 photon
-  if (num_pi==1 && ec_num_n==0 && num_n==0) {
+  if (num_pi==1) {
     double p_perp[2] = {0};
     TLorentzVector V4_total[2];
     /// - - - - - Filter Selection Implementation -Am 9.27.20 - - - - - ///
@@ -2744,8 +2667,9 @@ TVector3 V3_pi[2], V3_pi_rot[2];
 double N_all2 = 0;
 double N_p1_pi1 = 0, N_p1_pi2 = 0, N_p2_pi2 = 0, N_p2_pi1 = 0;
 //Requiring 2 pions, 0 photons
-if(num_pi == 2 && ec_num_n==0 && num_n==0)
+if(num_pi == 2)
 {
+  TwoProtTwoPiAll++;
   double p_perp[4];
   TLorentzVector V4_total[4];
   /// - - - - - Filter Selection Implementation -AM 9.27.20 - - - - - ///
@@ -2777,7 +2701,17 @@ if(num_pi == 2 && ec_num_n==0 && num_n==0)
   double qpi[2];
   qpi[0] = q[index_pi[0]];
   qpi[1] = q[index_pi[1]];
-
+  for(int x = 0; x<2; x++)
+  {
+    if(qpi[x]>0)
+    {
+      TwoProtTwoPiPipl++;
+    }
+    else if(qpi[x]<0)
+    {
+      TwoProtTwoPiPimi++;
+    }
+  }
   en_recon1[0] = V4_el.E() + p2_kin[0] + V4_pi[0].E();
   en_recon1[1] = V4_el.E() + p2_kin[0] + V4_pi[1].E();
   en_recon1[2] = V4_el.E() + p2_kin[1] + V4_pi[0].E();
@@ -3265,8 +3199,10 @@ if(num_p == 3){
   TLorentzVector V4_pi;
   TVector3 V3_pi;
   //Requiring 1 pion, 1 photon
-  if(num_pi == 1 && ec_num_n == 1)
+  if(num_pi == 1)
   {
+    ThreeProtOnePiAll++;
+
     TLorentzVector V4_total[3];
     double p_perp[3] = {0};
     /// - - - - - Filter Selection Implementation -AM 9.25.20 - - - - - ///
@@ -3291,6 +3227,15 @@ if(num_p == 3){
     double en_recon1[3];
     double en_recon3;
     double qpi = q[index_pi[0]];
+    ///- - - - - Beggining of Three Proton One Pion pimi and pipl statements - - - - -///
+    if(qpi<0)
+    {
+      ThreeProtOnePiPimi++;
+    }
+    else if(qpi>0)
+    {
+      ThreeProtOnePiPipl++;
+    }
     for(int i = 0;i<3;i++){
       en_recon1[i] = V4_el.E() + p3_kin[i] + V4_pi.E();
     }
@@ -4033,7 +3978,7 @@ if(num_p == 3){
 }
 //End of 1 pi 0 phot statement
   //Requiring 1 pion, 0 photon
-  if(num_pi == 1 && ec_num_n==0 && num_n==0)
+  if(num_pi == 1)
   {
     double p_perp[3] = {0};
     TLorentzVector V4_total[3];
@@ -4652,6 +4597,30 @@ h1_sub_kin_e_pi_all_pipl->Add(h1_rot3_3pi_1p_pipl, -1);
 
 
 gDirectory->Write("hist_Files", TObject::kOverwrite);
+
+///- - - - - Output results of Event Counters - - - - - -///
+cout << "Three Pion Events: "
+     << "\n 1prot3pi ALL: "  << right << OneProtThreePiAll  << left
+     << "\n 1prot3pi pimi: " << right << OneProtThreePiPimi << left
+     << "\n 1prot3pi pipl: " << right << OneProtThreePiPipl << left
+     << "\nTwo Pion Events: "
+     << "\n 1prot2pi ALL: "  << right << OneProtTwoPiAll    << left
+     << "\n 1prot2pi pimi: " << right << OneProtTwoPiPimi   << left
+     << "\n 1prot2pi pipl: " << right << OneProtTwoPiPipl   << left
+     << "\n 2prot2pi ALL: "  << right << TwoProtTwoPiAll    << left
+     << "\n 2prot2pi pimi: " << right << TwoProtTwoPiPimi   << left
+     << "\n 2prot2pi pipl: " << right << TwoProtTwoPiPipl   << left
+     << "\nOne Pion Events: "
+     << "\n 1prot1pi ALL: "  << right << OneProtOnePiAll    << left
+     << "\n 1prot1pi pimi: " << right << OneProtOnePiPimi   << left
+     << "\n 1prot1pi pipl: " << right << OneProtOnePiPipl   << left
+     << "\n 2prot1pi ALL: "  << right << TwoProtOnePiAll    << left
+     << "\n 2prot1pi pimi: " << right << TwoProtOnePiPimi   << left
+     << "\n 2prot1pi pipl: " << right << TwoProtOnePiPipl   << left
+     << "\n 3prot1pi ALL: "  << right << ThreeProtOnePiAll  << left
+     << "\n 3prot1pi pimi: " << right << ThreeProtOnePiPimi << left
+     << "\n 3prot1pi pipl: " << right << ThreeProtOnePiPipl << left
+     << endl;
 }
 
 Bool_t GetEPhiLimits(Float_t momentum, Float_t theta, Int_t sector,Float_t *EPhiMin, Float_t *EPhiMax){

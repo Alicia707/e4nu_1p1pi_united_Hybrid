@@ -87,8 +87,8 @@ void genie_analysis::Loop(Int_t choice) {
 
 	if (fChain == 0) return;
 
-	//Long64_t nentries = fChain->GetEntriesFast();
-	Long64_t nentries = 2000000;
+	Long64_t nentries = fChain->GetEntriesFast();
+	//Long64_t nentries = 2000000;
 
 	//Resolutions for Smearing for GENIE simulation data
 	double reso_p = 0.01; // smearing for the proton
@@ -681,13 +681,29 @@ void genie_analysis::Loop(Int_t choice) {
 
 	///= = = = = Event Counters = = = = =///
 	/// - - - 1pi - - -//
-	 int OneProtOnepiAll;
-	 int OneProtOnepiPipl;
-	 int OneProtOnepiPimi;
+	 int OneProtOnePiAll  = 0;
+	 int OneProtOnePiPipl = 0;
+	 int OneProtOnePiPimi = 0;
 	 ///---
-	 int OneProtOnepiAll;
-	 int OneProtOnepiPipl;
-	 int OneProtOnepiPimi;
+	 int TwoProtOnePiAll  = 0;
+	 int TwoProtOnePiPipl = 0;
+	 int TwoProtOnePiPimi = 0;
+	 ///---
+	 int ThreeProtOnePiAll  = 0;
+	 int ThreeProtOnePiPipl = 0;
+	 int ThreeProtOnePiPimi = 0;
+	 /// - - - 2pi - - -//
+	 int OneProtTwoPiAll  = 0;
+	 int OneProtTwoPiPipl = 0;
+	 int OneProtTwoPiPimi = 0;
+	 ///---
+	 int TwoProtTwoPiAll  = 0;
+	 int TwoProtTwoPiPipl = 0;
+	 int TwoProtTwoPiPimi = 0;
+	 /// - - - 3pi - - -//
+	 int OneProtThreePiAll  = 0;
+	 int OneProtThreePiPipl = 0;
+	 int OneProtThreePiPimi = 0;
 
 
 
@@ -1132,6 +1148,7 @@ void genie_analysis::Loop(Int_t choice) {
 		h2_N_pi_phot[num_p]->Fill(ec_num_n,num_pi);
 
 		//Events with exactly 2 protons
+		///- - - - - Beggining of Two proton statement - - - - - ///
 		if(num_p == 2) {
 
 			//LorentzVectors for protons without momentum smearing or corrections
@@ -1195,9 +1212,10 @@ void genie_analysis::Loop(Int_t choice) {
 			//Variable might/could be placed in a more local context F.H. 05.09.19
 			double Ecal_2p1pi_to2p0pi[N_2prot]={0};
 			double p_miss_perp_2p1pi_to2p0pi[N_2prot]={0};
-
-			if (num_pi_phot==1) {
-
+			///- - - - - Beggining of two proton 1 pion statement - - - - -///
+			if (num_pi == 1)
+			{
+				TwoProtOnePiAll++;
 				TVector3 V3_1pi_corr;
 				TLorentzVector V4_1pi_corr;
 				double pion_acc_ratio = 1;
@@ -1243,11 +1261,11 @@ void genie_analysis::Loop(Int_t choice) {
 				rotation->prot2_pi1_rot_func(V3_2prot_corr, V3_2prot_uncorr, V3_1pi_corr, V4_2prot_corr, V4_1pi_corr, charge_pi[0], V4_el, E_tot_2p,p_perp_tot_2p, P_2p1pito1p1pi);
 				double histoweight = pion_acc_ratio * weight_protons * e_acc_ratio * wght/(1.0/Q4);
 				//Is this correct in the following loop? F.H. 09/01/19
-
+				///- - - - - Beggining of Two Proton One Pion pimi pipl statement - - - - - ///
 				for(int z=0; z < N_2prot; z++){ //looping over two protons
 					if(charge_pi[0]>0)
 					{
-
+						TwoProtOnePiPipl++;
 					//---------------------------------- 2p 1pi ->2p 0pi ----------------------------------------------
 					h2_Etot_pperp_pipl->Fill(p_miss_perp_2p1pi_to2p0pi[z],Ecal_2p1pi_to2p0pi[z],P_2p1pito2p0pi[z]*histoweight);
 					h2_pperp_W_pipl->Fill(W_var,p_miss_perp_2p1pi_to2p0pi[z],P_2p1pito2p0pi[z]*histoweight);
@@ -1421,6 +1439,7 @@ void genie_analysis::Loop(Int_t choice) {
 				}
 				else
 				{
+					TwoProtOnePiPimi++;
 					h2_Etot_pperp_pimi->Fill(p_miss_perp_2p1pi_to2p0pi[z],Ecal_2p1pi_to2p0pi[z],P_2p1pito2p0pi[z]*histoweight);
 					h2_pperp_W_pimi->Fill(W_var,p_miss_perp_2p1pi_to2p0pi[z],P_2p1pito2p0pi[z]*histoweight);
 					h1_theta0_pimi->Fill((V4_beam.Vect()).Angle(V4_el.Vect()+V3_2prot_uncorr[z]) *TMath::RadToDeg(),P_2p1pito2p0pi[z]*histoweight);
@@ -1603,11 +1622,13 @@ void genie_analysis::Loop(Int_t choice) {
 			double p_miss_perp_2p2pi[N_2prot];
 			double Ptot_2p[2][2]={0};
 			TLorentzVector V4_2pi_corr[2];
-			if (num_pi_phot == 2) {
-
+			/// - - - - - Beggining of Two Proton Two Pion Statement - - - - - ///
+			if (num_pi == 2)
+			 {
+				 TwoProtTwoPiAll++;
 				TVector3 V3_2pi_corr[N_2pi];
 				double pion_acc_ratio[N_2pi] = {1};
-				for (int i = 0; i < num_pi_phot; i++) {
+				for (int i = 0; i < num_pi; i++) {
 
 					if (choice == 0) { //CLAS data
 						V3_2pi_corr[i].SetXYZ(pxf[ind_pi_phot[i]],pyf[ind_pi_phot[i]],pzf[ind_pi_phot[i]]);
@@ -1653,12 +1674,12 @@ void genie_analysis::Loop(Int_t choice) {
 				double histoweight = weight_pions * weight_protons * e_acc_ratio * wght/(1.0/Q4);
 				//Is this correct in the following loop? F.H. 09/01/19
 
-
+				///- - - - - Beggining of Two Prot Two Pi pimi pipl statement - - - - - ///
 				for(int z = 0; z < N_2prot; z++){ //looping over two protons
 					for(int j=0; j<2;j++){
 						if(charge_pi[j]>0)
 						{
-
+							TwoProtTwoPiPipl++;
 
 					//---------------------------------- 2p 2pi ->1p 0pi   ----------------------------------------------
 					h1_E_tot_2p2pi_pipl->Fill(Ecal2p2pi[z][j], P_tot_2p[z][j]*histoweight);
@@ -1730,6 +1751,7 @@ void genie_analysis::Loop(Int_t choice) {
 				}
 				else
 				{
+					TwoProtTwoPiPimi++;
 					//---------------------------------- 2p 2pi ->1p 0pi   ----------------------------------------------
 					h1_E_tot_2p2pi_pimi->Fill(Ecal2p2pi[z][j], P_tot_2p[z][j]*histoweight);
 					h1_E_rec_2p2pi_pimi->Fill(E_rec,P_tot_2p[z][j]*histoweight);
@@ -1808,8 +1830,9 @@ void genie_analysis::Loop(Int_t choice) {
 		// -------------------------------------------------------------------------------------------------------------------------------------
 
 		//Events with exactly 3 protons
-
-		if(num_p == 3) {
+		/// - - - - - Beggining of 3 Proton Statement - - - - - ///
+		if(num_p == 3)
+		 {
 
 			const int N_3p = 3;
 			TLorentzVector V4_p_uncorr[N_3p], V4_p_corr[N_3p],V4_prot_el[N_3p];
@@ -1876,9 +1899,10 @@ void genie_analysis::Loop(Int_t choice) {
 			//acceptance weight for all three protons ( = 1 for CLAS data)
 			double weight_protons =	p_acc_ratio[0] * p_acc_ratio[1] * p_acc_ratio[2];
 			//----------------------------------3p 1pi ----------------------------------------------------------
-
-			if (num_pi_phot==1) {
-
+			///- - - - - - Beggining of Three Proton One Pion Statement - - - - - ///
+			if (num_pi == 1)
+			 {
+				ThreeProtOnePiAll++;
 				double P_tot_3p[N_3p]={0};
 				double Ecal_3p1pi[N_3p]={0};
 				double p_miss_perp_3p1pi[N_3p]={0};
@@ -1925,10 +1949,11 @@ void genie_analysis::Loop(Int_t choice) {
 				//for CLAS data is histoweight = 1/Q4
 				double histoweight = pion_acc_ratio * weight_protons * e_acc_ratio * wght/(1.0/Q4);
 				//Weight for 3protons, 1 pion, 1 electron, GENIE weight and Mott cross section
-
+				///- - - - - - Beggining of Three Proton One Pion pimi pipl statement - - - - - ///
 				for(int j = 0; j < N_3p; j++) { //loop over 3 protons
 					if(charge_pi[0]>0)
 					{
+						ThreeProtOnePiPipl++;
 						h1_E_tot_3p1pi_pipl->Fill(E_cal[j], P_tot_3p[j]*histoweight);
 						h1_E_rec_3p1pi_pipl->Fill(E_rec,P_tot_3p[j]*histoweight);
 						h2_Erec_pperp_3p1pi_pipl->Fill(p_miss_perp[j],E_rec,P_tot_3p[j]*histoweight);
@@ -1999,6 +2024,7 @@ void genie_analysis::Loop(Int_t choice) {
 					}
 					else
 					{
+						ThreeProtOnePiPimi++;
 						h1_E_tot_3p1pi_pimi->Fill(E_cal[j], P_tot_3p[j]*histoweight);
 						h1_E_rec_3p1pi_pimi->Fill(E_rec,P_tot_3p[j]*histoweight);
 						h2_Erec_pperp_3p1pi_pimi->Fill(p_miss_perp[j],E_rec,P_tot_3p[j]*histoweight);
@@ -2075,7 +2101,7 @@ void genie_analysis::Loop(Int_t choice) {
 		} //end if num_p == 3  3proton requirement
 
 		//Events with exactly one proton
-
+		/// - - - - - Beggining of One Proton Statement - - - - - ///
 		if( num_p == 1) {
 
 			//Vector for proton without momentum smearing
@@ -2114,9 +2140,9 @@ void genie_analysis::Loop(Int_t choice) {
 			}
 
 			//---------------------------------- 1p 1pi   ----------------------------------------------
-
+			///- - - - - Beggining of One Proton One Pion Statement - - - - -///
 			if(num_pi == 1){
-
+				OneProtOnePiAll++;
 				double N_piphot_det;
 				double N_piphot_undet;
 				TVector3 V3_pi_corr;
@@ -2166,23 +2192,26 @@ void genie_analysis::Loop(Int_t choice) {
 				//histoweight is 1/Q4 for CLAS data
 				double histoweight = pion_acc_ratio * p_acc_ratio * e_acc_ratio * wght/(1.0/Q4);
 				//1proton, 1 Pion, 1 electron acceptance, GENIE weight and Mott
-
+				///- - - - - Beginning of One Prot One Pion pimi pipl statements - - - - ///
 				if(charge_pi[0]>0)
 				{
-				h1_E_tot_pipl->Fill(Ecal,histoweight);
-				h1_Ecal_pipl->Fill(Ecal,histoweight);
-				h1_E_rec_pipl->Fill(E_rec,histoweight);
-				h1_E_rec_1prot_pipl->Fill(E_rec,histoweight);
-				h1_E_tot_1prot_pipl->Fill(Ecal,histoweight);
-				h2_Erec_pperp_pipl->Fill(p_perp_tot,E_rec);
-				h2_Etot_pperp_pipl->Fill(p_perp_tot,Ecal,histoweight);
+					OneProtOnePiPipl++;
+					h1_E_tot_pipl->Fill(Ecal,histoweight);
+					h1_Ecal_pipl->Fill(Ecal,histoweight);
+					h1_E_rec_pipl->Fill(E_rec,histoweight);
+					h1_E_rec_1prot_pipl->Fill(E_rec,histoweight);
+					h1_E_tot_1prot_pipl->Fill(Ecal,histoweight);
+					h2_Erec_pperp_pipl->Fill(p_perp_tot,E_rec);
+					h2_Etot_pperp_pipl->Fill(p_perp_tot,Ecal,histoweight);
 
-				h1_E_rec_cutpi1_pipl->Fill(E_rec,histoweight);
-				h1_E_tot_cutpi1_pipl->Fill(Ecal,histoweight);
+					h1_E_rec_cutpi1_pipl->Fill(E_rec,histoweight);
+					h1_E_tot_cutpi1_pipl->Fill(Ecal,histoweight);
 				}
 				else
 				{
-				  Ecal = V4_el.E();
+					OneProtOnePiPimi++;
+				  //Ecal = V4_el.E();
+					//Ecal = V4_el.E() + V4prot.E() - m_prot + V4pi.E();
 				  //h1_E_tot_pimi->Fill(Ecal,histoweight);
 				  h1_E_tot_pimi->Fill(Ecal,Q4);
 					h1_Ecal_pimi->Fill(Ecal,histoweight);
@@ -2197,9 +2226,9 @@ void genie_analysis::Loop(Int_t choice) {
 				}
 			 }//end of 1p 1pi requirement
 			//---------------------------------- 1p 2pi   ----------------------------------------------
-
-			if(num_pi_phot == 2) {
-
+			///- - - - - Beggining of One Proton Two Pion Statement - - - - -///
+			if(num_pi == 2) {
+				OneProtTwoPiAll++;
 				const int N_2pi=2;
 				TVector3 V3_2pi_corr[N_2pi],V3_2pi_rot[N_2pi],V3_p_rot;
 				TLorentzVector V4_2pi_corr[2];
@@ -2256,10 +2285,11 @@ void genie_analysis::Loop(Int_t choice) {
 				//1proton, 2 Pion, 1 electron acceptance, GENIE weight and Mott
 
 				//---------------------------------- 1p 2pi->1p1pi   ----------------------------------------------
-
+				///- - - - - Beggining of One Proton Two Pion pimi pipl Statements - - - - - ///
 				for(int z = 0; z < N_2pi; z++){  //to consider 2 diff. 1pi states
 					if(charge_pi[z]>0)
 					{
+						OneProtTwoPiPipl++;
 						h1_E_tot_1p2pi_pipl->Fill(Ecal[z],P_1p1pi[z]*histoweight);
 						h1_E_rec_1p2pi_pipl->Fill(E_rec,P_1p1pi[z]*histoweight);
 						h2_Erec_pperp_1p2pi_1p1pi_pipl->Fill(p_miss_perp[z],E_rec,P_1p1pi[z]*histoweight);
@@ -2330,6 +2360,7 @@ void genie_analysis::Loop(Int_t choice) {
 					}
 					else
 					{
+						OneProtTwoPiPimi++;
 						h1_E_tot_1p2pi_pimi->Fill(Ecal[z],P_1p1pi[z]*histoweight);
 						h1_E_rec_1p2pi_pimi->Fill(E_rec,P_1p1pi[z]*histoweight);
 						h2_Erec_pperp_1p2pi_1p1pi_pimi->Fill(p_miss_perp[z],E_rec,P_1p1pi[z]*histoweight);
@@ -2404,9 +2435,9 @@ void genie_analysis::Loop(Int_t choice) {
 			}//1p 2pi statetment ends
 
 			//---------------------------------- 1p 3pi   ----------------------------------------------
-
-			if(num_pi_phot == 3){
-
+			///- - - - - Beggining of One Proton Three Pion Statement - - - - -///
+			if(num_pi == 3){
+				OneProtThreePiAll++;
 				const int N_3pi=3;
 				TVector3 V3_3pi_corr[N_3pi],V3_3pi_rot[N_3pi],V3_p_rot;
 				TLorentzVector V4_3pi_corr[3];
@@ -2459,10 +2490,12 @@ void genie_analysis::Loop(Int_t choice) {
 				//1proton, 3 Pion, 1 electron acceptance, GENIE weight and Mott
 
 				//---------------------------------- 1p 3pi->1p 0pi  total ?? F.H. 08/13/19 check logic here compared to 1p 2pi case ----------------------------
+				///- - - - - Beggining of One Proton Three Pion pimi pipl Statement - - - - ///
 				for(int z=0;z<3;z++)
 				{
 				if(charge_pi[z]>0)
 				{
+					OneProtThreePiPipl++;
 					h1_E_tot_1p3pi_pipl->Fill(Ecal1p3pi[z],P_1p3pi[z]*histoweight);
 					h1_E_rec_1p3pi_pipl->Fill(E_rec,P_1p3pi[z]*histoweight);
 					h2_Erec_pperp_1p3pi_pipl->Fill(p_perp1p3pi[z],E_rec,P_1p3pi[z]*histoweight);
@@ -2530,6 +2563,7 @@ void genie_analysis::Loop(Int_t choice) {
 				}
 				else
 				{
+					OneProtThreePiPimi++;
 					h1_E_tot_1p3pi_pimi->Fill(Ecal1p3pi[z],P_1p3pi[z]*histoweight);
 					h1_E_rec_1p3pi_pimi->Fill(E_rec,P_1p3pi[z]*histoweight);
 					h2_Erec_pperp_1p3pi_pimi->Fill(p_perp1p3pi[z],E_rec,P_1p3pi[z]*histoweight);
@@ -2907,8 +2941,30 @@ void genie_analysis::Loop(Int_t choice) {
 	// skim_tree->AutoSave();
 
 	// --------------------------------------------------------------------------------------------------------
-
-	std::cout << std::endl << "-----------------------------------------------------------------------------------------------------" << std::endl;
+	///- - - - - Output results of Event Counters - - - - - -///
+	std::cout << "Three Pion Events: "
+				    << "\n 1prot3pi ALL: "  << right << OneProtThreePiAll  << left
+				    << "\n 1prot3pi pimi: " << right << OneProtThreePiPimi << left
+				    << "\n 1prot3pi pipl: " << right << OneProtThreePiPipl << left
+				    << "\nTwo Pion Events: "
+				    << "\n 1prot2pi ALL: "  << right << OneProtTwoPiAll    << left
+				    << "\n 1prot2pi pimi: " << right << OneProtTwoPiPimi   << left
+				    << "\n 1prot2pi pipl: " << right << OneProtTwoPiPipl   << left
+				    << "\n 2prot2pi ALL: "  << right << TwoProtTwoPiAll    << left
+				    << "\n 2prot2pi pimi: " << right << TwoProtTwoPiPimi   << left
+				    << "\n 2prot2pi pipl: " << right << TwoProtTwoPiPipl   << left
+				    << "\nOne Pion Events: "
+				    << "\n 1prot1pi ALL: "  << right << OneProtOnePiAll    << left
+				    << "\n 1prot1pi pimi: " << right << OneProtOnePiPimi   << left
+				    << "\n 1prot1pi pipl: " << right << OneProtOnePiPipl   << left
+				    << "\n 2prot1pi ALL: "  << right << TwoProtOnePiAll    << left
+				    << "\n 2prot1pi pimi: " << right << TwoProtOnePiPimi   << left
+				    << "\n 2prot1pi pipl: " << right << TwoProtOnePiPipl   << left
+				    << "\n 3prot1pi ALL: "  << right << ThreeProtOnePiAll  << left
+				    << "\n 3prot1pi pimi: " << right << ThreeProtOnePiPimi << left
+				    << "\n 3prot1pi pipl: " << right << ThreeProtOnePiPipl << left
+				    << std::endl;
+	/*std::cout << std::endl << "-----------------------------------------------------------------------------------------------------" << std::endl;
 	std::cout << std::endl << "Initial # Events = " << fChain->GetEntries() << std::endl;
 	std::cout << std::endl << "1e1p0pi Signal # Events = " << SignalEvents << std::endl;
 	std::cout << std::endl << "Passing Rate = " << int(double(SignalEvents) / double(fChain->GetEntries())*100.) << " \%"<< std::endl << std::endl;
@@ -2930,7 +2986,7 @@ void genie_analysis::Loop(Int_t choice) {
 	std::cout << std::endl << "EQE 5% Fraction = " << int(double(EQESignalEventsWithin5Perc) / double(SignalEvents)*100.) << " \%"<< std::endl << std::endl;
 	std::cout << std::endl << "EQE 5% Fraction 1st Slice = " << int(double(EQESignalEventsWithin5Perc_FirstSlice) / double(SignalEvents)*100.) << " \%"<< std::endl << std::endl;
 	std::cout << std::endl << "EQE 5% Fraction 2nd Slice = " << int(double(EQESignalEventsWithin5Perc_SecondSlice) / double(SignalEvents)*100.) << " \%"<< std::endl << std::endl;
-	std::cout << std::endl << "EQE 5% Fraction 3rd Slice = " << int(double(EQESignalEventsWithin5Perc_ThirdSlice) / double(SignalEvents)*100.) << " \%"<< std::endl << std::endl;
+	std::cout << std::endl << "EQE 5% Fraction 3rd Slice = " << int(double(EQESignalEventsWithin5Perc_ThirdSlice) / double(SignalEvents)*100.) << " \%"<< std::endl << std::endl;*/
 
 	if (choice == 1) {
 
