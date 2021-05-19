@@ -159,14 +159,21 @@ void energy_reconstruction::Loop()
 {
   TH1D::SetDefaultSumw2();
   TH2D::SetDefaultSumw2();
+  ///- - - - - Begin entry recording:
+  ofstream outFile;
+  outFile.open("entryRecord.txt");
 
   if (fChain == 0) return;
+
+  en_beam["1161"]=1.161;
   en_beam["2261"]=2.261;
   en_beam["4461"]=4.461;
+
   fbeam_E=fbeam_en;
-  TLorentzVector V4_beam(0,0,en_beam[fbeam_E],en_beam[fbeam_E]);
+
   gRandom = new TRandom3();
   gRandom->SetSeed(10);
+
   if(en_beam[fbeam_en]>2. && en_beam[fbeam_en]<3.)
     {
       hist_max = 5;
@@ -263,26 +270,27 @@ cout<<"!!!!!!!! Modified photon PID!!!!!!!!!!!!!"<<endl;
 
   if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5)
     {
-  hist_max = 6;
-  prot_accept_mom_lim=0.3;
-  chargedpi_accept_mom_lim=0.15;
-  phot_accept_en_lim=0.3;
-  prot_mom_lim=2.7;
-  min_good_mom=1.1;
-  if(ftarget=="3He") min_good_mom=1.3;//the EC threshold was different for He3
-  max_mom=3.7;
-  pipl_maxmom=1.9;
-  pipl_delt_cutrange=3.;
-  pimi_maxmom=1.6;
-  pimi_delt_cutrange=3.;
-  N_pperp=2,N_Ecal=6;
-  pperp_cut=new double[N_pperp];
+      hist_max = 6;
+      prot_accept_mom_lim=0.3;
+      chargedpi_accept_mom_lim=0.15;
+      phot_accept_en_lim=0.3;
+      prot_mom_lim=2.7;
+      min_good_mom=1.1;
+      if(ftarget=="3He") min_good_mom=1.3;//the EC threshold was different for He3
+      max_mom=3.7;
+      pipl_maxmom=1.9;
+      pipl_delt_cutrange=3.;
+      pimi_maxmom=1.6;
+      pimi_delt_cutrange=3.;
+      N_pperp=2,N_Ecal=6;
+      pperp_cut=new double[N_pperp];
       Ecal_lowlim=new double[N_Ecal];
       Ecal_uplim=new double[N_Ecal];
       pperp_cut[0]=0.;  pperp_cut[1]=0.2;
-      for (int i=0;i<N_Ecal;i++){
-	Ecal_lowlim[i]=1.5+i*0.5;
-	Ecal_uplim[i]=2.+i*0.5;
+      for (int i=0;i<N_Ecal;i++)
+      {
+        	Ecal_lowlim[i]=1.5+i*0.5;
+        	Ecal_uplim[i]=2.+i*0.5;
       }
       Ecal_lowlim[5]=0.;
       Ecal_uplim[5]=4.;
@@ -290,24 +298,24 @@ cout<<"!!!!!!!! Modified photon PID!!!!!!!!!!!!!"<<endl;
       Q2_mean=1.5;
       Q2_step=1;
 
-vert_min["3He"]=-3.27;
- vert_min["4He"]=-2.51;
- vert_min["C12"]=4.7;
- vert_min["56Fe"]=4.6;
- vert_max["3He"]=0.07;
- vert_max["4He"]=1.71;
- vert_max["C12"]=5.3;
- vert_max["56Fe"]=5.4;
+     vert_min["3He"]=-3.27;
+     vert_min["4He"]=-2.51;
+     vert_min["C12"]=4.7;
+     vert_min["56Fe"]=4.6;
+     vert_max["3He"]=0.07;
+     vert_max["4He"]=1.71;
+     vert_max["C12"]=5.3;
+     vert_max["56Fe"]=5.4;
 
- vertdiff_min["3He"]=-1.;
- vertdiff_min["4He"]=-1;
- vertdiff_min["C12"]=-1;
- vertdiff_min["56Fe"]=-1;
+     vertdiff_min["3He"]=-1.;
+     vertdiff_min["4He"]=-1;
+     vertdiff_min["C12"]=-1;
+     vertdiff_min["56Fe"]=-1;
 
- vertdiff_max["3He"]=1.;
- vertdiff_max["4He"]=1.;
- vertdiff_max["C12"]=1;
- vertdiff_max["56Fe"]=1;
+     vertdiff_max["3He"]=1.;
+     vertdiff_max["4He"]=1.;
+     vertdiff_max["C12"]=1;
+     vertdiff_max["56Fe"]=1;
 
 
 //original cut
@@ -423,7 +431,7 @@ EC_photon_beta["3He"]=0.93;
 
   Long64_t nentries = fChain->GetEntriesFast();
   //nentries = 100000000; //Number of Entries
-  //nentries = 2000000;
+  nentries = 2000000;
   TFile *file_in=new TFile(Form("el_Epratio_mom_%s.root",fbeam_en.c_str()));
   TFile *file_in1=new TFile(Form("protdeltat_mom_%s.root",fbeam_en.c_str()));
   TFile *file_in2=new TFile(Form("pimideltat_mom_%s.root",fbeam_en.c_str()));
@@ -483,6 +491,27 @@ EC_photon_beta["3He"]=0.93;
   TH2F *RadCosThetaGammaEgamma = new TH2F("RadCosThetaGammaEgamma","",100,-1.,1.,600,0.,6.);
 	TH2F *RadCosDeltaThetaGammaEgamma = new TH2F("RadCosDeltaThetaGammaEgamma","",100,-1.,1.,600,0.,6.);
 	TH2F *NonRadThetaVsPhiGamma = new TH2F("NonRadThetaVsPhiGamma","",360,0.,360.,180,0.,180.);
+
+  double Q2cut = 0.0;
+
+  if(en_beam[fbeam_en]>1. && en_beam[fbeam_en]<2.) //1.1 GeV Configuration parameters and cuts
+  {
+    outFile<<"q2cut 1 ";
+    Q2cut = 0.1;
+  }
+
+
+  if(en_beam[fbeam_en]>2. && en_beam[fbeam_en]<3.) //2.2 GeV Configuration parameters and cuts
+  {
+    outFile<<"q2cut 4 ";
+    Q2cut = 0.4;
+  }
+
+  if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.) //4.4 GeV Configuration parameters and cuts
+  {
+    outFile<<"q2cut 8 ";
+    Q2cut = 0.8;
+  }
 
   // Setting parameters for each beam energy and target
   if(en_beam[fbeam_en]>2. && en_beam[fbeam_en]<3.){
@@ -562,6 +591,12 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
   TH1F *h1_rot1_1pi_2p=new TH1F("1pi_2p_rot_cal","",n_bins, x_values);
   TH1F *h1_E_tot_2p1pi_1p1pi_pimi=new TH1F("h1_E_tot_2p1pi_1p1pi_pimi","",n_bins, x_values);
   TH1F *h1_E_tot_2p1pi_1p1pi_pipl=new TH1F("h1_E_tot_2p1pi_1p1pi_pipl","",n_bins, x_values);
+  //- - - - - TEMP STUFF - - - - - ///
+  TH1F *h1_E_tot_2p1pi_1p1pi_pimi_weighted = new TH1F("h1_E_tot_2p1pi_1p1pi_pimi_weighted","", n_bins, x_values);
+  TH1F *h1_E_tot_2p1pi_1p1pi_pimi_unweighted = new TH1F("h1_E_tot_2p1pi_1p1pi_pimi_unweighted","", n_bins, x_values);
+  TH1F *h1_E_tot_2p1pi_1p1pi_pipl_weighted = new TH1F("h1_E_tot_2p1pi_1p1pi_pipl_weighted","", n_bins, x_values);
+  TH1F *h1_E_tot_2p1pi_1p1pi_pipl_unweighted = new TH1F("h1_E_tot_2p1pi_1p1pi_pipl_unweighted","", n_bins, x_values);
+  //- - - - - END TEMP STUFF - - - - -//
   TH1F *h1_rot2_1pi_2p=new TH1F("1pi_2p_rot_kin_e","",n_bins, x_values);
   TH1F *h1_rot2_1pi_2p_pimi=new TH1F("1pi_2p_rot_kin_e_pimi","",n_bins, x_values);
   TH1F *h1_rot2_1pi_2p_pipl=new TH1F("1pi_2p_rot_kin_e_pipl","",n_bins, x_values);
@@ -728,7 +763,7 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
   TH1F *h1_Npiphot_norad=new TH1F("h1_Npiphot_norad","",10,-0.5,4.5);
 
 // - - - - - -
-
+  TLorentzVector V4_beam(0,0,en_beam[fbeam_en],en_beam[fbeam_en]);
   // Pulling parameters from f_vz file
   double pars[3];
   if(ftarget=="56Fe"){
@@ -745,7 +780,8 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
   int n_evnt=1;
   Long64_t nbytes = 0, nb = 0;
 
-  ///= = = = = Event Counters = = = = =///
+  ///= = = = = Event Counters DEBUGGERS = = = = =///
+  int debugCount = 0;
 	/// - - - 1pi - - -//
 	 int OneProtOnePiAll  = 0;
 	 int OneProtOnePiPipl = 0;
@@ -786,25 +822,51 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
 	     gDirectory->Write("hist_Files", TObject::kOverwrite);
 	     cout<<"Processing event "<<jentry<<endl;
     }
-    if (runnb==18258 || runnb==18259 || (runnb>18382 && runnb<18438) || (runnb>18220 && runnb<18253)) vz_corr_func->SetParameters(pars);
 
-    if(runnb==18258 || runnb==18259)   {   //setting appropriate e- vertex cut range for the runs with the same target and bema energy, but different vertex correction
-      vert_max["56Fe"]=6.;
-      vert_min["56Fe"]=5.2;//runs with exploaded cell
+    if(ffilter_selection == "unfiltered")
+    {
+      if (runnb==18258 || runnb==18259 || (runnb>18382 && runnb<18438) || (runnb>18220 && runnb<18253)) vz_corr_func->SetParameters(pars);
+
+      if(runnb==18258 || runnb==18259)   {   //setting appropriate e- vertex cut range for the runs with the same target and bema energy, but different vertex correction
+        vert_max["56Fe"]=6.;
+        vert_min["56Fe"]=5.2;//runs with exploaded cell
+      }
+      if(runnb>18382 && runnb<18438){
+        vert_max["3He"]=0.01;
+        vert_min["3He"]=-3.31; //runs with thin exit window
+      }
+      if((runnb>18283 && runnb<18289) || (runnb>18300 && runnb<18304) || (runnb>18317 && runnb<18329))fTorusCurrent=750;    //setting appropriate torrus magnet current
+      else if ((runnb>18293 && runnb<18301) || (runnb>18305 && runnb<18317) || (runnb>18328 && runnb<18336))fTorusCurrent=1500;
+      else fTorusCurrent=2250;
+      fTorusCurrent=2250;
+
+      if(n_evnt==1){SetFiducialCutParameters();}
+      n_evnt++;
+
     }
-    if(runnb>18382 && runnb<18438){
-      vert_max["3He"]=0.01;
-      vert_min["3He"]=-3.31; //runs with thin exit window
+
+    else
+    {
+      if(jentry == 0)
+      {
+  			//The TorusField has to be set before the Fiducialcut parameters are initialized
+  		  if(en_beam[fbeam_en]>1. && en_beam[fbeam_en]<2. ) //1.1 GeV, we are not using the 1.1 GeV data with 1500 current field
+  			{
+  				 fTorusCurrent = 750;
+  			}
+  			else if( (en_beam[fbeam_en]>2. && en_beam[fbeam_en]<3.) || (en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.) ) //2.2 GeV	or 4.4 GeV
+  			{
+  				 fTorusCurrent = 2250;
+  			}
+  			else { std::cout << "genie_analysis::Loop(): fTorusCurrent could not be assigned" << std::endl;}
+
+  			//fiducialcut->SetConstants(fTorusCurrent, target_name, en_beam);
+  			//fiducialcut->SetFiducialCutParameters(fbeam_en);
+  			std::cout << " EventLoop: Finished setting up fiducial cut class " << std::endl;
+  			//rotation->InitSubtraction(fbeam_en, target_name, bind_en, N_tot, fiducialcut);
+  			std::cout << " EventLoop: Finished setting up rotation initialize " << std::endl;
+      }
     }
-
-    if((runnb>18283 && runnb<18289) || (runnb>18300 && runnb<18304) || (runnb>18317 && runnb<18329))fTorusCurrent=750;    //setting appropriate torrus magnet current
-    else if ((runnb>18293 && runnb<18301) || (runnb>18305 && runnb<18317) || (runnb>18328 && runnb<18336))fTorusCurrent=1500;
-    else fTorusCurrent=2250;
-    fTorusCurrent=2250;
-
-
-    if(n_evnt==1){SetFiducialCutParameters();}
-    n_evnt++;
 
 
     int n_elec = 0;
@@ -865,11 +927,19 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
 
     double el_momentum = V3_el.Mag();
 
+    /// = = = = = Acceptance Parameters = = = = = ///
+    // Explicit cuts on electron momentum
+    if (fbeam_en == "1161" && el_momentum < 0.4) { continue; }
+    if (fbeam_en == "2261" && el_momentum < 0.55) { continue; }
+    if (fbeam_en == "4461" && el_momentum < 1.1) { continue; }
+
+
     h1_el_mom_ratio->Fill(V4_el.Rho()/V4_el_uncorr.Rho());
     double en_recon2 = (m_delta*m_delta-(m_prot-eps)*(m_prot-eps)+2*(m_prot-eps)*V4_el.E())/(2*(m_prot-eps-V4_el.E()+V4_el.Rho()*cz[ind_em]));
     if(ffilter_selection == "filtered")
       {
 	       el_phi_mod = V3_el.Phi()*TMath::RadToDeg()  + 30;
+         if(el_phi_mod<0)  el_phi_mod  = el_phi_mod+360;
       }
     TVector3 V3_pipl;
     TVector3 V3_pimi;
@@ -888,11 +958,11 @@ if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.){
     int num_n = 0,ec_num_n = 0;
     double pi_phi,pi_phi_mod, pi_theta,pimi_phi,pimi_phi_mod,pimi_theta,pipl_phi,pipl_phi_mod, pipl_theta;
     double fine_struc_const=0.007297;
-    double reco_Q2 = 0;
-    reco_Q2 = -(V4_el-V4_beam).Mag2();
+    double reco_Q2 = -(V4_el-V4_beam).Mag2();
 /// - - - - -  Removed Mott_cross_sec, replaced with Q4 for weighting. - - - - - ///
     double Q4 = reco_Q2 * reco_Q2;
-    double WeightIncl = Q4;
+    double e_acc_ratio = 1.;
+    double WeightIncl = wght*e_acc_ratio / Q4;
 
     const double pimi_vertcut=2.5,pipl_vertcut=2.5;
     double pimi_vert, pipl_vert, prot_vert, pimi_vert_corr, pipl_vert_corr, prot_vert_corr, prot_theta, prot_phi, prot_phi_mod;
@@ -916,41 +986,25 @@ if(ffilter_selection == "unfiltered"){
     h2_e_phi_costheta->Fill(el_phi_mod, cz[ind_em]);
     h2_e_ec_xy->Fill(ec_x,ec_y);
 
-    double Q2cut = 0;
     TVector3 V3_q=(V4_beam-V4_el).Vect();
+    double V3_q_theta_deg = V3_q.Theta() * 180. / TMath::Pi();
+		double V3_q_phi_deg = V3_q.Phi() * 180. / TMath::Pi() + 30.;
+		if (V3_q_phi_deg > 360) { V3_q_phi_deg = V3_q_phi_deg - 360.; }
+		if (V3_q_phi_deg < 0) { V3_q_phi_deg = V3_q_phi_deg + 360.; }
     double q2 = -(V4_beam-V4_el).Mag2();
     double omega= (V4_beam-V4_el).E();
     double Wvar=TMath::Sqrt((m_prot+omega)*(m_prot+omega)-V3_q*V3_q);
 
-    if(en_beam[fbeam_en]>1. && en_beam[fbeam_en]<2.) //1.1 GeV Configuration parameters and cuts
-    {
-      Q2cut = 0.1;
-    }
-
-
-    if(en_beam[fbeam_en]>2. && en_beam[fbeam_en]<3.) //2.2 GeV Configuration parameters and cuts
-    {
-      Q2cut = 0.4;
-    }
-
-    if(en_beam[fbeam_en]>4. && en_beam[fbeam_en]<5.) //4.4 GeV Configuration parameters and cuts
-    {
-      Q2cut = 0.8;
-    }
     ///- - - - - Declaration of Parameters for continue statements - - - - - ///
     double Wcut = 2;
     //double e_acc_ratio = 1.;
     double nu = -(V4_el-V4_beam).E();
-    double W_var = TMath::Sqrt((m_prot+nu)*(m_prot+nu)-V3_q*V3_q);
-
-    /// = = = = = Acceptance Parameters = = = = = ///
+    double W_var = 0.0;
+    W_var = TMath::Sqrt((m_prot+nu)*(m_prot+nu)-V3_q*V3_q);
     ///- - - - - 11.5.20 -> Changed Q2 -> reco_Q2 - - - - - ///
     if(ffilter_selection == "filtered")
     {
-      if( reco_Q2 < Q2cut || W_var > Wcut) continue;
-      ///- - - - - - Perhaps this is the source of my charges being messed up? - - - - - ///
-    //  if(!EFiducialCut(V3_el)) continue;
-    //  if(fabs(e_acc_ratio) != e_acc_ratio) {continue;}
+      if( reco_Q2 < Q2cut || W_var > Wcut) {continue;}
     }
 
     /// - - - - - 11.5.20 -> Attempt bug fix - - - - - ///
@@ -958,11 +1012,6 @@ if(ffilter_selection == "unfiltered"){
     {
       if(!EFiducialCut(el_mom1)){ continue; }//theta, phi cuts
     }
-
-    // Explicit cuts on electron momentum
-    if (fbeam_en == "1161" && el_momentum < 0.4) { continue; }
-    if (fbeam_en == "2261" && el_momentum < 0.55) { continue; }
-    if (fbeam_en == "4461" && el_momentum < 1.1) { continue; }
 
     else ///- - - - - Hardron Counts - - - - -///
     {
@@ -1039,200 +1088,201 @@ if(ffilter_selection == "unfiltered"){
   			}
       }//end for
     }//end else if
-    if(num_phot_rad > 0 )
-    {
-      Rad_phot_Pass++;
-      continue;
-    }
-    if(ffilter_selection == "unfiltered")
-    {
-        if(!CutUVW(e_ec_xyz1)){ continue; }
-    }
     /// - - - - - ///
     h2_e_ec_xy_fidcut->Fill(ec_x,ec_y);
     h2_e_phi_theta_cut->Fill(el_phi_mod, el_theta);
     h2_e_phi_costheta_cut->Fill(el_phi_mod, cz[ind_em]);
     ///- - - - - 10.8.20 Attempt to fix -AM - - - - - ///
+    h2_Np_Npi->Fill(num_pi,num_p);
+    h3_Npi_Np_Nphoton->Fill(num_pi,num_p,ec_num_n);
+    h1_el_vertcorr->Fill(el_vert_corr);
+    h1_el_vertuncorr->Fill(el_vert);
+    h1_Q2->Fill(reco_Q2);
+    h1_el_mom->Fill(V4_el_uncorr.Rho(), Q4);
+    //- - - - - 11.5.20 -> Added X distribution - - - - - ///
+    ///- - - - - ///
+    double x_bjk = reco_Q2/(2*m_prot*nu);
+    h1_xbjk -> Fill(x_bjk);
+    h1_omega->Fill(omega, Q4);
+    h1_Wvar->Fill(Wvar, Q4);
+    h2_Wvar_Q2->Fill(Wvar, q2, Q4);
+
+    ///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    /// - - - - - Hardron Count Histograms - - - - - ///
+    h1_Nprot->Fill(num_p);
+    h1_Npi->Fill(num_pi);
+    h1_Nphot->Fill(ec_num_n);
+    h1_Npipl->Fill(num_pipl);
+    h1_Npimi->Fill(num_pimi);
+    h1_Npiphot->Fill(num_pi_phot);
+    h1_Npiphot_norad->Fill(num_pi_phot_nonrad);
+
+    if(num_phot_rad > 0 )
+    {
+      Rad_phot_Pass++;
+      continue;
+    }
+    if(num_pi == 0){continue;}
+    //outFile<< jentry << endl;
+    if(ffilter_selection == "unfiltered")
+    {
+        if(!CutUVW(e_ec_xyz1)){ continue; }
+    }
     if(ffilter_selection == "filtered")
     {
       gpart = 20;
     }
   for( int i = 1; i < TMath::Min(gpart, 20); i++ )   //i is the index of the particle in the event
       {
-  /// - - - - - Implemented Filter Selection  10.4.20 -AM - - - - - ///
-  ///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-	if( (sc[i] > 0 && stat[i] > 0 &&  id[i] == 2212) && ffilter_selection == "unfiltered" )// looking for protons, id ==2212
-	  {
-      bett=p[i]/TMath::Sqrt(p[i]*p[i]+m_prot*m_prot);
-      deltt=sc_t[sc[i]-1]-sc_r[sc[i]-1]/(bett*c*ns_to_s) - tr_time;
-      fsum_prot->SetParameters(prot_delt_cutrange,prot_mom_lim);
-	    fsub_prot->SetParameters(prot_delt_cutrange,prot_mom_lim);
+        /// - - - - - Implemented Filter Selection  10.4.20 -AM - - - - - ///
+        ///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        if( (sc[i] > 0 && stat[i] > 0 &&  id[i] == 2212) && ffilter_selection == "unfiltered" )// looking for protons, id ==2212
+          {
+            bett=p[i]/TMath::Sqrt(p[i]*p[i]+m_prot*m_prot);
+            deltt=sc_t[sc[i]-1]-sc_r[sc[i]-1]/(bett*c*ns_to_s) - tr_time;
+            fsum_prot->SetParameters(prot_delt_cutrange,prot_mom_lim);
+            fsub_prot->SetParameters(prot_delt_cutrange,prot_mom_lim);
 
-	    prot_Deltat_p->Fill(p[i],deltt);
+            prot_Deltat_p->Fill(p[i],deltt);
 
-	    if(deltt<fsum_prot->Eval(p[i]) && deltt>fsub_prot->Eval(p[i]) && p[i]>=prot_accept_mom_lim){//Proton PID cut
-      prot_Deltat_p_cut->Fill(p[i],deltt);
-      TVector3 V3_p;
-      V3_p.SetXYZ(p[i]*cx[i],p[i]*cy[i],p[i]*cz[i]);
-      prot_vert = vz[i];
-      prot_phi=TMath::ATan2(cy[i],cx[i])*TMath::RadToDeg();
-      prot_phi_mod=prot_phi+30;
-      if (prot_phi_mod<0)prot_phi_mod=prot_phi_mod+360;
-      prot_theta=TMath::ACos(cz[i])*TMath::RadToDeg();
-      prot_vert_corr = prot_vert + vz_corr(prot_phi_mod,prot_theta);
-      h2_p_phi_theta->Fill(prot_phi_mod, prot_theta);
+            if(deltt<fsum_prot->Eval(p[i]) && deltt>fsub_prot->Eval(p[i]) && p[i]>=prot_accept_mom_lim){//Proton PID cut
+            prot_Deltat_p_cut->Fill(p[i],deltt);
+            TVector3 V3_p;
+            V3_p.SetXYZ(p[i]*cx[i],p[i]*cy[i],p[i]*cz[i]);
+            prot_vert = vz[i];
+            prot_phi=TMath::ATan2(cy[i],cx[i])*TMath::RadToDeg();
+            prot_phi_mod=prot_phi+30;
+            if (prot_phi_mod<0)prot_phi_mod=prot_phi_mod+360;
+            prot_theta=TMath::ACos(cz[i])*TMath::RadToDeg();
+            prot_vert_corr = prot_vert + vz_corr(prot_phi_mod,prot_theta);
+            h2_p_phi_theta->Fill(prot_phi_mod, prot_theta);
 
 
-      if(PFiducialCut(V3_p)){
-        h2_p_phi_theta_cut->Fill(prot_phi_mod, prot_theta);
-        h1_p_vert_corr->Fill(el_vert_corr-prot_vert_corr);
-      if((el_vert_corr-prot_vert_corr)>vertdiff_min[ftarget] && (el_vert_corr-prot_vert_corr)<vertdiff_max[ftarget]){
-        h1_p_vert_corr_cut->Fill(el_vert_corr-prot_vert_corr);
-      num_p++;
-	    index_p[num_p-1]=i;
+            if(PFiducialCut(V3_p)){
+              h2_p_phi_theta_cut->Fill(prot_phi_mod, prot_theta);
+              h1_p_vert_corr->Fill(el_vert_corr-prot_vert_corr);
+            if((el_vert_corr-prot_vert_corr)>vertdiff_min[ftarget] && (el_vert_corr-prot_vert_corr)<vertdiff_max[ftarget]){
+              h1_p_vert_corr_cut->Fill(el_vert_corr-prot_vert_corr);
+            num_p++;
+            index_p[num_p-1]=i;
+            }
+            }
+           }
+          }
+        ///- - - - - Filter Selection Implementation 10.4.20 -AM - - - - - ///
+        ///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        if((q[i]!=0 &&  sc[i] > 0 && dc[i]>0 && stat[i] > 0 &&  id[i] == -211)&&(ffilter_selection=="unfiltered")) //looking for negative pions, id=-211
+          {
+            V3_pimi.SetXYZ(p[i]*cx[i],p[i]*cy[i],p[i]*cz[i]);
+            bett=p[i]/TMath::Sqrt(p[i]*p[i]+Mpi*Mpi);
+            deltt=sc_t[sc[i]-1]-sc_r[sc[i]-1]/(bett*c*ns_to_s) - tr_time;
+
+            fsub_pimi->SetParameters(pimi_delt_cutrange,pimi_maxmom);
+            fsum_pimi->SetParameters(pimi_delt_cutrange,pimi_maxmom);
+
+            pimi_delt_p->Fill(p[i],deltt);
+
+            if(deltt<fsum_pimi->Eval(p[i]) && deltt>fsub_pimi->Eval(p[i])){//Negative pion PID cut
+
+            pimi_delt_p_cut->Fill(p[i],deltt);
+
+            pimi_vert = vz[i];
+            pimi_phi=TMath::ATan2(cy[i],cx[i])*TMath::RadToDeg();
+            pimi_phi_mod=pimi_phi+30;
+            if (pimi_phi_mod<0)pimi_phi_mod=pimi_phi_mod+360;
+            pimi_theta=TMath::ACos(cz[i])*TMath::RadToDeg();
+            pimi_vert_corr = pimi_vert + vz_corr(pimi_phi_mod,pimi_theta);
+            h2_pimi_phi_theta->Fill(pimi_phi_mod, pimi_theta);
+            if(PimiFiducialCut(V3_pimi, &cphil, &cphir)){
+              h2_pimi_phi_theta_cut->Fill(pimi_phi_mod, pimi_theta);
+              h1_pimi_vert_corr->Fill(el_vert_corr-pimi_vert_corr);
+            if(abs(el_vert_corr-pimi_vert_corr)<pimi_vertcut){
+              h1_pimi_vert_corr_cut->Fill(el_vert_corr-pimi_vert_corr);
+            num_pimi = num_pimi + 1;
+            num_pi = num_pi + 1;
+            index_pimi[num_pimi - 1]=i;
+            index_pi[num_pi - 1]=i;
+          }
+          }
+          }
+          }
+        /// - - - - - FIlter Selection Implementation 10.4.20 -AM - - - - - ///
+        ///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        if((q[i]!=0 &&  sc[i] > 0 && dc[i]>0 && stat[i] > 0 &&  id[i] == 211) && (ffilter_selection == "unfiltered")) //looking for positive pions, id=211
+          {
+            V3_pipl.SetXYZ(p[i]*cx[i],p[i]*cy[i],p[i]*cz[i]);
+
+            bett=p[i]/TMath::Sqrt(p[i]*p[i]+Mpi*Mpi);
+            deltt=sc_t[sc[i]-1]-sc_r[sc[i]-1]/(bett*c*ns_to_s) - tr_time;
+
+            fsub_pipl->SetParameters(pipl_delt_cutrange,pipl_maxmom);
+            fsum_pipl->SetParameters(pipl_delt_cutrange,pipl_maxmom);
+
+            pipl_delt_p->Fill(p[i],deltt);
+
+            if(deltt<fsum_pipl->Eval(p[i]) && deltt>fsub_pipl->Eval(p[i])){//Positive pion PID cut
+            pipl_delt_p_cut->Fill(p[i],deltt);
+            pipl_vert = vz[i];
+            pipl_phi=TMath::ATan2(cy[i],cx[i])*TMath::RadToDeg();
+            pipl_phi_mod=pipl_phi+30;
+            if (pipl_phi_mod<0)pipl_phi_mod=pipl_phi_mod+360;
+            pipl_theta=TMath::ACos(cz[i])*TMath::RadToDeg();
+            pipl_vert_corr = pipl_vert + vz_corr(pipl_phi_mod,pipl_theta);
+            h2_pipl_phi_theta->Fill(pipl_phi_mod, pipl_theta);
+            if(PiplFiducialCut(V3_pipl, &cphil, &cphir)){
+              h1_pipl_vert_corr->Fill(el_vert_corr-pipl_vert_corr);
+              h2_pipl_phi_theta_cut->Fill(pipl_phi_mod, pipl_theta);
+            if(abs(el_vert_corr-pipl_vert_corr)<pipl_vertcut){
+              h1_pipl_vert_corr_cut->Fill(el_vert_corr-pipl_vert_corr);
+            num_pipl = num_pipl+1;
+            num_pi = num_pi + 1;
+            index_pipl[num_pipl - 1]=i;
+            index_pi[num_pi - 1]=i;
+          }
+          }
+          }
+        }
+        ///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        if((ec[i] > 0 && dc[i]<=0  && sc[i]<=0  && stat[i] > 0 &&  q[i] == 0) && (ffilter_selection == "unfiltered"))//looking for neutral particles
+        {
+          neut_zvert=vz[i];
+          neut_yvert=vy[i];
+          neut_xvert=vx[i];
+          neut_ecx=ech_x[ec[i]-1];
+          neut_ecy=ech_y[ec[i]-1];
+          neut_ecz=ech_z[ec[i]-1];
+          phot_ec_xyz.SetXYZ(ech_x[ec[i]-1],ech_y[ec[i]-1],ech_z[ec[i]-1]);
+
+          neut_ecpath_corr=TMath::Sqrt((neut_ecx-neut_xvert)*(neut_ecx-neut_xvert)+(neut_ecy-neut_yvert)*(neut_ecy-neut_yvert)+(neut_ecz-neut_zvert)*(neut_ecz-neut_zvert));
+          neut_ectime_corr=neut_ecpath_corr/(b[i]*c*ns_to_s)-EC_time_offset[make_pair(ftarget,ec_sect[ec[i]-1])];
+          neut_beta_corr=neut_ecpath_corr/(neut_ectime_corr*c*ns_to_s);
+          neutr_phi_mod=TMath::ATan2(cy[i],cx[i])*TMath::RadToDeg()+30;
+          if (neutr_phi_mod<0)neutr_phi_mod=neutr_phi_mod+360;
+          V3_phot.SetXYZ(p[i]*cx[i],p[i]*cy[i],p[i]*cz[i]);
+          V3_el_angles_SC.SetXYZ(dc_cxsc[dc[ind_em]-1],dc_cysc[dc[ind_em]-1],dc_czsc[dc[ind_em]-1]);
+          ec_deltt=ec_t[ec[i]-1]-neut_ecpath_corr/(c*ns_to_s)+EC_time_offset[make_pair(ftarget,ec_sect[ec[i]-1])] - tr_time;
+          h1_ec_beta_corr->Fill(neut_beta_corr);
+          if(neut_beta_corr >EC_photon_beta[ftarget]) //looking for photons
+          {
+            h1_ec_beta_corr_cut->Fill(neut_beta_corr);
+            h2_neut_costheta_phi->Fill(neutr_phi_mod, cz[i]);
+            if(Phot_fid(V3_phot))
+            {
+              h2_neut_costheta_phi_cut->Fill(neutr_phi_mod, cz[i]);
+              ec_num_n = ec_num_n + 1;
+              ec_index_n[ec_num_n - 1]=i;
+              if(V3_phot.Angle(V3_el)*TMath::RadToDeg()<phot_rad_cut && abs(neutr_phi_mod-el_phi_mod)<phot_e_phidiffcut) ec_radstat_n[ec_num_n - 1]=true;
+              photon_ece = TMath::Max(ec_ei[ec[i] - 1] + ec_eo[ec[i] - 1], etot[ec[i] - 1]);
+            }
+          }
+        }
       }
-      }
-	   }
-    }
-///- - - - - Filter Selection Implementation 10.4.20 -AM - - - - - ///
-///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-	if((q[i]!=0 &&  sc[i] > 0 && dc[i]>0 && stat[i] > 0 &&  id[i] == -211)&&(ffilter_selection=="unfiltered")) //looking for negative pions, id=-211
-	  {
-      V3_pimi.SetXYZ(p[i]*cx[i],p[i]*cy[i],p[i]*cz[i]);
-      bett=p[i]/TMath::Sqrt(p[i]*p[i]+Mpi*Mpi);
-	    deltt=sc_t[sc[i]-1]-sc_r[sc[i]-1]/(bett*c*ns_to_s) - tr_time;
-
-      fsub_pimi->SetParameters(pimi_delt_cutrange,pimi_maxmom);
-	    fsum_pimi->SetParameters(pimi_delt_cutrange,pimi_maxmom);
-
-	    pimi_delt_p->Fill(p[i],deltt);
-
-	    if(deltt<fsum_pimi->Eval(p[i]) && deltt>fsub_pimi->Eval(p[i])){//Negative pion PID cut
-
-      pimi_delt_p_cut->Fill(p[i],deltt);
-
-      pimi_vert = vz[i];
-      pimi_phi=TMath::ATan2(cy[i],cx[i])*TMath::RadToDeg();
-      pimi_phi_mod=pimi_phi+30;
-      if (pimi_phi_mod<0)pimi_phi_mod=pimi_phi_mod+360;
-      pimi_theta=TMath::ACos(cz[i])*TMath::RadToDeg();
-      pimi_vert_corr = pimi_vert + vz_corr(pimi_phi_mod,pimi_theta);
-      h2_pimi_phi_theta->Fill(pimi_phi_mod, pimi_theta);
-      if(PimiFiducialCut(V3_pimi, &cphil, &cphir)){
-        h2_pimi_phi_theta_cut->Fill(pimi_phi_mod, pimi_theta);
-        h1_pimi_vert_corr->Fill(el_vert_corr-pimi_vert_corr);
-      if(abs(el_vert_corr-pimi_vert_corr)<pimi_vertcut){
-        h1_pimi_vert_corr_cut->Fill(el_vert_corr-pimi_vert_corr);
-      num_pimi = num_pimi + 1;
-      num_pi = num_pi + 1;
-	    index_pimi[num_pimi - 1]=i;
-      index_pi[num_pi - 1]=i;
-    }
-    }
-    }
-	  }
-  /// - - - - - FIlter Selection Implementation 10.4.20 -AM - - - - - ///
-  ///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-	if((q[i]!=0 &&  sc[i] > 0 && dc[i]>0 && stat[i] > 0 &&  id[i] == 211) && (ffilter_selection == "unfiltered")) //looking for positive pions, id=211
-	  {
-      V3_pipl.SetXYZ(p[i]*cx[i],p[i]*cy[i],p[i]*cz[i]);
-
-      bett=p[i]/TMath::Sqrt(p[i]*p[i]+Mpi*Mpi);
-	    deltt=sc_t[sc[i]-1]-sc_r[sc[i]-1]/(bett*c*ns_to_s) - tr_time;
-
-	    fsub_pipl->SetParameters(pipl_delt_cutrange,pipl_maxmom);
-	    fsum_pipl->SetParameters(pipl_delt_cutrange,pipl_maxmom);
-
-      pipl_delt_p->Fill(p[i],deltt);
-
-      if(deltt<fsum_pipl->Eval(p[i]) && deltt>fsub_pipl->Eval(p[i])){//Positive pion PID cut
-      pipl_delt_p_cut->Fill(p[i],deltt);
-      pipl_vert = vz[i];
-      pipl_phi=TMath::ATan2(cy[i],cx[i])*TMath::RadToDeg();
-      pipl_phi_mod=pipl_phi+30;
-      if (pipl_phi_mod<0)pipl_phi_mod=pipl_phi_mod+360;
-      pipl_theta=TMath::ACos(cz[i])*TMath::RadToDeg();
-      pipl_vert_corr = pipl_vert + vz_corr(pipl_phi_mod,pipl_theta);
-      h2_pipl_phi_theta->Fill(pipl_phi_mod, pipl_theta);
-      if(PiplFiducialCut(V3_pipl, &cphil, &cphir)){
-        h1_pipl_vert_corr->Fill(el_vert_corr-pipl_vert_corr);
-        h2_pipl_phi_theta_cut->Fill(pipl_phi_mod, pipl_theta);
-      if(abs(el_vert_corr-pipl_vert_corr)<pipl_vertcut){
-        h1_pipl_vert_corr_cut->Fill(el_vert_corr-pipl_vert_corr);
-      num_pipl = num_pipl+1;
-      num_pi = num_pi + 1;
-	    index_pipl[num_pipl - 1]=i;
-      index_pi[num_pi - 1]=i;
-    }
-    }
-	  }
-}
-///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if((ec[i] > 0 && dc[i]<=0  && sc[i]<=0  && stat[i] > 0 &&  q[i] == 0) && (ffilter_selection == "unfiltered"))//looking for neutral particles
-  {
-    neut_zvert=vz[i];
-    neut_yvert=vy[i];
-    neut_xvert=vx[i];
-    neut_ecx=ech_x[ec[i]-1];
-    neut_ecy=ech_y[ec[i]-1];
-    neut_ecz=ech_z[ec[i]-1];
-    phot_ec_xyz.SetXYZ(ech_x[ec[i]-1],ech_y[ec[i]-1],ech_z[ec[i]-1]);
-
-    neut_ecpath_corr=TMath::Sqrt((neut_ecx-neut_xvert)*(neut_ecx-neut_xvert)+(neut_ecy-neut_yvert)*(neut_ecy-neut_yvert)+(neut_ecz-neut_zvert)*(neut_ecz-neut_zvert));
-    neut_ectime_corr=neut_ecpath_corr/(b[i]*c*ns_to_s)-EC_time_offset[make_pair(ftarget,ec_sect[ec[i]-1])];
-    neut_beta_corr=neut_ecpath_corr/(neut_ectime_corr*c*ns_to_s);
-    neutr_phi_mod=TMath::ATan2(cy[i],cx[i])*TMath::RadToDeg()+30;
-    if (neutr_phi_mod<0)neutr_phi_mod=neutr_phi_mod+360;
-    V3_phot.SetXYZ(p[i]*cx[i],p[i]*cy[i],p[i]*cz[i]);
-    V3_el_angles_SC.SetXYZ(dc_cxsc[dc[ind_em]-1],dc_cysc[dc[ind_em]-1],dc_czsc[dc[ind_em]-1]);
-    ec_deltt=ec_t[ec[i]-1]-neut_ecpath_corr/(c*ns_to_s)+EC_time_offset[make_pair(ftarget,ec_sect[ec[i]-1])] - tr_time;
-    h1_ec_beta_corr->Fill(neut_beta_corr);
-    if(neut_beta_corr >EC_photon_beta[ftarget]) //looking for photons
-    {
-      h1_ec_beta_corr_cut->Fill(neut_beta_corr);
-      h2_neut_costheta_phi->Fill(neutr_phi_mod, cz[i]);
-      if(Phot_fid(V3_phot))
-      {
-        h2_neut_costheta_phi_cut->Fill(neutr_phi_mod, cz[i]);
-        ec_num_n = ec_num_n + 1;
-        ec_index_n[ec_num_n - 1]=i;
-        if(V3_phot.Angle(V3_el)*TMath::RadToDeg()<phot_rad_cut && abs(neutr_phi_mod-el_phi_mod)<phot_e_phidiffcut) ec_radstat_n[ec_num_n - 1]=true;
-        photon_ece = TMath::Max(ec_ei[ec[i] - 1] + ec_eo[ec[i] - 1], etot[ec[i] - 1]);
-      }
-    }
-  }
-}
-  h2_Np_Npi->Fill(num_pi,num_p);
-  h3_Npi_Np_Nphoton->Fill(num_pi,num_p,ec_num_n);
-  h1_el_vertcorr->Fill(el_vert_corr);
-  h1_el_vertuncorr->Fill(el_vert);
-
-
-
-  h1_Q2->Fill(reco_Q2);
-  h1_el_mom->Fill(V4_el_uncorr.Rho(), Q4);
-  //- - - - - 11.5.20 -> Added X distribution - - - - - ///
-  double x_bjk = reco_Q2/(2*m_prot*nu);
-  h1_xbjk -> Fill(x_bjk);
-  ///- - - - - ///
-  h1_omega->Fill(omega, Q4);
-  h1_Wvar->Fill(Wvar, Q4);
-  h2_Wvar_Q2->Fill(Wvar, q2, Q4);
   if(el_phi_mod<30 && el_phi_mod>-30)
   {
       h2_Wvar_Q2_sect1->Fill(Wvar, q2, Q4);
       h2_omega_Q2_sect1->Fill(omega, q2, Q4);
   }
   h2_omega_Q2->Fill(omega,q2, Q4);
-///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/// - - - - - Hardron Count Histograms - - - - - ///
-  h1_Nprot->Fill(num_p);
-  h1_Npi->Fill(num_pi);
-  h1_Nphot->Fill(ec_num_n);
-  h1_Npipl->Fill(num_pipl);
-  h1_Npimi->Fill(num_pimi);
-  h1_Npiphot->Fill(num_pi_phot);
-  h1_Npiphot_norad->Fill(num_pi_phot_nonrad);
 
 ///- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if((el_vert_corr<vert_max[ftarget] && el_vert_corr>vert_min[ftarget])||(ffilter_selection=="filtered")){
@@ -1909,7 +1959,7 @@ if(ffilter_selection == "unfiltered"){
       OneProtOnePiAll++;
       TLorentzVector V4_total;
       double p_perp = 0;
-      if(num_pipl == 1)
+      if(charge_pi[0] >0)
       {
         OneProtOnePiPipl++;
         TLorentzVector V4_pi;
@@ -1927,7 +1977,13 @@ if(ffilter_selection == "unfiltered"){
         }
         // First reconstruction method
         double en_recon1 = V4_el.E() + p_kin + V4_pi.E();
-        double Ecal = V4_el.E() + p_kin + V4_pi.E();
+        //double Ecal = V4_el.E() + p_kin + V4_pi.E();
+        TLorentzVector V4_prot_corr, V4_pi_corr;
+        TLorentzVector V3_pi_corr;
+        V4_pi_corr.SetPxPyPzE(pxf[ind_pi_phot[0]], pyf[ind_pi_phot[0]], pzf[ind_pi_phot[0]],TMath::Sqrt(Mpi*Mpi+pf[ind_pi_phot[0]]*pf[ind_pi_phot[0]]));
+        TLorentzVector V4_prot_uncorr1(pxf[index_p[0]],pyf[index_p[0]],pzf[index_p[0]],TMath::Sqrt(m_prot*m_prot+pf[index_p[0]]*pf[index_p[0]]));
+        V4_prot_corr.SetPxPyPzE(pxf[index_p[0]+60], pyf[index_p[0]+60], pzf[index_p[0]+60],TMath::Sqrt(m_prot*m_prot+pf[index_p[0]+60]*pf[index_p[0]+60]));
+        double Ecal = V4_el.E() + V4_prot_uncorr1.E() - m_prot + V4_pi_corr.E();
         h1_E_tot_pipl->Fill(Ecal,Q4);
         h1_en_recon1->Fill(en_recon1, Q4);
         h1_en_recon1_pipl->Fill(en_recon1, Q4);
@@ -1942,7 +1998,7 @@ if(ffilter_selection == "unfiltered"){
         h1_en_recon3->Fill(en_recon3, Q4);
         h1_en_recon3_pipl->Fill(en_recon3, Q4);
       }
-      if(num_pimi==1)
+      else if(charge_pi[0] < 0)
       {
         OneProtOnePiPimi++;
         TLorentzVector V4_pi(p[index_pimi[0]]*cx[index_pimi[0]],p[index_pimi[0]]*cy[index_pimi[0]],p[index_pimi[0]]*cz[index_pimi[0]], TMath::Sqrt(p[index_pimi[0]]*p[index_pimi[0]]+Mpi*Mpi));
@@ -2005,7 +2061,9 @@ if(ffilter_selection == "unfiltered"){
         double Ecal = V4_el.E() + V4_prot_uncorr1.E() - m_prot + V4_pi_corr.E();
         //double Ecal = V4_el.E();
         h1_E_tot_pimi->Fill(Ecal, Q4);
-
+        /// - - - - - Ali look here (jentry -> event number) - - - - -///
+        //outFile << jentry << endl;
+        //cout<<jentry<<endl;
         h2_cal_Wvar->Fill(Ecal, Wvar, Q4);
         //Second reconstruction method
         h1_en_recon2->Fill(en_recon2, Q4);
@@ -2038,7 +2096,7 @@ if(ffilter_selection == "unfiltered"){
     }
   }//end of 1pi 0 photon statement
   //Requiring 1 pion, 1 photon
-  if(num_pi==1)
+/*  if(num_pi==1)
   {
     ///Ali please look here :) line 2199 in genie ///
     TLorentzVector V4_total;
@@ -2244,7 +2302,7 @@ if(ffilter_selection == "unfiltered"){
         h2_kin_e_pi_Wvar->Fill(en_recon3, Wvar, (N1pi1p0phot/N1pi1p1phot)*(N_1pi_1p_1phot/N_1pi_1p_2phot)*(Q4));
       }
     }
-  }//end of 1 pi 2 photon statement
+  }*///end of 1 pi 2 photon statement
 }//end of 1proton statement
 TVector3 V3_1pi_rot, V3_p_rot[2], V3_pi, V3_p[2];
 TLorentzVector V4_pi, V4_p[2], V4_prot_uncorr1;
@@ -2578,16 +2636,23 @@ if(num_p == 2)
 
 rot_1pi_2p(V3_pi, qpi, V3_p, V3_q, N_1pi_1p, &N_1pi_2p, N_tot);
     //fill the histograms here
-      if(N_1pi_2p!=0){
+      if(num_p == 2){//N_1pi_2p!=0
           // First reconstruction method
           h1_rot1_1pi_2p->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(Q4));
-          if(qpi>0)
+          if(qpi>0 || charge_pi[0] > 0)
           {
             h1_E_tot_2p1pi_1p1pi_pipl->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(Q4));
+            h1_E_tot_2p1pi_1p1pi_pipl_weighted -> Fill((N_1pi_1p[0]/N_1pi_2p)*(Q4));
+            h1_E_tot_2p1pi_1p1pi_pipl_unweighted -> Fill(en_recon1[0]);
           }
-          else
+          else if(qpi < 0 || charge_pi[0] < 0)
           {
             h1_E_tot_2p1pi_1p1pi_pimi->Fill(en_recon1[0], (N_1pi_1p[0]/N_1pi_2p)*(Q4));
+            // temp fills :)
+            h1_E_tot_2p1pi_1p1pi_pimi_weighted -> Fill((N_1pi_1p[0]/N_1pi_2p)*(Q4));
+            h1_E_tot_2p1pi_1p1pi_pimi_unweighted -> Fill(en_recon1[0]);
+            debugCount++;
+            //end temp fills :)
             h1_Q2_sub->Fill(q2,-(N_1pi_1p[0]/N_1pi_2p)*(Q4));
             h1_omega_sub->Fill(omega,-(N_1pi_1p[0]/N_1pi_2p)*(Q4));
             h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[0]/N_1pi_2p)*(Q4));
@@ -2600,13 +2665,20 @@ rot_1pi_2p(V3_pi, qpi, V3_p, V3_q, N_1pi_1p, &N_1pi_2p, N_tot);
             if(p_perp[0] > 0.4) h1_cal_p_slice3_sub->Fill(en_recon1[0], -(N_1pi_1p[0]/N_1pi_2p)*(Q4));
           }
           h1_rot1_1pi_2p->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(Q4));
-          if(qpi>0)
+          if(qpi>0 || charge_pi[1] > 0)
           {
             h1_E_tot_2p1pi_1p1pi_pipl->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(Q4));
+            h1_E_tot_2p1pi_1p1pi_pipl_weighted -> Fill((N_1pi_1p[1]/N_1pi_2p)*(Q4));
+            h1_E_tot_2p1pi_1p1pi_pipl_unweighted -> Fill(en_recon1[1]);
           }
-          else
+          else if(qpi < 0 || charge_pi[1] < 0)
           {
             h1_E_tot_2p1pi_1p1pi_pimi->Fill(en_recon1[1], (N_1pi_1p[1]/N_1pi_2p)*(Q4));
+            //temp fills :)
+            h1_E_tot_2p1pi_1p1pi_pimi_weighted -> Fill((N_1pi_1p[1]/N_1pi_2p)*(Q4));
+            h1_E_tot_2p1pi_1p1pi_pimi_unweighted -> Fill(en_recon1[1]);
+            debugCount++;
+            //end temp fills :)
             h1_Q2_sub->Fill(q2,-(N_1pi_1p[1]/N_1pi_2p)*(Q4));
             h1_omega_sub->Fill(omega,-(N_1pi_1p[1]/N_1pi_2p)*(Q4));
             h1_Wvar_sub->Fill(Wvar,-(N_1pi_1p[1]/N_1pi_2p)*(Q4));
@@ -3199,7 +3271,7 @@ if(num_p == 3){
   TLorentzVector V4_pi;
   TVector3 V3_pi;
   //Requiring 1 pion, 1 photon
-  if(num_pi == 1)
+/*  if(num_pi == 1)
   {
     ThreeProtOnePiAll++;
 
@@ -3975,7 +4047,7 @@ if(num_p == 3){
               }
             }
           }
-}
+}*/
 //End of 1 pi 0 phot statement
   //Requiring 1 pion, 0 photon
   if(num_pi == 1)
@@ -3992,6 +4064,9 @@ if(num_p == 3){
     {
       V4_pi.SetPxPyPzE(p[index_pi[0]]*cx[index_pi[0]],p[index_pi[0]]*cy[index_pi[0]],p[index_pi[0]]*cz[index_pi[0]],TMath::Sqrt(p[index_pi[0]]*p[index_pi[0]]+Mpi*Mpi));
       V3_pi = V4_pi.Vect();
+      V4_el.SetPxPyPzE(pxl,pyl,pzl,El);
+      V4_el_uncorr.SetPxPyPzE(pxl,pyl,pzl,El);
+      V3_el.SetXYZ(pxl,pyl,pzl);
     }
     for(int j=0;j<3;j++)
     {
@@ -4004,7 +4079,10 @@ if(num_p == 3){
     double qpi = 0;
     qpi = q[index_pi[0]];
     for(int i = 0;i<3;i++){
-      en_recon1[i] = V4_el.E() + p3_kin[i] + V4_pi.E();
+      if(ffilter_selection == "unfiltered")
+        en_recon1[i] = V4_el.E() + p3_kin[i] + V4_pi.E();
+      else if(ffilter_selection == "filtered" )
+        en_recon1[i] = V4_el.E() + V4_prot[i].E() - m_prot + V4_pi.E();
     }
     en_recon3 = (m_prot*m_prot - (m_prot - eps)*(m_prot - eps) + 2*(m_neut - eps)*(V4_el.E() + V4_pi.E()) - e_mass*e_mass - 2*V4_el.E()*V4_pi.E() + 2*V4_el.Rho()*V4_pi.Rho()*cos(V3_pi.Angle(V3_el)) + Mpi*Mpi)/
                                             (2*(m_neut - eps - V4_el.E() - V4_pi.E()) + 2*(V4_el.Rho()*cz[ind_em] + V4_pi.Rho()*cz[index_pi[0]]));
@@ -4620,7 +4698,29 @@ cout << "Three Pion Events: "
      << "\n 3prot1pi ALL: "  << right << ThreeProtOnePiAll  << left
      << "\n 3prot1pi pimi: " << right << ThreeProtOnePiPimi << left
      << "\n 3prot1pi pipl: " << right << ThreeProtOnePiPipl << left
+     << "\n \n Debugger Count:" << right << debugCount << left
      << endl;
+///Drawing histograms and saving them to a folder just to save time bc I am lazy :)
+TCanvas *c1 = new TCanvas("c1","",500,300);
+h1_E_tot_2p1pi_1p1pi_pimi->Draw();
+c1->Print("Histograms/LucasPimiNoChange.png");
+TCanvas *c2 = new TCanvas("c2","",500,300);
+h1_E_tot_2p1pi_1p1pi_pipl->Draw();
+c2->Print("Histograms/LucasPiplNoChange.png");
+TCanvas *c3 = new TCanvas("c3","",500,300);
+h1_E_tot_2p1pi_1p1pi_pimi_weighted->Draw();
+c3->Print("Histograms/LucasPimiWeighted.png");
+TCanvas *c4 = new TCanvas("c4","",500,300);
+h1_E_tot_2p1pi_1p1pi_pipl_weighted->Draw();
+c4->Print("Histograms/LucasPiplWeighted.png");
+TCanvas *c5 = new TCanvas("c5","",500,300);
+h1_E_tot_2p1pi_1p1pi_pimi_unweighted->Draw();
+c5->Print("Histograms/LucasPimiUnweighted.png");
+TCanvas *c6 = new TCanvas("c6","",500,300);
+h1_E_tot_2p1pi_1p1pi_pipl_unweighted->Draw();
+c6->Print("Histograms/LucasPiplUnweighted.png");
+
+ outFile.close();
 }
 
 Bool_t GetEPhiLimits(Float_t momentum, Float_t theta, Int_t sector,Float_t *EPhiMin, Float_t *EPhiMax){
@@ -7200,7 +7300,7 @@ void SetFiducialCutParameters(){
 	   for(int k=0; k<6; k++) fgPar_4Gev_2250_Efid_a_p[sector-1][1][k] = data[k];
 	   break;
 	 default:
-	   printf("Error in Efid parameter file!\nReceived parameter type %d, which is not found.\nAborting!\n\n\n",param_type);
+	   Printf("Error in Efid parameter file!\nReceived parameter type %d, which is not found.\nAborting!\n\n\n",param_type);
 	   break;
 	 }
      } // Done reading in Fiducial Region Parameters
@@ -7654,7 +7754,7 @@ for(int i = 0 ; i < 8 ; i++){
 
 
  }
-else printf("There are no fiducial cut parameters to be read at %3.1f GeV!\n", en_beam[fbeam_E]);
+else Printf("There are no fiducial cut parameters to be read at %3.1f GeV!\n", en_beam[fbeam_E]);
  //	param_file2.close();
 
 
